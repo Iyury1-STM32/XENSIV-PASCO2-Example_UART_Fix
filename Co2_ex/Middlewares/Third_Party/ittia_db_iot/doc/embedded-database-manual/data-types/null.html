@@ -1,0 +1,141 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>6.5. NULL Values &#8212; ITTIA DB IoT Embedded Database Manual</title>
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/ittia.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="7. Security" href="../security/index.html" />
+    <link rel="prev" title="6.4. Binary Types" href="binary.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+          <p class="logo"><a href="../index.html">
+            <img class="logo" src="../_static/logo.png" alt="Logo"/>
+          </a></p>
+        <div class="headertitle"><a
+          href="../index.html">ITTIA DB IoT Embedded Database Manual</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="binary.html" title="6.4. Binary Types"
+             accesskey="P">previous</a>
+           |
+          <a href="../security/index.html" title="7. Security"
+             accesskey="N">next</a>
+           |
+          <a href="../contents.html">Contents</a>
+           |
+          <a href="../../c-api-reference/index.html">C API</a>
+           |
+          <a href="../../cpp-api-reference/index.html">C++ API</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="null-values">
+<h1>6.5. NULL Values<a class="headerlink" href="#null-values" title="Permalink to this headline">¶</a></h1>
+<p>Any data type in ITTIA DB IoT can hold a special value called null,
+represented by the literal <code class="docutils literal notranslate"><span class="pre">null</span></code>. When a value is null, it indicates that
+the value is unknown, has not been set, or does not exist.</p>
+<p>Columns in a table can be restricted to not contain any null values. When a row is
+inserted, any columns that are not set default to null.</p>
+<p>While the SQL literal <code class="docutils literal notranslate"><span class="pre">null</span></code> has no inherent type, its type is usually
+inferred from the context of the SQL query. If the type cannot be inferred,
+for example when <code class="docutils literal notranslate"><span class="pre">null</span></code> appears in a select list, but not part of any
+expression, the field will have type <code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_UNDEFINED</span></code>.</p>
+<p>Comparison operators handle null as a special case. The result of any
+comparison is false whenever either value is null, and even if both values
+are null, because the actual answer is uncertain. To determine whether a
+value <code class="docutils literal notranslate"><span class="pre">x</span></code> is <code class="docutils literal notranslate"><span class="pre">null</span></code>, use the expression <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">IS</span> <span class="pre">NULL</span></code> or <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">IS</span> <span class="pre">NOT</span>
+<span class="pre">NULL</span></code>.</p>
+<p>Null values are also a special case for unique indexes. If the value of an
+index column is null for a given row, then that row is exempt from the unique
+constraint.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">In C and C++, <code class="docutils literal notranslate"><span class="pre">NULL</span></code> is a pointer type equal to <code class="docutils literal notranslate"><span class="pre">0</span></code>. In SQL,
+<code class="docutils literal notranslate"><span class="pre">0</span></code> and <code class="docutils literal notranslate"><span class="pre">null</span></code> are distinct values.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Database Manual</h3>
+          <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general-information/index.html">1. General Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">2. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">3. Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage-engines/index.html">4. Database Engines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">5. APIs &amp; Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">6. Data Types</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="numeric.html">6.1. Numeric Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="character-string.html">6.2. Character String Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="date-time.html">6.3. Date and Time Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="binary.html">6.4. Binary Types</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6.5. NULL Values</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">7. Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../errors.html">8. Error Codes</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="binary.html" title="6.4. Binary Types"
+              >previous</a> |
+            <a href="../security/index.html" title="7. Security"
+              >next</a>
+          </div>
+          <div role="note" aria-label="source link">
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, ITTIA L.L.C..
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

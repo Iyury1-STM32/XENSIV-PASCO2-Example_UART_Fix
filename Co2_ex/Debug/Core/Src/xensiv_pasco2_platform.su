@@ -1,0 +1,7 @@
+../Core/Src/xensiv_pasco2_platform.c:70:9:xensiv_pasco2_plat_i2c_transfer	48	static
+../Core/Src/xensiv_pasco2_platform.c:95:9:xensiv_pasco2_plat_uart_read	24	static
+../Core/Src/xensiv_pasco2_platform.c:114:9:xensiv_pasco2_plat_uart_write	24	static
+../Core/Src/xensiv_pasco2_platform.c:130:6:xensiv_pasco2_plat_delay	16	static
+../Core/Src/xensiv_pasco2_platform.c:144:10:xensiv_pasco2_plat_htons	16	static
+../Core/Src/xensiv_pasco2_platform.c:153:9:xensiv_pasco2_plat_htonb	24	static
+../Core/Src/xensiv_pasco2_platform.c:169:6:xensiv_pasco2_plat_assert	16	static

@@ -1,0 +1,36 @@
+var a00020 =
+[
+    [ "db_stream_graph_t", "a00357.html#gaf2c6ddce58bb0d9ca2968a8296405b7c", null ],
+    [ "db_stream_node_t", "a00357.html#ga7a84cb7839c4dd9fb913e1dc87d91f87", null ],
+    [ "db_stream_callback_t", "a00357.html#ga3dc06ffda6e25a35006a409d6ef1c1ba", null ],
+    [ "db_aggregate_t", "a00357.html#ga2e297130978c7e0904212014b7e252cf", [
+      [ "DB_AGGREGATE_COUNT", "a00357.html#gga2e297130978c7e0904212014b7e252cfacaf6d58282da436244740ea79e402fe1", null ],
+      [ "DB_AGGREGATE_SUM", "a00357.html#gga2e297130978c7e0904212014b7e252cfa9fdeb37a718cfee2a94399177f8296ff", null ],
+      [ "DB_AGGREGATE_AVERAGE", "a00357.html#gga2e297130978c7e0904212014b7e252cfa5ac01fcb83917bb590fa78150506a4e0", null ]
+    ] ],
+    [ "db_stream_create_graph", "a00357.html#ga26cdef60fd12f56b75886d91bf2d5458", null ],
+    [ "db_stream_free_graph", "a00357.html#gaa70308c80f7a5d4f2d494852d10bcee0", null ],
+    [ "db_stream_create_row_input", "a00357.html#gafbee6b53e944a9c98a286abd26889306", null ],
+    [ "db_stream_set_sint32", "a00357.html#ga0277d9fbb18b15ecab655c2d2ad59d67", null ],
+    [ "db_stream_set_uint64", "a00357.html#ga7dd1ecbaeefd5a5e0d623ca66badcb59", null ],
+    [ "db_stream_set_timestamp_usec", "a00357.html#ga028704339bf6a67aad91cc359724e5a1", null ],
+    [ "db_stream_set_float32", "a00357.html#ga21a45fd34c2cf9b1779a316c587f2a60", null ],
+    [ "db_stream_set_float64", "a00357.html#ga5f37d3b17868098e98daf05f80fea7db", null ],
+    [ "db_stream_process", "a00357.html#gac09a86fad4ffc8a59692ca779d89664c", null ],
+    [ "db_stream_create_row_output", "a00357.html#gabacda35e979e2aee3dbab5f9d2b250c2", null ],
+    [ "db_stream_get_tag", "a00357.html#ga00d86986cc9f6999c3f182443fe769dd", null ],
+    [ "db_stream_get_transaction_timestamp", "a00357.html#gaccda38823644ac5c6bec21dfde7677b8", null ],
+    [ "db_stream_get_sint32", "a00357.html#ga6d011b5d51cd9bd7abb98aa22ccd58b8", null ],
+    [ "db_stream_get_uint32", "a00357.html#ga899b38f9bf7da8d3c57e7f98bb6c82d8", null ],
+    [ "db_stream_get_sint64", "a00357.html#ga67412dab99eeaaf4a3ada7375af16efa", null ],
+    [ "db_stream_get_uint64", "a00357.html#gaff7f302cf3b1db29887e0eb76f341fe6", null ],
+    [ "db_stream_get_timestamp_usec", "a00357.html#gae34dfefb74780f091c475de8735d3dfd", null ],
+    [ "db_stream_get_float32", "a00357.html#ga67c6625cbf2f7d2cd0bd70d4ff22bb7b", null ],
+    [ "db_stream_get_float64", "a00357.html#gaf9fd56430aa31d480460e6673b752a1e", null ],
+    [ "db_stream_create_queue", "a00357.html#ga32d5632d0888c9d5cac79ae343a49db3", null ],
+    [ "db_stream_queue_next", "a00357.html#gae40c485519766317549b5790ee627e7d", null ],
+    [ "db_stream_create_filter_uint64", "a00357.html#gab46f3e5b34a99a5c3ea3547432211010", null ],
+    [ "db_stream_create_time_interval_window", "a00357.html#ga7c95f31cb9c8c9eeac1c25dadb403dcc", null ],
+    [ "db_stream_create_aggregates", "a00357.html#ga6aa52949cbe078237bbc765e3302e7b6", null ],
+    [ "db_stream_create_join_all_within", "a00357.html#ga63b8e12bd813110a6995fdcb7d955fc2", null ]
+];

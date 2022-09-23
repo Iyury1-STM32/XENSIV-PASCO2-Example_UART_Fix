@@ -1,0 +1,284 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>5.4.4. C++ Table Cursors &#8212; ITTIA DB IoT Embedded Database Manual</title>
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/ittia.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="6. Data Types" href="../../data-types/index.html" />
+    <link rel="prev" title="5.4.3. Transactions" href="transactions.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+          <p class="logo"><a href="../../index.html">
+            <img class="logo" src="../../_static/logo.png" alt="Logo"/>
+          </a></p>
+        <div class="headertitle"><a
+          href="../../index.html">ITTIA DB IoT Embedded Database Manual</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="transactions.html" title="5.4.3. Transactions"
+             accesskey="P">previous</a>
+           |
+          <a href="../../data-types/index.html" title="6. Data Types"
+             accesskey="N">next</a>
+           |
+          <a href="../../contents.html">Contents</a>
+           |
+          <a href="../../../c-api-reference/index.html">C API</a>
+           |
+          <a href="../../../cpp-api-reference/index.html">C++ API</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="c-table-cursors">
+<span id="table-cursors-api"></span><h1>5.4.4. C++ Table Cursors<a class="headerlink" href="#c-table-cursors" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;storage/data/environment.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;storage/ittiadb/table.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p>A table cursor provides direct access to a single table and its indexes.
+The cursor can be used to read, find, insert, update, or delete one row
+at a time.</p>
+<p>To open a cursor, create a <code class="docutils literal notranslate"><span class="pre">storage::ittiadb::Table</span></code> object and call
+<code class="docutils literal notranslate"><span class="pre">open()</span></code>.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">storage</span><span class="o">::</span><span class="n">ittiadb</span><span class="o">::</span><span class="n">Table</span> <span class="n">contact</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="s">&quot;contact&quot;</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">DB_OK</span> <span class="o">!=</span> <span class="n">contact</span><span class="p">.</span><span class="n">open</span><span class="p">())</span> <span class="p">{</span>
+    <span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Error opening table: &quot;</span>
+         <span class="o">&lt;&lt;</span> <span class="n">storage</span><span class="o">::</span><span class="n">data</span><span class="o">::</span><span class="n">Environment</span><span class="o">::</span><span class="n">error</span><span class="p">().</span><span class="n">name</span>
+         <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>When you are done with the cursor, call <code class="docutils literal notranslate"><span class="pre">close()</span></code> to free resources.
+The cursor will also close itself automatically when it is destroyed.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">contact</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+</pre></div>
+</div>
+<div class="section" id="inserting-data">
+<span id="cpp-inserting-data"></span><h2>5.4.4.1. Inserting Data<a class="headerlink" href="#inserting-data" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;storage/ittiadb/sequence.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;storage/data/single_row.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p>Before inserting data, it is often useful to obtain a unique value from
+a sequence generator.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">storage</span><span class="o">::</span><span class="n">ittiadb</span><span class="o">::</span><span class="n">Sequence</span> <span class="n">id_sequence</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="s">&quot;contact_id&quot;</span><span class="p">);</span>
+<span class="n">db_seqvalue_t</span> <span class="n">id</span><span class="p">;</span>
+
+<span class="n">id_sequence</span><span class="p">.</span><span class="n">open</span><span class="p">();</span>
+<span class="n">id_sequence</span><span class="p">.</span><span class="n">get_next_value</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>To insert data, first create a <code class="docutils literal notranslate"><span class="pre">storage::data::SingleRow</span></code> object for
+the table’s columns. Next, assign values to the row object. Finally,
+insert the row into the table.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">SingleRow</span> <span class="nf">row</span><span class="p">(</span><span class="n">contact</span><span class="p">.</span><span class="n">columns</span><span class="p">());</span>
+<span class="n">row</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">).</span><span class="n">set</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<span class="n">row</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">).</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;Dijkstra&quot;</span><span class="p">);</span>
+<span class="n">row</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="s">&quot;ring_id&quot;</span><span class="p">).</span><span class="n">set</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
+
+<span class="n">contact</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">row</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Data inserted into the database will not be persistent until the
+current transaction is committed.</p>
+</div>
+</div>
+<div class="section" id="searching-a-table-cursor">
+<span id="cpp-searching-a-table-cursor"></span><h2>5.4.4.2. Searching a Table Cursor<a class="headerlink" href="#searching-a-table-cursor" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;storage/data/row_set.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p>To filter a table, first open the table with an index on the field or
+fields to be searched.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">contact</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;by_name&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Create a <code class="docutils literal notranslate"><span class="pre">storage::data::RowSet&lt;&gt;</span></code> object for the search results and a
+<code class="docutils literal notranslate"><span class="pre">storage::data::SingleRow</span></code> object for the search key. Assign a value
+to each index field and call <code class="docutils literal notranslate"><span class="pre">search_by_index</span></code> to find the matching
+rows.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">storage</span><span class="o">::</span><span class="n">data</span><span class="o">::</span><span class="n">RowSet</span><span class="o">&lt;&gt;</span> <span class="n">search_result</span><span class="p">;</span>
+<span class="n">storage</span><span class="o">::</span><span class="n">data</span><span class="o">::</span><span class="n">SingleRow</span> <span class="n">key</span><span class="p">(</span><span class="n">contact</span><span class="p">.</span><span class="n">columns</span><span class="p">());</span>
+<span class="n">key</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">).</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;Lovelace&quot;</span><span class="p">);</span>
+
+<span class="n">contact</span><span class="p">.</span><span class="n">search_by_index</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">search_result</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The search result object can be iterated to access all the matching
+rows.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="p">(</span><span class="n">RowSet</span><span class="o">&lt;&gt;::</span><span class="n">const_iterator</span> <span class="n">iter</span> <span class="o">=</span> <span class="n">search_result</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+     <span class="n">iter</span> <span class="o">!=</span> <span class="n">search_result</span><span class="p">.</span><span class="n">end</span><span class="p">();</span>
+     <span class="o">++</span><span class="n">iter</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">uint32_t</span> <span class="n">id</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">name</span><span class="p">;</span>
+    <span class="n">iter</span><span class="o">-&gt;</span><span class="n">at</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">).</span><span class="n">get</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+    <span class="n">iter</span><span class="o">-&gt;</span><span class="n">at</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">).</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Id: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">id</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Name: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">name</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The fields used as search criteria must be fields of the sort index.
+Furthermore, if the index contains multiple fields, the search criteria
+must be some or all of the first fields in the index. For example, if an
+index has three fields, the search criteria can be either the first
+field in the index, the first two fields, or all three fields. Each
+field is compared from left to right in index order until a non-equal
+comparison is reached. These functions cannot be used if an index has
+not been set.</p>
+</div>
+<div class="section" id="updating-data">
+<span id="cpp-updating-data"></span><h2>5.4.4.3. Updating Data<a class="headerlink" href="#updating-data" title="Permalink to this headline">¶</a></h2>
+<p>In addition to accessing data, you can also use a search key to update
+rows. Find a row, assign new values to each field that should be
+changed, and call <code class="docutils literal notranslate"><span class="pre">update_by_index()</span></code> to update the row.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Search by the primary key index (id) to find one row.</span>
+<span class="n">storage</span><span class="o">::</span><span class="n">data</span><span class="o">::</span><span class="n">SingleRow</span> <span class="n">row</span><span class="p">(</span><span class="n">contact</span><span class="p">.</span><span class="n">columns</span><span class="p">());</span>
+<span class="n">row</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">).</span><span class="n">set</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">contact</span><span class="p">.</span><span class="n">search_by_index</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">row</span><span class="p">);</span>
+
+<span class="n">row</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">).</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;Updated Name&quot;</span><span class="p">);</span>
+
+<span class="c1">// Update a the table from a result row.</span>
+<span class="n">contact</span><span class="p">.</span><span class="n">update_by_index</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">row</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>When the search key is not updated, it is safe to use the same row
+object as both search key and data. To update the search key field or
+fields, assign the key values to a separate key row object.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Search by the primary key index (id) to find one row.</span>
+<span class="n">storage</span><span class="o">::</span><span class="n">data</span><span class="o">::</span><span class="n">SingleRow</span> <span class="n">key</span><span class="p">(</span><span class="n">contact</span><span class="p">.</span><span class="n">columns</span><span class="p">());</span>
+<span class="n">key</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">).</span><span class="n">set</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+
+<span class="n">storage</span><span class="o">::</span><span class="n">data</span><span class="o">::</span><span class="n">SingleRow</span> <span class="n">row</span><span class="p">(</span><span class="n">contact</span><span class="p">.</span><span class="n">columns</span><span class="p">());</span>
+<span class="n">contact</span><span class="p">.</span><span class="n">search_by_index</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">row</span><span class="p">);</span>
+
+<span class="n">row</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">).</span><span class="n">set</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+
+<span class="c1">// Update a the table from a result row.</span>
+<span class="n">contact</span><span class="p">.</span><span class="n">update_by_index</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">row</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">As with inserts, modifications to the database will not be
+persistent until the current transaction is committed.</p>
+</div>
+</div>
+<div class="section" id="deleting-the-row">
+<span id="cpp-deleting-the-row"></span><h2>5.4.4.4. Deleting the Row<a class="headerlink" href="#deleting-the-row" title="Permalink to this headline">¶</a></h2>
+<p>To delete the current row, call <code class="docutils literal notranslate"><span class="pre">delete_by_index()</span></code>.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Search by the primary key index (id) to delete one row.</span>
+<span class="n">storage</span><span class="o">::</span><span class="n">data</span><span class="o">::</span><span class="n">SingleRow</span> <span class="n">key</span><span class="p">(</span><span class="n">contact</span><span class="p">.</span><span class="n">columns</span><span class="p">());</span>
+<span class="n">key</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">).</span><span class="n">set</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">contact</span><span class="p">.</span><span class="n">delete_by_index</span><span class="p">(</span><span class="n">key</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The row will not be permanently removed from the database until the
+current transaction is committed.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Database Manual</h3>
+          <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../general-information/index.html">1. General Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation/index.html">2. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/index.html">3. Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../storage-engines/index.html">4. Database Engines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. APIs &amp; Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../native-development/index.html">5.1. Building C and C++ API Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iot/index.html">5.2. ITTIA DB IoT C API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c/index.html">5.3. ITTIA DB SQL C API</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.4. ITTIA DB SQL C++ API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="getting-started.html">5.4.1. Getting Started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="database-design.html">5.4.2. Database Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="transactions.html">5.4.3. Transactions</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.4.4. C++ Table Cursors</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#inserting-data">5.4.4.1. Inserting Data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searching-a-table-cursor">5.4.4.2. Searching a Table Cursor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#updating-data">5.4.4.3. Updating Data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#deleting-the-row">5.4.4.4. Deleting the Row</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../data-types/index.html">6. Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">7. Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../errors.html">8. Error Codes</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="../../search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="transactions.html" title="5.4.3. Transactions"
+              >previous</a> |
+            <a href="../../data-types/index.html" title="6. Data Types"
+              >next</a>
+          </div>
+          <div role="note" aria-label="source link">
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, ITTIA L.L.C..
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,2 @@
+../Middlewares/ST/threadx/ports/cortex_m33/gnu/inc/tx_port.h:283:28:_get_ipsr	16	static,ignoring_inline_asm
+../Middlewares/ST/filex/common/src/fxe_unicode_file_rename.c:80:6:_fxe_unicode_file_rename	40	static

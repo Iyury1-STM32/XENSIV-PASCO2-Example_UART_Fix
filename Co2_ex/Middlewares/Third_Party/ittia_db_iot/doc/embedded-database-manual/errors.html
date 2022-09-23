@@ -1,0 +1,910 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>8. Error Codes &#8212; ITTIA DB IoT Embedded Database Manual</title>
+    <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/ittia.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="7.2. Database Storage Encryption" href="security/database-encryption.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+          <p class="logo"><a href="index.html">
+            <img class="logo" src="_static/logo.png" alt="Logo"/>
+          </a></p>
+        <div class="headertitle"><a
+          href="index.html">ITTIA DB IoT Embedded Database Manual</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="security/database-encryption.html" title="7.2. Database Storage Encryption"
+             accesskey="P">previous</a>
+           |
+          <a href="contents.html">Contents</a>
+           |
+          <a href="../c-api-reference/index.html">C API</a>
+           |
+          <a href="../cpp-api-reference/index.html">C++ API</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="error-codes">
+<span id="id1"></span><h1>8. Error Codes<a class="headerlink" href="#error-codes" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="colwidths-given docutils" id="id2">
+<caption><span class="caption-number">Table 8.1: </span><span class="caption-text">General Errors</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="35%" />
+<col width="10%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Code</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_INCOMPLETE</span></code></td>
+<td>+113</td>
+<td>Operation did not finish completely</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="colwidths-given docutils" id="id3">
+<caption><span class="caption-number">Table 8.2: </span><span class="caption-text">Error Codes</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="35%" />
+<col width="10%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Code</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_NOERROR</span></code></td>
+<td>0</td>
+<td>No error occurred</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_FAILURE</span></code></td>
+<td>-1</td>
+<td>Operation failed</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="colwidths-given docutils" id="id4">
+<caption><span class="caption-number">Table 8.3: </span><span class="caption-text">OS Errors</span><a class="headerlink" href="#id4" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="35%" />
+<col width="10%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Code</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EBADF</span></code></td>
+<td>-2</td>
+<td>Invalid file handle</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EEXIST</span></code></td>
+<td>-3</td>
+<td>File already exists</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ENOENT</span></code></td>
+<td>-4</td>
+<td>File doesn’t exist</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ENOSPACE</span></code></td>
+<td>-5</td>
+<td>No space available</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EIO</span></code></td>
+<td>-6</td>
+<td>I/O error</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EACCESS</span></code></td>
+<td>-7</td>
+<td>File cannot be opened due to invalid access mode or insufficient file system privileges</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EEXTEND</span></code></td>
+<td>-8</td>
+<td>File operation is out of file size</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EDEADLOCK</span></code></td>
+<td>-9</td>
+<td>Unable to lock - deadlock condition detected</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ELOCKED</span></code></td>
+<td>-10</td>
+<td>Unable to acquire lock</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="colwidths-given docutils" id="id5">
+<caption><span class="caption-number">Table 8.4: </span><span class="caption-text">Argument Errors</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="35%" />
+<col width="10%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Code</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EINVAL</span></code></td>
+<td>-11</td>
+<td>Invalid argument</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ERANGE</span></code></td>
+<td>-12</td>
+<td>Argument is out of range</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ESTATE</span></code></td>
+<td>-13</td>
+<td>Object state is not compatible with the method called or arguments</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ENOTIMPL</span></code></td>
+<td>-14</td>
+<td>The requested functionality is not implemented in the current library package</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ENOMEM</span></code></td>
+<td>-15</td>
+<td>[HY001] No memory available for allocation</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EOSERROR</span></code></td>
+<td>-16</td>
+<td>General operating system error</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ENOTAPPLICABLE</span></code></td>
+<td>-17</td>
+<td>Not applicable</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ENOTHREAD</span></code></td>
+<td>-18</td>
+<td>No such thread</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EINTERNAL</span></code></td>
+<td>-19</td>
+<td>Internal error detected</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EINVPATH</span></code></td>
+<td>-20</td>
+<td>Invalid path encoding</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EINVFS</span></code></td>
+<td>-21</td>
+<td>Invalid file system requested</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EDBGFAILURE</span></code></td>
+<td>-22</td>
+<td>Simulated failure for debugging</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ENLSSPACE</span></code></td>
+<td>-23</td>
+<td>Not enough space for NLS conversion</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EINVCHAR</span></code></td>
+<td>-24</td>
+<td>Invalid character for NLS conversion</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EINVENC</span></code></td>
+<td>-25</td>
+<td>Invalid encoding for NLS conversion</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ENOSYS</span></code></td>
+<td>-26</td>
+<td>A required function is not supported on this platform</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EINVLOCALE</span></code></td>
+<td>-27</td>
+<td>Invalid or unknown locale name</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="colwidths-given docutils" id="id6">
+<caption><span class="caption-number">Table 8.5: </span><span class="caption-text">Socket Errors</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="35%" />
+<col width="10%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Code</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ESOCKETSTARTUP</span></code></td>
+<td>-50</td>
+<td>Socket startup error</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ESOCKETOPEN</span></code></td>
+<td>-51</td>
+<td>Socket open error</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ESOCKET</span></code></td>
+<td>-52</td>
+<td>General socket error</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ESOCKETHOSTNAME</span></code></td>
+<td>-53</td>
+<td>Host name error</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ESOCKETCONNECTION</span></code></td>
+<td>-54</td>
+<td>Connection error</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ESOCKETRECV</span></code></td>
+<td>-55</td>
+<td>Socket data receive error</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ESOCKETSEND</span></code></td>
+<td>-56</td>
+<td>Socket data send error</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ESOCKETNOTCONN</span></code></td>
+<td>-57</td>
+<td>Socket is not connected</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ESSLCIPHERKEY</span></code></td>
+<td>-60</td>
+<td>Private key is not valid</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ESSLDHPARAMS</span></code></td>
+<td>-61</td>
+<td>Diffie-Hellmap parameteres are not valid</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ESSLCERTIFICATE</span></code></td>
+<td>-62</td>
+<td>Certificate chain is not valid</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ESSLCALOCATION</span></code></td>
+<td>-63</td>
+<td>CA file is not valid</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="colwidths-given docutils" id="id7">
+<caption><span class="caption-number">Table 8.6: </span><span class="caption-text">General Errors</span><a class="headerlink" href="#id7" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="35%" />
+<col width="10%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Code</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EDUPLICATE</span></code></td>
+<td>-100</td>
+<td>Duplicate value not allowed</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ENOTFOUND</span></code></td>
+<td>-101</td>
+<td>Item not found</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ENOMOREDATA</span></code></td>
+<td>-102</td>
+<td>No more data</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EKEYOUTOFRANGE</span></code></td>
+<td>-103</td>
+<td>Key out of range</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EEMPTYRANGE</span></code></td>
+<td>-104</td>
+<td>An attempt was made to set an empty range</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EBTREESLOTTOOLARGE</span></code></td>
+<td>-105</td>
+<td>An attempt was made to insert into a B+tree a key and data that is too large</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ENEEDREVALIDATE</span></code></td>
+<td>-106</td>
+<td>B+tree iterator needs revalidation</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ENORECORD</span></code></td>
+<td>-107</td>
+<td>No record found</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ENAME</span></code></td>
+<td>-109</td>
+<td>Invalid name</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EROWRANGE</span></code></td>
+<td>-110</td>
+<td>Too many records in a table</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ESHUTDOWN</span></code></td>
+<td>-111</td>
+<td>Shutdown is in progress</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ECONNLOCK</span></code></td>
+<td>-112</td>
+<td>Connection is used by another thread</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ECURSORMODE</span></code></td>
+<td>-114</td>
+<td>Invald or unsupported cursor mode</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ECIPHER</span></code></td>
+<td>-115</td>
+<td>Invalid cipher type</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ECIPHERDATA</span></code></td>
+<td>-116</td>
+<td>Invalid cipher data</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="colwidths-given docutils" id="id8">
+<caption><span class="caption-number">Table 8.7: </span><span class="caption-text">Table Errors</span><a class="headerlink" href="#id8" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="35%" />
+<col width="10%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Code</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ETABLE</span></code></td>
+<td>-120</td>
+<td>General table error</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ETABLETYPE</span></code></td>
+<td>-121</td>
+<td>Unknown table type</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ENOTABLE</span></code></td>
+<td>-122</td>
+<td>No such table</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ENOMEMSTORAGE</span></code></td>
+<td>-123</td>
+<td>Memory storage is not open, memory_storage_size is 0</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ENOCONSTRAINT</span></code></td>
+<td>-125</td>
+<td>No such constraint defined</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ETABLEEXISTS</span></code></td>
+<td>-126</td>
+<td>Table already exists</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="colwidths-given docutils" id="id9">
+<caption><span class="caption-number">Table 8.8: </span><span class="caption-text">Index Errors</span><a class="headerlink" href="#id9" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="35%" />
+<col width="10%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Code</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EINDEX</span></code></td>
+<td>-130</td>
+<td>General index error</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EPRIMARYDUP</span></code></td>
+<td>-131</td>
+<td>Multiple primary keys defined</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EFKREFERENCE</span></code></td>
+<td>-132</td>
+<td>Referenced row not found</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EFKRESTRICTED</span></code></td>
+<td>-133</td>
+<td>Operation is restricted due to references</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EFKMATCHFULL</span></code></td>
+<td>-134</td>
+<td>Operation is restricted due to incomplete full row match</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EFKEYDEF</span></code></td>
+<td>-135</td>
+<td>Invalid foreign key definition</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EFKLIMIT</span></code></td>
+<td>-136</td>
+<td>Too many cascade operations</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ECLUSTERKEY</span></code></td>
+<td>-137</td>
+<td>Invalid cluster key</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="colwidths-given docutils" id="id10">
+<caption><span class="caption-number">Table 8.9: </span><span class="caption-text">Field Errors</span><a class="headerlink" href="#id10" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="35%" />
+<col width="10%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Code</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EFIELD</span></code></td>
+<td>-140</td>
+<td>General field error</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EDUPLICATEFIELDS</span></code></td>
+<td>-141</td>
+<td>Cannot create duplicate fields</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EFIELDSIZE</span></code></td>
+<td>-142</td>
+<td>Invalid field size</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EBINDSIZE</span></code></td>
+<td>-143</td>
+<td>Invalid bind size</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EPARAM</span></code></td>
+<td>-144</td>
+<td>Invalid parameter</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EINDVALUE</span></code></td>
+<td>-145</td>
+<td>Length indicator value exceeds buffer size or is an invalid negative number</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ENULLFIELD</span></code></td>
+<td>-146</td>
+<td>Insert or update would violate a NOT NULL constraint, or primary key must be NOT NULL</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EFIELDTYPE</span></code></td>
+<td>-147</td>
+<td>Invalid field type</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EBLOB</span></code></td>
+<td>-148</td>
+<td>Invalid blob operation</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="colwidths-given docutils" id="id11">
+<caption><span class="caption-number">Table 8.10: </span><span class="caption-text">Sequence Errors</span><a class="headerlink" href="#id11" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="35%" />
+<col width="10%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Code</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ESEQ</span></code></td>
+<td>-150</td>
+<td>General sequence error</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ESEQ_OVERFLOW</span></code></td>
+<td>-151</td>
+<td>Sequence overflow: no unique values remain</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ESEQ_NOCURVAL</span></code></td>
+<td>-152</td>
+<td>Sequence does not yet have a current value, get the next value first</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="colwidths-given docutils" id="id12">
+<caption><span class="caption-number">Table 8.11: </span><span class="caption-text">Row Errors</span><a class="headerlink" href="#id12" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="35%" />
+<col width="10%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Code</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EINVALROWTYPE</span></code></td>
+<td>-160</td>
+<td>Invalid row type</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EINVALKEYTYPE</span></code></td>
+<td>-161</td>
+<td>Invalid key type</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EKEYTOOSHORT</span></code></td>
+<td>-162</td>
+<td>Key is too short</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ERECORDSIZE</span></code></td>
+<td>-163</td>
+<td>Record size is too large for chosen page size</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="colwidths-given docutils" id="id13">
+<caption><span class="caption-number">Table 8.12: </span><span class="caption-text">Data Errors</span><a class="headerlink" href="#id13" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="35%" />
+<col width="10%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Code</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EBOOKMARK</span></code></td>
+<td>-167</td>
+<td>Bookmark is not valid</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EINVALIDINTERVAL</span></code></td>
+<td>-168</td>
+<td>Invalid INTERVAL type literal</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ECURSOR</span></code></td>
+<td>-169</td>
+<td>Invalid cursor for the given operation</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EDATA</span></code></td>
+<td>-170</td>
+<td>Invalid field data value</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ECONVERT</span></code></td>
+<td>-171</td>
+<td>Incompatible types: conversion is not possible</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="colwidths-given docutils" id="id14">
+<caption><span class="caption-number">Table 8.13: </span><span class="caption-text">Kernel Errors</span><a class="headerlink" href="#id14" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="35%" />
+<col width="10%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Code</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ENOBUFFER</span></code></td>
+<td>-172</td>
+<td>No available buffers</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="colwidths-given docutils" id="id15">
+<caption><span class="caption-number">Table 8.14: </span><span class="caption-text">Data Errors</span><a class="headerlink" href="#id15" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="35%" />
+<col width="10%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Code</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EINVTYPE</span></code></td>
+<td>-173</td>
+<td>Invalid column/var type</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="colwidths-given docutils" id="id16">
+<caption><span class="caption-number">Table 8.15: </span><span class="caption-text">Kernel Errors</span><a class="headerlink" href="#id16" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="35%" />
+<col width="10%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Code</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ESTORAGE</span></code></td>
+<td>-174</td>
+<td>Storage not recognized as a valid database</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ECRC</span></code></td>
+<td>-175</td>
+<td>CRC verification failed: database integrity has been compromised</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ERECOVERY</span></code></td>
+<td>-176</td>
+<td>Storage needs crash recovery</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EUNDOSPACE</span></code></td>
+<td>-177</td>
+<td>Overflow in undo log space, unable to write entries required for rollback</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EJOURNALTYPE</span></code></td>
+<td>-178</td>
+<td>Invalid journal type</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EJOURNAL</span></code></td>
+<td>-179</td>
+<td>Invalid journal or missing log file</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EJOURNALCRC</span></code></td>
+<td>-180</td>
+<td>Journal CRC validation failed</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EPREPARED</span></code></td>
+<td>-181</td>
+<td>Prepared transactions support is required to complete operation</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ENOJOURNALREC</span></code></td>
+<td>-182</td>
+<td>Requested journal record not found</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EINVPAGE</span></code></td>
+<td>-183</td>
+<td>Invalid page number</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EREADONLY</span></code></td>
+<td>-184</td>
+<td>Storage is in the read only mode</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ENOPAGESPACE</span></code></td>
+<td>-185</td>
+<td>Storage run out of disk space</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EPASSWORD</span></code></td>
+<td>-186</td>
+<td>Access password is not valid or access is denied</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EJOURNALWRITE</span></code></td>
+<td>-187</td>
+<td>Unable to write journal file</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EINCOMPATIBLE</span></code></td>
+<td>-188</td>
+<td>Incompatible storage format</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="colwidths-given docutils" id="id17">
+<caption><span class="caption-number">Table 8.16: </span><span class="caption-text">Transaction Errors</span><a class="headerlink" href="#id17" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="35%" />
+<col width="10%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Code</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ENOTX</span></code></td>
+<td>-190</td>
+<td>No transaction is active</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ETXSTATE</span></code></td>
+<td>-191</td>
+<td>The operation cannot be performed in the current transaction state</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ETXACTIVE</span></code></td>
+<td>-192</td>
+<td>Transaction is already running</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ESAVEPOINTEXIST</span></code></td>
+<td>-193</td>
+<td>Savepoint already exists</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ENOSAVEPOINT</span></code></td>
+<td>-194</td>
+<td>Specified savepoint does not exist</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_ETXKIND</span></code></td>
+<td>-195</td>
+<td>Operation cannot be performed for such transaction type (for example, local commit cannot be done on prepared transaction)</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EDTMXID</span></code></td>
+<td>-196</td>
+<td>Invalid DTM xid provided</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EBADTX</span></code></td>
+<td>-197</td>
+<td>Transaction cannot continue and must abort</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="colwidths-given docutils" id="id18">
+<caption><span class="caption-number">Table 8.17: </span><span class="caption-text">Shared Access Errors</span><a class="headerlink" href="#id18" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="35%" />
+<col width="10%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Code</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ENOLOCK</span></code></td>
+<td>-200</td>
+<td>There are no available lock cells</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EMAXLOCKERS</span></code></td>
+<td>-201</td>
+<td>There are too many lockers</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EINVLOCK</span></code></td>
+<td>-202</td>
+<td>Unlock request for a lock that has not been obtained</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EWAITINTR</span></code></td>
+<td>-203</td>
+<td>Lock waiting interrupted</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_ENOLOCKOBJ</span></code></td>
+<td>-204</td>
+<td>There are no available lock object cells</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="colwidths-given docutils" id="id19">
+<caption><span class="caption-number">Table 8.18: </span><span class="caption-text">Other Errors</span><a class="headerlink" href="#id19" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="35%" />
+<col width="10%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Code</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EUSER</span></code></td>
+<td>-210</td>
+<td>User generated error</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_EAPIVER</span></code></td>
+<td>-220</td>
+<td>API not initialized or feature not available in this version of the API</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EEVALUATION</span></code></td>
+<td>-250</td>
+<td>Operation not permitted in evaluation version</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="colwidths-given docutils" id="id20">
+<caption><span class="caption-number">Table 8.19: </span><span class="caption-text">Data Errors</span><a class="headerlink" href="#id20" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="35%" />
+<col width="10%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Code</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_EINVALIDNUMBER</span></code></td>
+<td>-408</td>
+<td>Invalid number</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Database Manual</h3>
+          <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="general-information/index.html">1. General Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation/index.html">2. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial/index.html">3. Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-engines/index.html">4. Database Engines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">5. APIs &amp; Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data-types/index.html">6. Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security/index.html">7. Security</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">8. Error Codes</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="security/database-encryption.html" title="7.2. Database Storage Encryption"
+              >previous</a>
+          </div>
+          <div role="note" aria-label="source link">
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, ITTIA L.L.C..
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

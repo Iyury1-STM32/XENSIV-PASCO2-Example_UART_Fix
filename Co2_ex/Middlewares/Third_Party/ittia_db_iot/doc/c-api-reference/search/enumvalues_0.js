@@ -1,0 +1,19 @@
+var searchData=
+[
+  ['db_5findextype_5fbtree_1446',['DB_INDEXTYPE_BTREE',['../a00348.html#gga7d61e9e5cc6d64950a42554a34356747aafdae39ecc1f4f7ad3a1b2e30e9f08b9',1,'db.h']]],
+  ['db_5findextype_5fdefault_1447',['DB_INDEXTYPE_DEFAULT',['../a00348.html#gga7d61e9e5cc6d64950a42554a34356747a251c05394cb1701c9e3f42f093caa7bb',1,'db.h']]],
+  ['db_5fseek_5fequal_1448',['DB_SEEK_EQUAL',['../a00352.html#gga8e2578b8bce0ecc55247edd88e6ecefda97cdacace23c7eb7bcb9bfe8aaefc42e',1,'db.h']]],
+  ['db_5fseek_5ffirst_5fequal_1449',['DB_SEEK_FIRST_EQUAL',['../a00352.html#gga8e2578b8bce0ecc55247edd88e6ecefdaf2cc405ba091dc0ffbdefcd5f11b6ac3',1,'db.h']]],
+  ['db_5fseek_5fgreater_1450',['DB_SEEK_GREATER',['../a00352.html#gga8e2578b8bce0ecc55247edd88e6ecefda81831e89647e2e173069b0b53d50ecf5',1,'db.h']]],
+  ['db_5fseek_5fgreater_5for_5fequal_1451',['DB_SEEK_GREATER_OR_EQUAL',['../a00352.html#gga8e2578b8bce0ecc55247edd88e6ecefda37f597b2fcd0f47c8dff57cd4c94af2a',1,'db.h']]],
+  ['db_5fseek_5flast_5fequal_1452',['DB_SEEK_LAST_EQUAL',['../a00352.html#gga8e2578b8bce0ecc55247edd88e6ecefdad28408dc6b1b2ac060bec5b9baa0d2db',1,'db.h']]],
+  ['db_5fseek_5fless_1453',['DB_SEEK_LESS',['../a00352.html#gga8e2578b8bce0ecc55247edd88e6ecefdaa02156c9bb38816cb30b4cd7d1169b39',1,'db.h']]],
+  ['db_5fseek_5fless_5for_5fequal_1454',['DB_SEEK_LESS_OR_EQUAL',['../a00352.html#gga8e2578b8bce0ecc55247edd88e6ecefdab6304a62b11c14d2e90cf0597b11e0e9',1,'db.h']]],
+  ['db_5ftabletype_5fcircular_1455',['DB_TABLETYPE_CIRCULAR',['../a00347.html#gga81e6fe0bba327dd63f56b33117753636a48b3e809ed31aa38953b9c0e324305c9',1,'db.h']]],
+  ['db_5ftabletype_5fclustered_1456',['DB_TABLETYPE_CLUSTERED',['../a00347.html#gga81e6fe0bba327dd63f56b33117753636a9ea632fb62fb8838685ddd308ec5ccb8',1,'db.h']]],
+  ['db_5ftabletype_5fdefault_1457',['DB_TABLETYPE_DEFAULT',['../a00347.html#gga81e6fe0bba327dd63f56b33117753636a35b3b84235e10bbc7880ff46c6232e3d',1,'db.h']]],
+  ['db_5ftabletype_5fkheap_1458',['DB_TABLETYPE_KHEAP',['../a00347.html#gga81e6fe0bba327dd63f56b33117753636a90f5a0439e97f865c7fe321ebd874d62',1,'db.h']]],
+  ['db_5ftabletype_5fmemory_1459',['DB_TABLETYPE_MEMORY',['../a00347.html#gga81e6fe0bba327dd63f56b33117753636acef0507f11ed634c34ef28bfa88cd2ba',1,'db.h']]],
+  ['db_5ftabletype_5frecord_1460',['DB_TABLETYPE_RECORD',['../a00347.html#gga81e6fe0bba327dd63f56b33117753636a7aabfdd84bb8a37b813dd78b72466b39',1,'db.h']]],
+  ['db_5ftabletype_5fsnapshot_1461',['DB_TABLETYPE_SNAPSHOT',['../a00347.html#gga81e6fe0bba327dd63f56b33117753636a961b0ab0a0b22c2892d17f434d6185af',1,'db.h']]]
+];

@@ -1,0 +1,445 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>5.3.5. C Table Cursors &#8212; ITTIA DB IoT Embedded Database Manual</title>
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/ittia.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.4. ITTIA DB SQL C++ API" href="../cpp/index.html" />
+    <link rel="prev" title="5.3.4. Dynamic Rows" href="rows.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+          <p class="logo"><a href="../../index.html">
+            <img class="logo" src="../../_static/logo.png" alt="Logo"/>
+          </a></p>
+        <div class="headertitle"><a
+          href="../../index.html">ITTIA DB IoT Embedded Database Manual</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="rows.html" title="5.3.4. Dynamic Rows"
+             accesskey="P">previous</a>
+           |
+          <a href="../cpp/index.html" title="5.4. ITTIA DB SQL C++ API"
+             accesskey="N">next</a>
+           |
+          <a href="../../contents.html">Contents</a>
+           |
+          <a href="../../../c-api-reference/index.html">C API</a>
+           |
+          <a href="../../../cpp-api-reference/index.html">C++ API</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="c-table-cursors">
+<span id="table-cursor-c-api"></span><h1>5.3.5. C Table Cursors<a class="headerlink" href="#c-table-cursors" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="cursors">
+<span id="c-cursors"></span><h2>5.3.5.1. Cursors<a class="headerlink" href="#cursors" title="Permalink to this headline">¶</a></h2>
+<p>A cursor is an object that provides access to rows and fields in the
+database. A cursor often has a row set and maintains a position in the
+row set.</p>
+<p>There are two types of cursors: table cursors and SQL query cursors. A
+table cursor corresponds to a specific table and has a row set
+containing the table’s rows and fields. An SQL query cursor may have a
+row set, depending on the type of query, and can accept a row of
+parameters when executed.</p>
+<p>A cursor is created by calling a function that returns a cursor handle,
+of type <code class="docutils literal notranslate"><span class="pre">db_cursor_t</span></code>. The cursor is associated with the database
+connection that was used to create it. Regardless of how the cursor was
+created, it is closed by calling <code class="docutils literal notranslate"><span class="pre">db_close_cursor()</span></code>, or when the
+database connection is closed.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">db_t</span> <span class="n">hdb</span> <span class="o">=</span> <span class="cm">/* ... */</span><span class="p">;</span>
+<span class="n">db_cursor_t</span> <span class="n">cursor</span> <span class="o">=</span> <span class="n">db_open_table_cursor</span><span class="p">(</span><span class="n">hdb</span><span class="p">,</span> <span class="s">&quot;table_name&quot;</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Multiple cursors can be used simultaneously with the same table or
+tables. An open cursor does not prevent access to any row, including the
+cursor’s current row. However, the schema for any tables associated with
+the cursor cannot be changed while the cursor is open.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Transactions can be started, committed, and aborted while a cursor
+is open. Between transactions, the cursor’s current row may be
+deleted or updated by another connection to the database. During a
+serializable or repeatable read transaction, only cursors created
+with the same database connection can modify or remove the cursor’s
+current row.</p>
+</div>
+</div>
+<div class="section" id="traversing-a-cursor-s-row-set">
+<span id="c-traversing-row-set"></span><h2>5.3.5.2. Traversing a Cursor’s Row Set<a class="headerlink" href="#traversing-a-cursor-s-row-set" title="Permalink to this headline">¶</a></h2>
+<p>To traverse a cursor with a row set, use <code class="docutils literal notranslate"><span class="pre">db_seek_first()</span></code>,
+<code class="docutils literal notranslate"><span class="pre">db_seek_next()</span></code>, and <code class="docutils literal notranslate"><span class="pre">db_eof()</span></code> to position on each row of data.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">To check whether a cursor has a row set, call <code class="docutils literal notranslate"><span class="pre">db_is_browsable()</span></code>.
+A cursor is browsable if and only if it has a row set.</p>
+</div>
+<p>To read the current row’s fields, use the <code class="docutils literal notranslate"><span class="pre">db_fetch()</span></code> function and a
+row object. Data is copied from the database into the row object. Type
+conversion and locking, if applicable, occur during the fetch operation
+only.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">db_cursor_t</span> <span class="n">cursor</span> <span class="o">=</span> <span class="cm">/* ... */</span><span class="p">;</span>
+<span class="n">db_row_t</span> <span class="n">row</span> <span class="o">=</span> <span class="cm">/* ... */</span><span class="p">;</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">db_seek_first</span><span class="p">(</span><span class="n">cursor</span><span class="p">);</span> <span class="o">!</span><span class="n">db_eof</span><span class="p">(</span><span class="n">cursor</span><span class="p">);</span> <span class="n">db_seek_next</span><span class="p">(</span><span class="n">cursor</span><span class="p">))</span>
+<span class="p">{</span>
+    <span class="n">db_fetch</span><span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+    <span class="cm">/* ... */</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="table-cursors">
+<span id="id1"></span><h2>5.3.5.3. Table Cursors<a class="headerlink" href="#table-cursors" title="Permalink to this headline">¶</a></h2>
+<p>A table cursor is used to position on a specific row in a table and to
+search using an index. An index is selected when opening the cursor to
+determine which fields to sort by when traversing the table and which
+fields are available for searching. If the index is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>, the table is
+not sorted and rows are ordered for most efficient access.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">db_cursor_t</span> <span class="n">contact_cursor</span><span class="p">;</span>
+<span class="n">db_table_cursor_t</span> <span class="n">p</span><span class="p">;</span>
+
+<span class="n">db_table_cursor_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">p</span><span class="p">);</span>
+<span class="n">p</span><span class="p">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">CONTACT_BY_ID</span><span class="p">;</span>
+<span class="n">p</span><span class="p">.</span><span class="n">flags</span> <span class="o">=</span> <span class="n">DB_CAN_MODIFY</span> <span class="o">|</span> <span class="n">DB_LOCK_EXCLUSIVE</span><span class="p">;</span>
+<span class="n">contact_cursor</span> <span class="o">=</span> <span class="n">db_open_table_cursor</span><span class="p">(</span><span class="n">hdb</span><span class="p">,</span> <span class="n">CONTACT_TABLE</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">p</span><span class="p">);</span>
+<span class="n">db_table_cursor_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">p</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Alternately, the cursor options can be created with a static definition:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">db_cursor_t</span> <span class="n">contact_cursor</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">const</span> <span class="n">db_table_cursor_t</span> <span class="n">contact_cursor_def</span> <span class="o">=</span>
+<span class="p">{</span>
+    <span class="n">CONTACT_BY_NAME</span><span class="p">,</span> <span class="cm">/* index */</span>
+    <span class="n">DB_SCAN_FORWARD</span> <span class="o">|</span> <span class="n">DB_LOCK_SHARED</span><span class="p">,</span> <span class="cm">/* flags */</span>
+    <span class="mi">0</span> <span class="cm">/* sort_buffer_size */</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Most cursors should use at least on of the following flags:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">DB_CAN_MODIFY</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">DB_SCAN_FORWARD</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">DB_SCAN_BACKWARD</span></code></li>
+</ul>
+<p>If the table cursor definition is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>, the cursor is created with all
+of the above capabilities and no index.</p>
+<p>A cursor should be closed when it is no longer needed to free resources:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">db_close_cursor</span><span class="p">(</span><span class="n">contact_cursor</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="inserting-data">
+<span id="c-inserting-data"></span><h2>5.3.5.4. Inserting Data<a class="headerlink" href="#inserting-data" title="Permalink to this headline">¶</a></h2>
+<p>To insert data using a table cursor, assign values to a row, then call
+<code class="docutils literal notranslate"><span class="pre">db_insert()</span></code>:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">uint32_t</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+<span class="n">db_utf16_t</span> <span class="n">name</span><span class="p">[</span><span class="mi">50</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;Bob&quot;</span><span class="p">;</span>
+
+<span class="k">const</span> <span class="n">db_bind_t</span> <span class="n">row_def</span><span class="p">[]</span> <span class="o">=</span>
+<span class="p">{</span>
+    <span class="p">{</span>
+        <span class="n">CONTACT_ID</span><span class="p">,</span>                   <span class="cm">/* field_no   */</span>
+        <span class="n">DB_VARTYPE_UINT32</span><span class="p">,</span>            <span class="cm">/* data_type  */</span>
+        <span class="n">DB_BIND_ADDRESS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">id</span><span class="p">),</span>         <span class="cm">/* data_ptr   */</span>
+        <span class="k">sizeof</span><span class="p">(</span><span class="n">id</span><span class="p">),</span>                   <span class="cm">/* data_size  */</span>
+        <span class="n">DB_BIND_ADDRESS</span><span class="p">(</span><span class="nb">NULL</span><span class="p">),</span>        <span class="cm">/* data_ind   */</span>
+        <span class="n">DB_BIND_ABSOLUTE</span><span class="p">,</span>             <span class="cm">/* data_flags */</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="n">CONTACT_NAME</span><span class="p">,</span>                 <span class="cm">/* field_no   */</span>
+        <span class="n">DB_VARTYPE_UTF16STR</span><span class="p">,</span>          <span class="cm">/* data_type  */</span>
+        <span class="n">DB_BIND_ADDRESS</span><span class="p">(</span><span class="n">name</span><span class="p">),</span>        <span class="cm">/* data_ptr   */</span>
+        <span class="k">sizeof</span><span class="p">(</span><span class="n">name</span><span class="p">),</span>                 <span class="cm">/* data_size  */</span>
+        <span class="n">DB_BIND_ADDRESS</span><span class="p">(</span><span class="nb">NULL</span><span class="p">),</span>        <span class="cm">/* data_ind   */</span>
+        <span class="n">DB_BIND_ABSOLUTE</span><span class="p">,</span>             <span class="cm">/* data_flags */</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="n">contact_row</span> <span class="o">=</span> <span class="n">db_alloc_row</span><span class="p">(</span><span class="n">row_def</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+
+<span class="n">db_insert</span><span class="p">(</span><span class="n">contact_cursor</span><span class="p">,</span> <span class="n">contact_row</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="n">db_free_row</span><span class="p">(</span><span class="n">r</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Data inserted into the database will not be persistent until the
+current transaction is committed.</p>
+</div>
+<p>After the row is inserted, the cursor’s position is undefined. To
+position the cursor on the new row after it is inserted, use the flag
+<code class="docutils literal notranslate"><span class="pre">DB_INSERT_SEEK_NEW</span></code>:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">db_insert</span><span class="p">(</span><span class="n">contact_cursor</span><span class="p">,</span> <span class="n">contact_row</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">DB_INSERT_SEEK_NEW</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="searching-a-table-cursor">
+<span id="c-searching-a-table-cursor"></span><h2>5.3.5.5. Searching a Table Cursor<a class="headerlink" href="#searching-a-table-cursor" title="Permalink to this headline">¶</a></h2>
+<p>Several methods can be used to search for a row with a table cursor:</p>
+<ol class="arabic simple">
+<li>Apply one or more filters.</li>
+<li>Scan for a matching row.</li>
+<li>Seek directly to a row using the cursor’s index.</li>
+<li>Apply a range match to the cursor’s index.</li>
+</ol>
+<p>Filters are applied to a table cursor by calling <code class="docutils literal notranslate"><span class="pre">db_add_filter()</span></code> one
+or more times, followed by <code class="docutils literal notranslate"><span class="pre">db_seek_first()</span></code> to locate the first
+matching row. Each row in the table is compared with the row provided to
+<code class="docutils literal notranslate"><span class="pre">db_add_filter()</span></code> according to the specified criteria.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">db_cursor_t</span> <span class="n">cursor</span> <span class="o">=</span> <span class="cm">/* ... */</span><span class="p">;</span>
+<span class="n">db_row_t</span> <span class="n">search_row</span> <span class="o">=</span> <span class="cm">/* ... */</span><span class="p">;</span>
+
+<span class="n">db_add_filter</span><span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">DB_SEEK_EQUAL</span><span class="p">,</span> <span class="n">search_row</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">db_seek_first</span><span class="p">(</span><span class="n">cursor</span><span class="p">)</span> <span class="o">==</span> <span class="n">DB_SUCCESS</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* The cursor is positioned on a row in the database that</span>
+<span class="cm">     * is equal to search_row for all fields in search_row. */</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If the table is large, the <code class="docutils literal notranslate"><span class="pre">db_seek_first()</span></code> function and subsequent
+calls to <code class="docutils literal notranslate"><span class="pre">db_seek_next()</span></code> may take a long time to complete. If the
+table cursor was created with an index, the indexed fields will be used
+to optimize the filter. Index fields are used from left to right in the
+order that they appear in the index.</p>
+<p>To manage the performance cost of searching a table, use the functions
+<code class="docutils literal notranslate"><span class="pre">db_seek_next()</span></code>, <code class="docutils literal notranslate"><span class="pre">db_seek()</span></code>, and <code class="docutils literal notranslate"><span class="pre">db_set_range()</span></code> in conjunction
+with <code class="docutils literal notranslate"><span class="pre">db_fetch()</span></code> to locate the desired row or rows. These four
+functions operate on one row at a time and will always complete in a
+short, predictable length of time.</p>
+</div>
+<div class="section" id="sorting-a-table-cursor">
+<span id="c-sorting-a-table-cursor"></span><h2>5.3.5.6. Sorting a Table Cursor<a class="headerlink" href="#sorting-a-table-cursor" title="Permalink to this headline">¶</a></h2>
+<p>To sort a table cursor using any of the table’s fields, use the
+<code class="docutils literal notranslate"><span class="pre">db_sort()</span></code> function.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">const</span> <span class="n">db_indexfield_t</span> <span class="n">sort_by_name</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">{</span> <span class="n">CONTACT_NAME</span><span class="p">,</span> <span class="mi">0</span> <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>The db_sort function may fetch all rows in the table cursor’s current
+row set to perform the sort. If the cursor’s index already sorts the
+table by the requested fields, db_sort will return immediately.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">If applying filters and sorting a table cursor, call <code class="docutils literal notranslate"><span class="pre">db_sort()</span></code>
+between <code class="docutils literal notranslate"><span class="pre">db_add_filter()</span></code> and <code class="docutils literal notranslate"><span class="pre">db_seek_first()</span></code> for best
+performance.</p>
+</div>
+<p>When the table cursor is created, the <code class="docutils literal notranslate"><span class="pre">sort_buffer_size</span></code> attribute
+determines how much memory can be allocated for sorting. If the buffer
+is too small, a partial sort will be performed and an error is returned.</p>
+</div>
+<div class="section" id="updating-a-table-cursor">
+<span id="c-updating-a-table-cursor"></span><h2>5.3.5.7. Updating a Table Cursor<a class="headerlink" href="#updating-a-table-cursor" title="Permalink to this headline">¶</a></h2>
+<p>In addition to accessing data, you can also update the current row.
+Update the values bound to the row and call <code class="docutils literal notranslate"><span class="pre">db_update_flags()</span></code>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">db_update_flags</span><span class="p">(</span><span class="n">contact_cursor</span><span class="p">,</span> <span class="n">contact_row</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">As with inserts, modifications to the database will not be
+persistent until the current transaction is committed.</p>
+</div>
+</div>
+<div class="section" id="deleting-a-table-row">
+<span id="c-deleting-a-table-row"></span><h2>5.3.5.8. Deleting a Table Row<a class="headerlink" href="#deleting-a-table-row" title="Permalink to this headline">¶</a></h2>
+<p>To delete the current row from a table cursor, call <code class="docutils literal notranslate"><span class="pre">db_delete()</span></code>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">db_delete</span><span class="p">(</span><span class="n">contact_cursor</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The row will not be permanently removed from the database until the
+current transaction is committed.</p>
+</div>
+</div>
+<div class="section" id="reading-and-writing-blobs">
+<span id="c-reading-and-writing-blobs"></span><h2>5.3.5.9. Reading and Writing BLOBs<a class="headerlink" href="#reading-and-writing-blobs" title="Permalink to this headline">¶</a></h2>
+<p>A <code class="docutils literal notranslate"><span class="pre">BLOB</span></code> (Binary Large OBject) is a special type that can store data of
+arbitrarily large size. To do this, data in a <code class="docutils literal notranslate"><span class="pre">BLOB</span></code> field is accessed in
+small divisions called chunks. These chunks can be written to and read
+from using loops to access the entire <code class="docutils literal notranslate"><span class="pre">BLOB</span></code> or only a portion of the
+<code class="docutils literal notranslate"><span class="pre">BLOB</span></code>.</p>
+<p>In the C API, a <code class="docutils literal notranslate"><span class="pre">BLOB</span></code> field is managed by binding to a variable of type
+<code class="docutils literal notranslate"><span class="pre">db_blob_t</span></code>. This structure is used to control what portion of the
+<code class="docutils literal notranslate"><span class="pre">BLOB</span></code> will be used in an update or fetch. When a <code class="docutils literal notranslate"><span class="pre">BLOB</span></code> field is fetched,
+<code class="docutils literal notranslate"><span class="pre">blob_size</span></code> is set to the total size of the <code class="docutils literal notranslate"><span class="pre">BLOB</span></code> field. If chunk_data is
+not <code class="docutils literal notranslate"><span class="pre">NULL</span></code>, it is filled with <code class="docutils literal notranslate"><span class="pre">chunk_size</span></code> bytes starting from position
+offset in the field. In case there is less data in the <code class="docutils literal notranslate"><span class="pre">BLOB</span></code> than <code class="docutils literal notranslate"><span class="pre">offset</span>
+<span class="pre">+</span> <span class="pre">chunk_size</span></code>, the actual number of bytes read is stored in
+<code class="docutils literal notranslate"><span class="pre">actual_size</span></code>.</p>
+<p>To read or write BLOB data, first bind a column in a table to a <code class="docutils literal notranslate"><span class="pre">BLOB</span></code> field.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ittia/db.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;db_helper.h&quot;</span><span class="cp"></span>
+
+<span class="n">db_cursor_t</span> <span class="n">t</span><span class="p">;</span>
+
+<span class="p">...</span> <span class="cm">/* Open t and position on an existing row. */</span>
+
+<span class="n">db_blob_t</span> <span class="n">blob</span><span class="p">;</span>
+
+<span class="cm">/* Bind &quot;blob&quot; to field number 3. */</span>
+<span class="k">const</span> <span class="n">db_bind_t</span> <span class="n">row_def</span><span class="p">[]</span> <span class="o">=</span>
+<span class="p">{</span>
+    <span class="n">DB_BIND_VAR</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">DB_VARTYPE_BLOB</span><span class="p">,</span> <span class="n">blob</span><span class="p">),</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>To write a chunk of BLOB data into the database, initialize the <code class="docutils literal notranslate"><span class="pre">db_blob_t</span></code>
+data structure and pass the row to <code class="docutils literal notranslate"><span class="pre">db_update()</span></code>. Repeat with a new offset
+for each chunk.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">FILE</span> <span class="o">*</span><span class="n">picture_file</span> <span class="o">=</span> <span class="n">fopen</span><span class="p">(</span><span class="s">&quot;read.png&quot;</span><span class="p">,</span> <span class="s">&quot;rb&quot;</span><span class="p">);</span>
+
+<span class="cm">/* Allocate buffer */</span>
+<span class="cp">#define DATA_SIZE 1024</span>
+<span class="kt">char</span> <span class="n">buffer</span><span class="p">[</span><span class="n">DATA_SIZE</span><span class="p">];</span>
+
+<span class="cm">/* Prepare BLOB variables */</span>
+<span class="kt">int</span> <span class="n">bytes_read</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="n">picture</span><span class="p">.</span><span class="n">chunk_data</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">buffer</span><span class="p">;</span>
+
+<span class="cm">/* Store picture into BLOB field */</span>
+<span class="k">while</span><span class="p">((</span><span class="n">bytes_read</span> <span class="o">=</span> <span class="n">fread</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">DATA_SIZE</span><span class="p">,</span> <span class="n">picture_file</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">blob</span><span class="p">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">DATA_SIZE</span> <span class="o">*</span> <span class="n">num_chunks</span><span class="p">;</span>
+    <span class="n">blob</span><span class="p">.</span><span class="n">chunk_size</span> <span class="o">=</span> <span class="n">bytes_read</span><span class="p">;</span>
+    <span class="n">db_update</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="n">fclose</span><span class="p">(</span><span class="n">picture_file</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>To read the from a BLOB call, initialize the <code class="docutils literal notranslate"><span class="pre">db_blob_t</span></code> data structure and
+pass the row to <code class="docutils literal notranslate"><span class="pre">db_fetch()</span></code>. Repeat with a new offset for each chunk of data
+to be read from the BLOB column.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">FILE</span> <span class="o">*</span><span class="n">picture_file</span> <span class="o">=</span> <span class="n">fopen</span><span class="p">(</span><span class="s">&quot;write.png&quot;</span><span class="p">,</span> <span class="s">&quot;wb&quot;</span><span class="p">)</span>
+
+<span class="cm">/* Allocate buffer */</span>
+<span class="cp">#define DATA_SIZE 1024</span>
+<span class="kt">char</span> <span class="n">buffer</span><span class="p">[</span><span class="n">DATA_SIZE</span><span class="p">];</span>
+
+<span class="cm">/* fetch file_name and blob.blob_size */</span>
+<span class="n">db_fetch</span><span class="p">(</span><span class="n">contact_cursor</span><span class="p">,</span> <span class="n">contact_row</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+
+<span class="cm">/* Prepare BLOB variables */</span>
+<span class="n">blob</span><span class="p">.</span><span class="n">chunk_data</span> <span class="o">=</span> <span class="n">buffer</span><span class="p">;</span>
+<span class="n">blob</span><span class="p">.</span><span class="n">chunk_size</span> <span class="o">=</span> <span class="n">DATA_SIZE</span><span class="p">;</span>
+
+<span class="cm">/* Export file from BLOB to disk */</span>
+<span class="k">for</span><span class="p">(</span><span class="n">blob</span><span class="p">.</span><span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">blob</span><span class="p">.</span><span class="n">offset</span> <span class="o">&lt;</span> <span class="n">blob</span><span class="p">.</span><span class="n">blob_size</span><span class="p">;</span> <span class="n">blob</span><span class="p">.</span><span class="n">offset</span> <span class="o">+=</span> <span class="n">DATA_SIZE</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">db_fetch</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+    <span class="n">fwrite</span><span class="p">(</span><span class="n">blob</span><span class="p">.</span><span class="n">chunk_data</span><span class="p">,</span> <span class="n">blob</span><span class="p">.</span><span class="n">actual_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">picture_file</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">fclose</span><span class="p">(</span><span class="n">picture_file</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>An application can read from a BLOB column at any offset and size up to the
+current BLOB size. An application can write to a BLOB column at any offset and
+size, and the actual size will grow if it exceeds the current BLOB size.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Database Manual</h3>
+          <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../general-information/index.html">1. General Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation/index.html">2. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/index.html">3. Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../storage-engines/index.html">4. Database Engines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. APIs &amp; Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../native-development/index.html">5.1. Building C and C++ API Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iot/index.html">5.2. ITTIA DB IoT C API</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.3. ITTIA DB SQL C API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="getting-started.html">5.3.1. Getting Started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="database-design.html">5.3.2. Database Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="transactions.html">5.3.3. Transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rows.html">5.3.4. Dynamic Rows</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.3.5. C Table Cursors</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cursors">5.3.5.1. Cursors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#traversing-a-cursor-s-row-set">5.3.5.2. Traversing a Cursor’s Row Set</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#table-cursors">5.3.5.3. Table Cursors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#inserting-data">5.3.5.4. Inserting Data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searching-a-table-cursor">5.3.5.5. Searching a Table Cursor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting-a-table-cursor">5.3.5.6. Sorting a Table Cursor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#updating-a-table-cursor">5.3.5.7. Updating a Table Cursor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#deleting-a-table-row">5.3.5.8. Deleting a Table Row</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reading-and-writing-blobs">5.3.5.9. Reading and Writing BLOBs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../cpp/index.html">5.4. ITTIA DB SQL C++ API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../data-types/index.html">6. Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">7. Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../errors.html">8. Error Codes</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="../../search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="rows.html" title="5.3.4. Dynamic Rows"
+              >previous</a> |
+            <a href="../cpp/index.html" title="5.4. ITTIA DB SQL C++ API"
+              >next</a>
+          </div>
+          <div role="note" aria-label="source link">
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, ITTIA L.L.C..
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

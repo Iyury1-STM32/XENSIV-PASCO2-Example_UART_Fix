@@ -1,0 +1,274 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>6. Data Types &#8212; ITTIA DB IoT Embedded Database Manual</title>
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/ittia.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6.1. Numeric Types" href="numeric.html" />
+    <link rel="prev" title="5.4.4. C++ Table Cursors" href="../api/cpp/table-cursors.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+          <p class="logo"><a href="../index.html">
+            <img class="logo" src="../_static/logo.png" alt="Logo"/>
+          </a></p>
+        <div class="headertitle"><a
+          href="../index.html">ITTIA DB IoT Embedded Database Manual</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="../api/cpp/table-cursors.html" title="5.4.4. C++ Table Cursors"
+             accesskey="P">previous</a>
+           |
+          <a href="numeric.html" title="6.1. Numeric Types"
+             accesskey="N">next</a>
+           |
+          <a href="../contents.html">Contents</a>
+           |
+          <a href="../../c-api-reference/index.html">C API</a>
+           |
+          <a href="../../cpp-api-reference/index.html">C++ API</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="data-types">
+<span id="id1"></span><h1>6. Data Types<a class="headerlink" href="#data-types" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="numeric.html">6.1. Numeric Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="character-string.html">6.2. Character String Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="date-time.html">6.3. Date and Time Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="binary.html">6.4. Binary Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="null.html">6.5. NULL Values</a></li>
+</ul>
+</div>
+<p><strong>ITTIA DB IoT</strong>™ can store data in a wide range of types. Every column
+has a data type, which limits the kind of data that can be stored in that
+column. This ensures that data is always in the expected format when retrieved
+from the database and imposes a hard limit on the amount of storage needed for
+each row.</p>
+<p>Data types are listed in <a class="reference internal" href="#sql-column-types"><span class="std std-numref">Table 6.6, &quot;Column Types&quot;</span></a>. Each data type has one or more SQL column type names,
+which can be used interchangeably. The column type name is used when a table
+is created or altered.</p>
+<span id="sql-column-types"></span><table border="1" class="docutils" id="id2">
+<caption><span class="caption-number">Table 6.6: </span><span class="caption-text">Column Types</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="43%" />
+<col width="34%" />
+<col width="23%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">SQL Column Type</th>
+<th class="head">C Data Type</th>
+<th class="head">Maximum Storage
+Size</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">tinyint</span></code>,
+<code class="docutils literal notranslate"><span class="pre">sint8</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">int8_t</span></code></td>
+<td>1 byte</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">smallint</span></code>,
+<code class="docutils literal notranslate"><span class="pre">sint16</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">int16_t</span></code></td>
+<td>2 bytes</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">integer</span></code>,
+<code class="docutils literal notranslate"><span class="pre">int</span></code>,
+<code class="docutils literal notranslate"><span class="pre">sint32</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">int32_t</span></code></td>
+<td>4 bytes</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">bigint</span></code>,
+<code class="docutils literal notranslate"><span class="pre">sint64</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">int64_t</span></code></td>
+<td>8 bytes</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">uint8</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">uint8_t</span></code></td>
+<td>1 byte</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">uint16</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">uint16_t</span></code></td>
+<td>2 bytes</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">uint32</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">uint32_t</span></code></td>
+<td>4 bytes</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">uint64</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">uint64_t</span></code></td>
+<td>8 bytes</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">float32</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">db_float32_t</span></code></td>
+<td>4 bytes</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">float</span></code>,
+<code class="docutils literal notranslate"><span class="pre">float64</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">db_float64_t</span></code></td>
+<td>8 bytes</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">currency</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">db_sint32_t</span></code></td>
+<td>4 bytes</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">varchar</span></code>(n),
+<code class="docutils literal notranslate"><span class="pre">ansistr</span></code>(n)</td>
+<td><code class="docutils literal notranslate"><span class="pre">db_ansi_t</span></code>,
+<code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">*</span></code></td>
+<td>1/2 page size</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">utf8str</span></code>(n)</td>
+<td><code class="docutils literal notranslate"><span class="pre">db_utf8_t</span></code>,
+<code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">*</span></code></td>
+<td>1/2 page size</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">nvarchar</span></code>(n),
+<code class="docutils literal notranslate"><span class="pre">utf16str</span></code>(n)</td>
+<td><code class="docutils literal notranslate"><span class="pre">db_utf16_t</span></code></td>
+<td>1/2 page size</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">utf32str</span></code>(n)</td>
+<td><code class="docutils literal notranslate"><span class="pre">db_utf32_t</span></code></td>
+<td>1/2 page size</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">boolean</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">db_boolean_t</span></code></td>
+<td>1 byte</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">date</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">db_date_t</span></code></td>
+<td>6 bytes</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">time</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">db_time_t</span></code></td>
+<td>6 bytes</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">datetime</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">db_datetime_t</span></code></td>
+<td>12 bytes</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">timestamp</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">db_timestamp_t</span></code>,
+<code class="docutils literal notranslate"><span class="pre">db_timestamp_usec_t</span></code></td>
+<td>16 bytes</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">interval</span> <span class="pre">year</span> <span class="pre">to</span> <span class="pre">month</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">db_interval_t</span></code></td>
+<td>8 bytes</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">interval</span> <span class="pre">day</span> <span class="pre">to</span> <span class="pre">second</span> <span class="pre">(6)</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">db_interval_t</span></code></td>
+<td>8 bytes</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">float</span> <span class="pre">time</span> <span class="pre">series</span></code>[n]</td>
+<td><code class="docutils literal notranslate"><span class="pre">db_time_series_t</span></code></td>
+<td>database size</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">varbinary</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*</span></code></td>
+<td>1/2 page size</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">blob</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">db_blob_t</span></code></td>
+<td>database size</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">For each column type, the C API provides a platform-independent C
+variable type that best matches the size and format used in the
+database. For best performance, the corresponding C data type should
+be used, but some column types can be bound to other C data types as
+well. See <a class="reference internal" href="../api/c/database-design.html#c-api-column-types"><span class="std std-numref">Section 5.3.2.1, &quot;Column Types&quot;</span></a> for
+more information.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Database Manual</h3>
+          <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general-information/index.html">1. General Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">2. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">3. Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage-engines/index.html">4. Database Engines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">5. APIs &amp; Drivers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">6. Data Types</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="numeric.html">6.1. Numeric Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="character-string.html">6.2. Character String Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="date-time.html">6.3. Date and Time Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="binary.html">6.4. Binary Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="null.html">6.5. NULL Values</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">7. Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../errors.html">8. Error Codes</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="../api/cpp/table-cursors.html" title="5.4.4. C++ Table Cursors"
+              >previous</a> |
+            <a href="numeric.html" title="6.1. Numeric Types"
+              >next</a>
+          </div>
+          <div role="note" aria-label="source link">
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, ITTIA L.L.C..
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

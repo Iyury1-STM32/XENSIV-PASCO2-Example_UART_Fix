@@ -1,0 +1,165 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>5.3. ITTIA DB SQL C API &#8212; ITTIA DB IoT Embedded Database Manual</title>
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/ittia.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.3.1. Getting Started" href="getting-started.html" />
+    <link rel="prev" title="5.2.2. IoT Stream Embedded C API Reference" href="../iot/stream.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+          <p class="logo"><a href="../../index.html">
+            <img class="logo" src="../../_static/logo.png" alt="Logo"/>
+          </a></p>
+        <div class="headertitle"><a
+          href="../../index.html">ITTIA DB IoT Embedded Database Manual</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="../iot/stream.html" title="5.2.2. IoT Stream Embedded C API Reference"
+             accesskey="P">previous</a>
+           |
+          <a href="getting-started.html" title="5.3.1. Getting Started"
+             accesskey="N">next</a>
+           |
+          <a href="../../contents.html">Contents</a>
+           |
+          <a href="../../../c-api-reference/index.html">C API</a>
+           |
+          <a href="../../../cpp-api-reference/index.html">C++ API</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="ittia-db-sql-c-api">
+<h1>5.3. ITTIA DB SQL C API<a class="headerlink" href="#ittia-db-sql-c-api" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">5.3.1. Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="getting-started.html#initializing-the-library">5.3.1.1. Initializing the Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting-started.html#creating-and-opening-a-database">5.3.1.2. Creating and Opening a Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting-started.html#error-handling">5.3.1.3. Error Handling</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="database-design.html">5.3.2. Database Design</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="database-design.html#column-types">5.3.2.1. Column Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database-design.html#tables-and-fields">5.3.2.2. Tables and Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database-design.html#primary-keys-unique-keys-and-indexes">5.3.2.3. Primary Keys, Unique Keys, and Indexes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database-design.html#foreign-keys">5.3.2.4. Foreign Keys</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database-design.html#sequence-generators">5.3.2.5. Sequence Generators</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="transactions.html">5.3.3. Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rows.html">5.3.4. Dynamic Rows</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rows.html#managed-fields">5.3.4.1. Managed Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rows.html#absolute-bound-fields">5.3.4.2. Absolute Bound Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rows.html#relative-bound-fields">5.3.4.3. Relative Bound Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="table-cursors.html">5.3.5. C Table Cursors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="table-cursors.html#cursors">5.3.5.1. Cursors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table-cursors.html#traversing-a-cursor-s-row-set">5.3.5.2. Traversing a Cursor’s Row Set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table-cursors.html#table-cursors">5.3.5.3. Table Cursors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table-cursors.html#inserting-data">5.3.5.4. Inserting Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table-cursors.html#searching-a-table-cursor">5.3.5.5. Searching a Table Cursor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table-cursors.html#sorting-a-table-cursor">5.3.5.6. Sorting a Table Cursor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table-cursors.html#updating-a-table-cursor">5.3.5.7. Updating a Table Cursor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table-cursors.html#deleting-a-table-row">5.3.5.8. Deleting a Table Row</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table-cursors.html#reading-and-writing-blobs">5.3.5.9. Reading and Writing BLOBs</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>The ITTIA DB SQL C API provides the most direct interface to the database.
+This section explains how to perform many operations with the C API.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Database Manual</h3>
+          <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../general-information/index.html">1. General Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation/index.html">2. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/index.html">3. Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../storage-engines/index.html">4. Database Engines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. APIs &amp; Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../native-development/index.html">5.1. Building C and C++ API Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iot/index.html">5.2. ITTIA DB IoT C API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.3. ITTIA DB SQL C API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="getting-started.html">5.3.1. Getting Started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="database-design.html">5.3.2. Database Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="transactions.html">5.3.3. Transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rows.html">5.3.4. Dynamic Rows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="table-cursors.html">5.3.5. C Table Cursors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../cpp/index.html">5.4. ITTIA DB SQL C++ API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../data-types/index.html">6. Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">7. Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../errors.html">8. Error Codes</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="../../search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="../iot/stream.html" title="5.2.2. IoT Stream Embedded C API Reference"
+              >previous</a> |
+            <a href="getting-started.html" title="5.3.1. Getting Started"
+              >next</a>
+          </div>
+          <div role="note" aria-label="source link">
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, ITTIA L.L.C..
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

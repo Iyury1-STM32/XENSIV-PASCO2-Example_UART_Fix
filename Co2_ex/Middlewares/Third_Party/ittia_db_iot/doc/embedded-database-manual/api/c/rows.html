@@ -1,0 +1,334 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>5.3.4. Dynamic Rows &#8212; ITTIA DB IoT Embedded Database Manual</title>
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/ittia.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.3.5. C Table Cursors" href="table-cursors.html" />
+    <link rel="prev" title="5.3.3. Transactions" href="transactions.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+          <p class="logo"><a href="../../index.html">
+            <img class="logo" src="../../_static/logo.png" alt="Logo"/>
+          </a></p>
+        <div class="headertitle"><a
+          href="../../index.html">ITTIA DB IoT Embedded Database Manual</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="transactions.html" title="5.3.3. Transactions"
+             accesskey="P">previous</a>
+           |
+          <a href="table-cursors.html" title="5.3.5. C Table Cursors"
+             accesskey="N">next</a>
+           |
+          <a href="../../contents.html">Contents</a>
+           |
+          <a href="../../../c-api-reference/index.html">C API</a>
+           |
+          <a href="../../../cpp-api-reference/index.html">C++ API</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="dynamic-rows">
+<span id="c-rows"></span><h1>5.3.4. Dynamic Rows<a class="headerlink" href="#dynamic-rows" title="Permalink to this headline">¶</a></h1>
+<p>Data can be stored and retrieved dynamically through rows. A row is a set of temporary
+buffers for storing the contents of database fields. Each field in a row
+can be stored in one of three locations: a managed internal buffer, a
+local variable referenced by memory address, or a member of a data
+structure. A row variable is independent of any specific row in the
+database and can be re-used for many insert, fetch and update
+operations.</p>
+<p>A row is created by calling either <code class="docutils literal notranslate"><span class="pre">db_alloc_row()</span></code> or
+<code class="docutils literal notranslate"><span class="pre">db_alloc_cursor_row()</span></code>. A row can only be used to access fields that
+it is aware of and will not set or retrieve values for any fields that
+it is not. A row variable can be created that is initially bound to no
+database fields:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">db_row_t</span> <span class="n">contact_row</span><span class="p">;</span>
+<span class="n">contact_row</span> <span class="o">=</span> <span class="n">db_alloc_row</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This row should then be dynamically bound to two fields by calling
+<code class="docutils literal notranslate"><span class="pre">db_bind_field()</span></code>.</p>
+<p>The data in a row can be read and written by calling
+<code class="docutils literal notranslate"><span class="pre">db_get_field_*()</span></code> and <code class="docutils literal notranslate"><span class="pre">db_set_field_*()</span></code> functions. For safe
+access, use <code class="docutils literal notranslate"><span class="pre">db_get_field_data()</span></code> and <code class="docutils literal notranslate"><span class="pre">db_set_field_data()</span></code> to copy
+values to or from each field in the row. The size of the field can be
+determined by calling <code class="docutils literal notranslate"><span class="pre">db_get_field_size()</span></code>.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">To obtain a direct pointer to the buffer that is used by the row,
+call <code class="docutils literal notranslate"><span class="pre">db_get_field_buffer()</span></code>. When writing to this pointer, be
+careful not to overrun the size of the buffer.</p>
+</div>
+<p>When a row is no longer needed, it must be freed:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">db_free_row</span><span class="p">(</span><span class="n">contact_row</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="section" id="managed-fields">
+<span id="c-managed-fields"></span><h2>5.3.4.1. Managed Fields<a class="headerlink" href="#managed-fields" title="Permalink to this headline">¶</a></h2>
+<div class="align-center figure" id="id1">
+<a class="reference internal image-reference" href="../../_images/managed-field-binding.png"><img alt="Managed Field Binding" src="../../_images/managed-field-binding.png" style="width: 100.0%;" /></a>
+<p class="caption"><span class="caption-number">Figure 5.2: </span><span class="caption-text">Managed Field Binding</span></p>
+</div>
+<p>The first method, a managed buffer, is most suitable when the exact data
+type of a field is not known at compile time. It allows the value to be
+extracted as a void pointer and cast to the appropriate type at run
+time. To create a row with managed buffers for all fields in a cursor,
+call <code class="docutils literal notranslate"><span class="pre">db_alloc_cursor_row()</span></code>:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">db_row_t</span> <span class="n">contact_row</span><span class="p">;</span>
+<span class="n">contact_row</span> <span class="o">=</span> <span class="n">db_alloc_cursor_row</span><span class="p">(</span> <span class="n">contact_cursor</span> <span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="absolute-bound-fields">
+<span id="c-absolute-bound-fields"></span><h2>5.3.4.2. Absolute Bound Fields<a class="headerlink" href="#absolute-bound-fields" title="Permalink to this headline">¶</a></h2>
+<div class="align-center figure" id="id2">
+<a class="reference internal image-reference" href="../../_images/absolute-field-binding.png"><img alt="Absolute Field Binding" src="../../_images/absolute-field-binding.png" style="width: 100.0%;" /></a>
+<p class="caption"><span class="caption-number">Figure 5.3: </span><span class="caption-text">Absolute Field Binding</span></p>
+</div>
+<p>When the data type of a field is known at compile time, it can be bound
+directly to a local variable by providing the memory address and size of
+the variable in bytes. When data is retrieved from the database, it will
+be stored in the bound variables. When data is stored to the database,
+it will be read from these same variables. To create a row that has
+fields bound to memory addresses, call <code class="docutils literal notranslate"><span class="pre">db_alloc_row()</span></code> with an array
+of binding definitions:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">uint32_t</span> <span class="n">id</span><span class="p">;</span>
+<span class="n">db_utf16_t</span> <span class="n">name</span><span class="p">[</span><span class="mi">50</span><span class="p">];</span>
+
+<span class="k">const</span> <span class="n">db_bind_t</span> <span class="n">row_def</span><span class="p">[]</span> <span class="o">=</span>
+<span class="p">{</span>
+    <span class="p">{</span>
+        <span class="n">CONTACT_ID</span><span class="p">,</span>                   <span class="cm">/* field_no   */</span>
+        <span class="n">DB_VARTYPE_UINT32</span><span class="p">,</span>            <span class="cm">/* data_type  */</span>
+        <span class="n">DB_BIND_ADDRESS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">id</span><span class="p">),</span>         <span class="cm">/* data_ptr   */</span>
+        <span class="k">sizeof</span><span class="p">(</span><span class="n">id</span><span class="p">),</span>                   <span class="cm">/* data_size  */</span>
+        <span class="n">DB_BIND_ADDRESS</span><span class="p">(</span><span class="nb">NULL</span><span class="p">),</span>        <span class="cm">/* data_ind   */</span>
+        <span class="n">DB_BIND_ABSOLUTE</span><span class="p">,</span>             <span class="cm">/* data_flags */</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="n">CONTACT_NAME</span><span class="p">,</span>                 <span class="cm">/* field_no   */</span>
+        <span class="n">DB_VARTYPE_UTF16STR</span><span class="p">,</span>          <span class="cm">/* data_type  */</span>
+        <span class="n">DB_BIND_ADDRESS</span><span class="p">(</span><span class="n">name</span><span class="p">),</span>        <span class="cm">/* data_ptr   */</span>
+        <span class="k">sizeof</span><span class="p">(</span><span class="n">name</span><span class="p">),</span>                 <span class="cm">/* data_size  */</span>
+        <span class="n">DB_BIND_ADDRESS</span><span class="p">(</span><span class="nb">NULL</span><span class="p">),</span>        <span class="cm">/* data_ind   */</span>
+        <span class="n">DB_BIND_ABSOLUTE</span><span class="p">,</span>             <span class="cm">/* data_flags */</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Instead of using internal buffers, the row will use the variables or
+memory addresses that have been provided for these fields. These fields
+can still be accessed using <code class="docutils literal notranslate"><span class="pre">db_get_field_*()</span></code> and
+<code class="docutils literal notranslate"><span class="pre">db_set_field_*()</span></code> functions if necessary, but it is generally more
+convenient to use the local variables to which they are bound directly.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">data_ind</span></code> member of <code class="docutils literal notranslate"><span class="pre">db_bind_t</span></code> is used to bind a field
+length indicator for the given field. The field length indicator
+provides additional information about the value stored in the
+database, such as string length and <code class="docutils literal notranslate"><span class="pre">NULL</span></code> state. In an absolute
+binding, set <code class="docutils literal notranslate"><span class="pre">data_ind</span></code> to the address of a <code class="docutils literal notranslate"><span class="pre">db_len_t</span></code> variable
+to access the field length indicator.</p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">db_bind_fieldFields</span></code> can be bound dynamically using
+<code class="docutils literal notranslate"><span class="pre">db_bind_field()</span></code>. In the following example, <code class="docutils literal notranslate"><span class="pre">db_bind_field()</span></code> is
+used to bind the variable <code class="docutils literal notranslate"><span class="pre">id</span></code> to two different row objects.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">db_row_t</span> <span class="n">simple_row</span><span class="p">,</span> <span class="n">contact_row</span><span class="p">;</span>
+<span class="kt">uint32_t</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="n">db_len_t</span> <span class="n">id_ind</span> <span class="o">=</span> <span class="n">DB_FIELD_NULL</span><span class="p">;</span>
+
+<span class="k">static</span> <span class="n">db_bind_t</span> <span class="n">bind_def</span> <span class="o">=</span>
+<span class="p">{</span>
+    <span class="n">CONTACT_ID</span><span class="p">,</span>                   <span class="cm">/* field_no   */</span>
+    <span class="n">DB_VARTYPE_UINT32</span><span class="p">,</span>            <span class="cm">/* data_type  */</span>
+    <span class="n">DB_BIND_ADDRESS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">id</span><span class="p">),</span>         <span class="cm">/* data_ptr   */</span>
+    <span class="k">sizeof</span><span class="p">(</span><span class="n">id</span><span class="p">),</span>                   <span class="cm">/* data_size  */</span>
+    <span class="n">DB_BIND_ADDRESS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">id_ind</span><span class="p">),</span>     <span class="cm">/* data_ind   */</span>
+    <span class="n">DB_BIND_ABSOLUTE</span><span class="p">,</span>             <span class="cm">/* data_flags */</span>
+<span class="p">};</span>
+
+<span class="n">simple_row</span> <span class="o">=</span> <span class="n">db_alloc_row</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="n">db_bind_field</span><span class="p">(</span><span class="n">simple_row</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">bind_def</span><span class="p">);</span>
+
+<span class="n">contact_row</span> <span class="o">=</span> <span class="n">db_alloc_cursor_row</span><span class="p">(</span> <span class="n">contact_cursor</span> <span class="p">);</span>
+<span class="n">db_bind_field</span><span class="p">(</span><span class="n">contact_row</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">bind_def</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">db_bind_field()</span></code> will override any previous bindings for that
+field. In this example, managed bindings are first created for all
+cursor fields. The binding that was created for <code class="docutils literal notranslate"><span class="pre">CONTACT_ID</span></code> is
+then replaced by an absolute binding to the <code class="docutils literal notranslate"><span class="pre">id</span></code> variable. In this
+way, a row can contain a mixture of different bind methods.</p>
+</div>
+<p>Binding to the same variable in two different rows is an efficient way
+to copy fields between tables. Data can be fetched from one table using
+the first binding and then stored directly to another table using the
+second binding without making any additional copies.</p>
+</div>
+<div class="section" id="relative-bound-fields">
+<span id="c-relative-bound-fields"></span><h2>5.3.4.3. Relative Bound Fields<a class="headerlink" href="#relative-bound-fields" title="Permalink to this headline">¶</a></h2>
+<div class="align-center figure" id="id3">
+<a class="reference internal image-reference" href="../../_images/relative-field-binding.png"><img alt="Relative Field Bindings" src="../../_images/relative-field-binding.png" style="width: 100.0%;" /></a>
+<p class="caption"><span class="caption-number">Figure 5.4: </span><span class="caption-text">Relative Field Bindings</span></p>
+</div>
+<p>A row can also be bound to a data structure to provide convenient access
+using a C struct.</p>
+<p>A relative binding is defined in much the same way as for address
+bindings, but instead of using an absolute address, an offset into the
+data structure is used. The <code class="docutils literal notranslate"><span class="pre">DB_BIND_OFFSET()</span></code> and <code class="docutils literal notranslate"><span class="pre">DB_BIND_SIZE()</span></code>
+macros can be used to determine the offset and size of a struct member.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define MAX_PHONE_NUMBER 20</span>
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">phone</span>
+<span class="p">{</span>
+    <span class="n">contactid_t</span> <span class="n">contact_id</span><span class="p">;</span>
+    <span class="n">db_ansi_t</span>   <span class="n">number</span><span class="p">[</span><span class="n">MAX_PHONE_NUMBER</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+    <span class="kt">uint32_t</span>    <span class="n">type</span><span class="p">;</span>
+    <span class="kt">int32_t</span>     <span class="n">speed_dial</span><span class="p">;</span>
+
+<span class="p">}</span> <span class="n">phone_t</span><span class="p">;</span>
+
+<span class="k">static</span> <span class="k">const</span> <span class="n">db_bind_t</span> <span class="n">phone_number_binds</span><span class="p">[]</span> <span class="o">=</span>
+<span class="p">{</span>
+    <span class="p">{</span> <span class="n">PHONE_CONTACT_ID</span><span class="p">,</span>                       <span class="cm">/* field_no  */</span>
+        <span class="n">DB_VARTYPE_UINT32</span><span class="p">,</span>                    <span class="cm">/* data_type */</span>
+        <span class="n">DB_BIND_OFFSET</span><span class="p">(</span><span class="n">phone_t</span><span class="p">,</span> <span class="n">contact_id</span><span class="p">),</span>  <span class="cm">/* data_ptr  */</span>
+        <span class="n">DB_BIND_SIZE</span><span class="p">(</span><span class="n">phone_t</span><span class="p">,</span> <span class="n">contact_id</span><span class="p">),</span>    <span class="cm">/* data_size */</span>
+        <span class="o">-</span><span class="mi">1</span><span class="p">,</span>                                   <span class="cm">/* data_ind  */</span>
+        <span class="n">DB_BIND_RELATIVE</span><span class="p">},</span>
+    <span class="p">{</span> <span class="n">PHONE_NUMBER</span><span class="p">,</span>
+        <span class="n">DB_VARTYPE_ANSISTR</span><span class="p">,</span>
+        <span class="n">DB_BIND_OFFSET</span><span class="p">(</span><span class="n">phone_t</span><span class="p">,</span> <span class="n">number</span><span class="p">),</span>
+        <span class="n">DB_BIND_SIZE</span><span class="p">(</span><span class="n">phone_t</span><span class="p">,</span> <span class="n">number</span><span class="p">),</span>
+        <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">DB_BIND_RELATIVE</span><span class="p">},</span>
+    <span class="p">{</span> <span class="n">PHONE_TYPE</span><span class="p">,</span>
+        <span class="n">DB_VARTYPE_UINT32</span><span class="p">,</span>
+        <span class="n">DB_BIND_OFFSET</span><span class="p">(</span><span class="n">phone_t</span><span class="p">,</span> <span class="n">type</span><span class="p">),</span>
+        <span class="n">DB_BIND_SIZE</span><span class="p">(</span><span class="n">phone_t</span><span class="p">,</span> <span class="n">type</span><span class="p">),</span>
+        <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">DB_BIND_RELATIVE</span><span class="p">},</span>
+    <span class="p">{</span> <span class="n">PHONE_SPEED_DIAL</span><span class="p">,</span>
+        <span class="n">DB_VARTYPE_SINT32</span><span class="p">,</span>
+        <span class="n">DB_BIND_OFFSET</span><span class="p">(</span><span class="n">phone_t</span><span class="p">,</span> <span class="n">speed_dial</span><span class="p">),</span>
+        <span class="n">DB_BIND_SIZE</span><span class="p">(</span><span class="n">phone_t</span><span class="p">,</span> <span class="n">speed_dial</span><span class="p">),</span>
+        <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">DB_BIND_RELATIVE</span><span class="p">},</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>The functions <code class="docutils literal notranslate"><span class="pre">db_fetch()</span></code>, <code class="docutils literal notranslate"><span class="pre">db_insert()</span></code>, and <code class="docutils literal notranslate"><span class="pre">db_update()</span></code> each
+accept a <code class="docutils literal notranslate"><span class="pre">uobject</span></code> parameter that is only required for relative bound
+fields. This parameter is the address of a data structure instance that
+corresponds to the relative bindings.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If relative binding is not used in the row, the parameter of type
+<code class="docutils literal notranslate"><span class="pre">db_object_t</span></code> should always be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.</p>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Relative bindings can also be used with an untyped memory buffer
+instead of a C data structure by setting <code class="docutils literal notranslate"><span class="pre">data_ptr</span></code> to the byte
+offset of each field.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Database Manual</h3>
+          <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../general-information/index.html">1. General Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation/index.html">2. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/index.html">3. Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../storage-engines/index.html">4. Database Engines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. APIs &amp; Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../native-development/index.html">5.1. Building C and C++ API Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iot/index.html">5.2. ITTIA DB IoT C API</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.3. ITTIA DB SQL C API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="getting-started.html">5.3.1. Getting Started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="database-design.html">5.3.2. Database Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="transactions.html">5.3.3. Transactions</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.3.4. Dynamic Rows</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#managed-fields">5.3.4.1. Managed Fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#absolute-bound-fields">5.3.4.2. Absolute Bound Fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#relative-bound-fields">5.3.4.3. Relative Bound Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="table-cursors.html">5.3.5. C Table Cursors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../cpp/index.html">5.4. ITTIA DB SQL C++ API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../data-types/index.html">6. Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">7. Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../errors.html">8. Error Codes</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="../../search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="transactions.html" title="5.3.3. Transactions"
+              >previous</a> |
+            <a href="table-cursors.html" title="5.3.5. C Table Cursors"
+              >next</a>
+          </div>
+          <div role="note" aria-label="source link">
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, ITTIA L.L.C..
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

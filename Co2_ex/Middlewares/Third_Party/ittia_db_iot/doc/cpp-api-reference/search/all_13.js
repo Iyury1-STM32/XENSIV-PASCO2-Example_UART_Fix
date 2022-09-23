@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['u_934',['u',['../../c-api-reference/a00442.html#aac891513e188cc82bb0590e3c848365a',1,'db_oid_t']]],
+  ['udata_935',['udata',['../../c-api-reference/a00466.html#a573281e305998508688b540bcba31839',1,'db_crypt_t']]],
+  ['udcp_5flisteners_936',['udcp_listeners',['../../c-api-reference/a00610.html#aa36fca9b47ce898dc96f7e11315822d5',1,'db_server_config_t']]],
+  ['udcp_5fnlisteners_937',['udcp_nlisteners',['../../c-api-reference/a00610.html#adfaeeb707ec236b540f116bfdb997116',1,'db_server_config_t']]],
+  ['udcp_5fparam_938',['udcp_param',['../../c-api-reference/a00474.html#a7b255aa1649312dea9e38688d08186a0',1,'db_file_storage_config_t']]],
+  ['unbind_939',['unbind',['../a00534.html#a4eb3e872b8fff66d791037fd3493597a',1,'storage::data::Row::unbind(db_fieldno_t fieldno)'],['../a00534.html#a3fb2bed1cf156dd0063e35c5b7a084a0',1,'storage::data::Row::unbind(const char *field_name)']]],
+  ['unmount_940',['unmount',['../a00562.html#aa8b0bdf8466a8ce3969ead5d0241d1a3',1,'storage::ittiadb::Connection']]],
+  ['unregister_5fhandler_941',['unregister_handler',['../a00634.html#a68d341cb4d92bab25d30f9aa02bfd97f',1,'storage::ittiadb::TableWatcher']]],
+  ['unwatch_5ftable_942',['unwatch_table',['../a00634.html#ac97820de21143eccc84e5f087fda12ca',1,'storage::ittiadb::TableWatcher']]],
+  ['update_5fby_5findex_943',['update_by_index',['../a00626.html#aa9adbc7284d4baed310d605596d377dc',1,'storage::ittiadb::Table::update_by_index(data::RowSet&lt; T &gt; &amp;keys_and_data, int index_fields)'],['../a00626.html#a9ea0e36ddfe8ba5c95270a9f7a21602a',1,'storage::ittiadb::Table::update_by_index(const data::Row &amp;key, int index_fields, data::Row &amp;row)'],['../a00626.html#a412ee8093d99f53a657d36bb2ce8e4b3',1,'storage::ittiadb::Table::update_by_index(data::RowSet&lt; T &gt; &amp;keys_and_data)'],['../a00626.html#aea0e0a1fb84e1f8b5a56403cb8ff8ae6',1,'storage::ittiadb::Table::update_by_index(const data::Row &amp;keys, data::Row &amp;row)']]],
+  ['update_5fevent_944',['update_event',['../a00630.html#ab22d8b8f1791dc826344c6525ca14739',1,'storage::ittiadb::ITableEventHandler']]],
+  ['update_5ffield_945',['update_field',['../a00558.html#a9b2991a5ef1dfcff66185621950851b4',1,'storage::ittiadb::Catalog']]],
+  ['update_5fresolve_946',['update_resolve',['../../c-api-reference/a00638.html#ac08b70084dadcca6ae0da4358f3caae9',1,'db_rep_table_info_t']]],
+  ['update_5frule_947',['update_rule',['../../c-api-reference/a00570.html#a84ca60e70faab39c5d0b58629ff960bf',1,'db_foreign_key_def_t']]],
+  ['uri_948',['uri',['../a00562.html#a044b4edb8818d5d7812037045c4e691f',1,'storage::ittiadb::Connection']]],
+  ['use_5flm_5flocal_949',['use_lm_local',['../a00506.html#a179b2105da4ce3ee068f69338d950ee0',1,'storage::data::Environment']]],
+  ['used_5fbytes_950',['used_bytes',['../../c-api-reference/a00514.html#ad363e2685a88b6ba9ee1ce638e1a7795',1,'db_file_storage_stat_t']]],
+  ['used_5fdata_5fbytes_951',['used_data_bytes',['../../c-api-reference/a00666.html#a9be1263d23573d3da226b7b6e98f9c4b',1,'db_file_info_t']]],
+  ['used_5fpage_5fcount_952',['used_page_count',['../../c-api-reference/a00514.html#a6207fda6542c00c7530ca9c8bd2f1603',1,'db_file_storage_stat_t']]],
+  ['user_953',['user',['../../c-api-reference/a00626.html#a095d39a22d9a7fdd319da0e8e13fe3e4',1,'db_mem_statistics_t']]],
+  ['user_5fname_954',['user_name',['../../c-api-reference/a00470.html#acf227e27876da7af2da3da63d9ee8d53',1,'db_auth_info_t']]],
+  ['utid_955',['utid',['../../c-api-reference/a00590.html#a7a678d82464c6c2791967125f6e40c8d',1,'db_event_t::utid()'],['../a00634.html#a02d4836c2a240b9a5a9e6e472674a375',1,'storage::ittiadb::TableWatcher::utid()']]]
+];

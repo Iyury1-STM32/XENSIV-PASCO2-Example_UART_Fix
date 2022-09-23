@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['valid_956',['valid',['../a00518.html#a99b55b601f5f7755aa63c72561e9dd45',1,'storage::data::FieldDefinition']]],
+  ['value_957',['value',['../a00874.html#a16a1396e2ac1278555bac9ef5fe35ceb',1,'storage::types::Nullable']]],
+  ['var_5ftype_958',['var_type',['../a00646.html#a8f0b7ffaa522cf78394dd74100e40f55',1,'storage::types::VarBindTraits::var_type()'],['../a00650.html#a975b841ee9e0129f0f5d4e946f7f7a11',1,'storage::types::ConstStrBindTraits::var_type()'],['../a00658.html#a22d093ea9c32967c23ac2de747b6f7f3',1,'storage::types::PtrBindTraits::var_type()'],['../a00882.html#abc26a081c286b0582af4eb7a57328c9d',1,'storage::types::BindTraits&lt; std::basic_string&lt; charT, traits, Alloc &gt; &gt;::var_type()']]],
+  ['varbindtraits_959',['VarBindTraits',['../a00646.html',1,'storage::types']]],
+  ['varbindtraits_3c_20db_5fdate_5ft_2c_20db_5fvartype_5fdate_5ftag_20_3e_960',['VarBindTraits&lt; db_date_t, DB_VARTYPE_DATE_TAG &gt;',['../a00646.html',1,'storage::types']]],
+  ['varbindtraits_3c_20db_5fdatetime_5ft_2c_20db_5fvartype_5fdatetime_5ftag_20_3e_961',['VarBindTraits&lt; db_datetime_t, DB_VARTYPE_DATETIME_TAG &gt;',['../a00646.html',1,'storage::types']]],
+  ['varbindtraits_3c_20db_5ffloat32_5ft_2c_20db_5fvartype_5ffloat32_5ftag_20_3e_962',['VarBindTraits&lt; db_float32_t, DB_VARTYPE_FLOAT32_TAG &gt;',['../a00646.html',1,'storage::types']]],
+  ['varbindtraits_3c_20db_5ffloat64_5ft_2c_20db_5fvartype_5ffloat64_5ftag_20_3e_963',['VarBindTraits&lt; db_float64_t, DB_VARTYPE_FLOAT64_TAG &gt;',['../a00646.html',1,'storage::types']]],
+  ['varbindtraits_3c_20db_5flargeint_5ft_2c_20db_5fvartype_5fsint64_5ftag_20_3e_964',['VarBindTraits&lt; db_largeint_t, DB_VARTYPE_SINT64_TAG &gt;',['../a00646.html',1,'storage::types']]],
+  ['varbindtraits_3c_20db_5fodbc_5fdate_5ft_2c_20db_5fvartype_5fodbc_5fdate_5ftag_20_3e_965',['VarBindTraits&lt; db_odbc_date_t, DB_VARTYPE_ODBC_DATE_TAG &gt;',['../a00646.html',1,'storage::types']]],
+  ['varbindtraits_3c_20db_5fodbc_5ftime_5ft_2c_20db_5fvartype_5fodbc_5ftime_5ftag_20_3e_966',['VarBindTraits&lt; db_odbc_time_t, DB_VARTYPE_ODBC_TIME_TAG &gt;',['../a00646.html',1,'storage::types']]],
+  ['varbindtraits_3c_20db_5fodbc_5ftimestamp_5ft_2c_20db_5fvartype_5fodbc_5ftimestamp_5ftag_20_3e_967',['VarBindTraits&lt; db_odbc_timestamp_t, DB_VARTYPE_ODBC_TIMESTAMP_TAG &gt;',['../a00646.html',1,'storage::types']]],
+  ['varbindtraits_3c_20db_5ftime_5ft_2c_20db_5fvartype_5ftime_5ftag_20_3e_968',['VarBindTraits&lt; db_time_t, DB_VARTYPE_TIME_TAG &gt;',['../a00646.html',1,'storage::types']]],
+  ['varbindtraits_3c_20db_5ftimestamp_5ft_2c_20db_5fvartype_5ftimestamp_5ftag_20_3e_969',['VarBindTraits&lt; db_timestamp_t, DB_VARTYPE_TIMESTAMP_TAG &gt;',['../a00646.html',1,'storage::types']]],
+  ['varbindtraits_3c_20int16_5ft_2c_20db_5fvartype_5fsint16_5ftag_20_3e_970',['VarBindTraits&lt; int16_t, DB_VARTYPE_SINT16_TAG &gt;',['../a00646.html',1,'storage::types']]],
+  ['varbindtraits_3c_20int32_5ft_2c_20db_5fvartype_5fsint32_5ftag_20_3e_971',['VarBindTraits&lt; int32_t, DB_VARTYPE_SINT32_TAG &gt;',['../a00646.html',1,'storage::types']]],
+  ['varbindtraits_3c_20int64_5ft_2c_20db_5fvartype_5fsint64_5ftag_20_3e_972',['VarBindTraits&lt; int64_t, DB_VARTYPE_SINT64_TAG &gt;',['../a00646.html',1,'storage::types']]],
+  ['varbindtraits_3c_20int8_5ft_2c_20db_5fvartype_5fsint8_5ftag_20_3e_973',['VarBindTraits&lt; int8_t, DB_VARTYPE_SINT8_TAG &gt;',['../a00646.html',1,'storage::types']]],
+  ['varbindtraits_3c_20uint16_5ft_2c_20db_5fvartype_5fuint16_5ftag_20_3e_974',['VarBindTraits&lt; uint16_t, DB_VARTYPE_UINT16_TAG &gt;',['../a00646.html',1,'storage::types']]],
+  ['varbindtraits_3c_20uint32_5ft_2c_20db_5fvartype_5fuint32_5ftag_20_3e_975',['VarBindTraits&lt; uint32_t, DB_VARTYPE_UINT32_TAG &gt;',['../a00646.html',1,'storage::types']]],
+  ['varbindtraits_3c_20uint64_5ft_2c_20db_5fvartype_5fuint64_5ftag_20_3e_976',['VarBindTraits&lt; uint64_t, DB_VARTYPE_UINT64_TAG &gt;',['../a00646.html',1,'storage::types']]],
+  ['varbindtraits_3c_20uint8_5ft_2c_20db_5fvartype_5fuint8_5ftag_20_3e_977',['VarBindTraits&lt; uint8_t, DB_VARTYPE_UINT8_TAG &gt;',['../a00646.html',1,'storage::types']]],
+  ['vartype_978',['vartype',['../a00518.html#a36aaebc1faf82d3fb9cc77aa8ef7965c',1,'storage::data::FieldDefinition']]],
+  ['version_979',['Version',['../../c-api-reference/a00366.html',1,'']]]
+];

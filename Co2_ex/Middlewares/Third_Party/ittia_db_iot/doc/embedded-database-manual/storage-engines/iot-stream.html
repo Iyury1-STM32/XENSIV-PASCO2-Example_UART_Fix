@@ -1,0 +1,146 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>4.2. In-Memory IoT Stream Processing &#8212; ITTIA DB IoT Embedded Database Manual</title>
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/ittia.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5. APIs &amp; Drivers" href="../api/index.html" />
+    <link rel="prev" title="4.1. On-Disk/Flash File Storage" href="file.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+          <p class="logo"><a href="../index.html">
+            <img class="logo" src="../_static/logo.png" alt="Logo"/>
+          </a></p>
+        <div class="headertitle"><a
+          href="../index.html">ITTIA DB IoT Embedded Database Manual</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="file.html" title="4.1. On-Disk/Flash File Storage"
+             accesskey="P">previous</a>
+           |
+          <a href="../api/index.html" title="5. APIs &amp; Drivers"
+             accesskey="N">next</a>
+           |
+          <a href="../contents.html">Contents</a>
+           |
+          <a href="../../c-api-reference/index.html">C API</a>
+           |
+          <a href="../../cpp-api-reference/index.html">C++ API</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="in-memory-iot-stream-processing">
+<h1>4.2. In-Memory IoT Stream Processing<a class="headerlink" href="#in-memory-iot-stream-processing" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="iot-stream">
+<h2>4.2.1. IoT Stream<a class="headerlink" href="#iot-stream" title="Permalink to this headline">¶</a></h2>
+<p>The ITTIA DB stream processing feature is designed for embedded systems real
+time data processing and enables devices to obtain insights to make sense of
+streams of data.</p>
+<p>ITTIA DB is architected for both device real time data processing and historical
+data management. The real time data processing is conducted by ITTIA DB IoT
+stream. This important feature enables embedded system to monitor and
+continuously process streams of data, capture real time information, and empower
+the device to immediately act and notify when there is an abnormality.</p>
+</div>
+<div class="section" id="benefits">
+<h2>4.2.2. Benefits<a class="headerlink" href="#benefits" title="Permalink to this headline">¶</a></h2>
+<p>Query live, real-time data and have those queries continuously updated as new information arrives from various sensors.
+The queries you submit to the live stream processing engine will always be kept up-to-date with the latest information.
+Alert your application and act in real-time to events such as:</p>
+<ul class="simple">
+<li>sudden change in temperature</li>
+<li>the average temperature over multiple sensors exceeds a limit</li>
+<li>the sum of temperatures over some time window exceeds a limit</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">ITTIA IoT streams are most useful for Internet of Things applications that rely on aggregating many sensors to act in real-time</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Database Manual</h3>
+          <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general-information/index.html">1. General Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">2. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">3. Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. Database Engines</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="file.html">4.1. On-Disk/Flash File Storage</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.2. In-Memory IoT Stream Processing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#iot-stream">4.2.1. IoT Stream</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#benefits">4.2.2. Benefits</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">5. APIs &amp; Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/index.html">6. Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">7. Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../errors.html">8. Error Codes</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="file.html" title="4.1. On-Disk/Flash File Storage"
+              >previous</a> |
+            <a href="../api/index.html" title="5. APIs &amp; Drivers"
+              >next</a>
+          </div>
+          <div role="note" aria-label="source link">
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, ITTIA L.L.C..
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

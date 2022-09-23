@@ -1,0 +1,652 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>5.2.1. Time Series Storage C API &#8212; ITTIA DB IoT Embedded Database Manual</title>
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/ittia.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.2.2. IoT Stream Embedded C API Reference" href="stream.html" />
+    <link rel="prev" title="5.2. ITTIA DB IoT C API" href="index.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+          <p class="logo"><a href="../../index.html">
+            <img class="logo" src="../../_static/logo.png" alt="Logo"/>
+          </a></p>
+        <div class="headertitle"><a
+          href="../../index.html">ITTIA DB IoT Embedded Database Manual</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="index.html" title="5.2. ITTIA DB IoT C API"
+             accesskey="P">previous</a>
+           |
+          <a href="stream.html" title="5.2.2. IoT Stream Embedded C API Reference"
+             accesskey="N">next</a>
+           |
+          <a href="../../contents.html">Contents</a>
+           |
+          <a href="../../../c-api-reference/index.html">C API</a>
+           |
+          <a href="../../../cpp-api-reference/index.html">C++ API</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="time-series-storage-c-api">
+<span id="time-series-c-api"></span><h1>5.2.1. Time Series Storage C API<a class="headerlink" href="#time-series-storage-c-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="initialize-iot-storage-environment">
+<h2>5.2.1.1. Initialize IoT Storage Environment<a class="headerlink" href="#initialize-iot-storage-environment" title="Permalink to this headline">¶</a></h2>
+<p>The storage environment must be initialized before any thread attempts to open,
+create, or connect to any database storage. Invoke <code class="docutils literal notranslate"><span class="pre">db_init_ex</span></code> exactly once
+per program:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ittia/db/db_iot_storage.h&gt;</span><span class="cp"></span>
+
+<span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">db_init_ex</span><span class="p">(</span><span class="n">DB_API_VER</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Until <code class="docutils literal notranslate"><span class="pre">db_init_ex</span></code> is called, all other API functions will fail with the error
+code <code class="docutils literal notranslate"><span class="pre">DB_EAPIVER</span></code>. All other API functions are thread-safe.</p>
+<p>By default, the database will use <code class="docutils literal notranslate"><span class="pre">malloc</span></code>, <code class="docutils literal notranslate"><span class="pre">realloc</span></code>, and <code class="docutils literal notranslate"><span class="pre">free</span></code> for
+small memory allocations. To prevent this behavior, initialize the database
+library with a global database heap.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ittia/db/db_iot_storage.h&gt;</span><span class="cp"></span>
+<span class="cp">#define DB_HEAP_SIZE (4 * 1024)</span>
+
+<span class="n">db_init_t</span> <span class="n">init</span> <span class="o">=</span> <span class="p">{</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span> <span class="p">};</span>
+<span class="cp">#if defined(DB_HEAP_SIZE) &amp;&amp; DB_HEAP_SIZE &gt; 0</span>
+<span class="k">static</span> <span class="kt">uint32_t</span> <span class="n">database_heap</span><span class="p">[</span><span class="n">DB_HEAP_SIZE</span> <span class="o">/</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)];</span>
+<span class="n">db_memory_config_t</span> <span class="n">mem_config</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">{}</span> <span class="p">};</span>
+<span class="n">mem_config</span><span class="p">.</span><span class="n">block_size</span> <span class="o">=</span> <span class="mi">64</span><span class="p">;</span>
+<span class="n">mem_config</span><span class="p">.</span><span class="n">num_segs</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="n">mem_config</span><span class="p">.</span><span class="n">mem_seg</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">ptr</span> <span class="o">=</span> <span class="n">database_heap</span><span class="p">;</span>
+<span class="n">mem_config</span><span class="p">.</span><span class="n">mem_seg</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">size</span> <span class="o">=</span> <span class="k">sizeof</span> <span class="n">database_heap</span><span class="p">;</span>
+<span class="n">init</span><span class="p">.</span><span class="n">mem_config</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">mem_config</span><span class="p">;</span>
+<span class="cp">#endif</span>
+
+<span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">db_init_ex</span><span class="p">(</span><span class="n">DB_API_VER</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">init</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The above example initializes the database with a 4 KiB statically allocated
+database heap.</p>
+</div>
+<div class="section" id="error-handling">
+<span id="errorhandling"></span><h2>5.2.1.2. Error Handling<a class="headerlink" href="#error-handling" title="Permalink to this headline">¶</a></h2>
+<p>Error codes are stored in the signed integer type <code class="docutils literal notranslate"><span class="pre">dbstatus_t</span></code>, which is
+returned by most functions in the embedded C API.</p>
+<p>Use the macro functions <code class="docutils literal notranslate"><span class="pre">DB_SUCCESS()</span></code> and <code class="docutils literal notranslate"><span class="pre">DB_FAILED()</span></code> to check whether an
+API function succeeded or failed.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ittia/db/db_iot_storage.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="n">dbstatus_t</span> <span class="n">status</span> <span class="o">=</span> <span class="n">db_init_ex</span><span class="p">(</span><span class="n">DB_API_VER</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">DB_FAILED</span><span class="p">(</span><span class="n">status</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;Database init error: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">status</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>When some functions returning <code class="docutils literal notranslate"><span class="pre">dbstatus_t</span></code> succeed, they may return a
+non-negative integer value and <code class="docutils literal notranslate"><span class="pre">DB_SUCCESS()</span></code> is true for the returned value.</p>
+<p>When an error occurs, one of the error codes listed in <a class="reference internal" href="../../errors.html#error-codes"><span class="std std-ref">Error Codes</span></a> is
+returned and <code class="docutils literal notranslate"><span class="pre">DB_FAILED()</span></code> is true for the returned error code.</p>
+<p>The following error codes are returned when any API function is used
+incorrectly:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">DB_EAPIVER</span></code>: API not initialized or feature not available in this version of the API</li>
+<li><code class="docutils literal notranslate"><span class="pre">DB_EINVAL</span></code>: Invalid argument</li>
+<li><code class="docutils literal notranslate"><span class="pre">DB_ERANGE</span></code>: Argument is out of range</li>
+<li><code class="docutils literal notranslate"><span class="pre">DB_ESTATE</span></code>: Object state is not compatible with the method called or arguments</li>
+</ul>
+<p>The following error codes are returned when any API function cannot be completed
+due to a platform-level error that cannot be resolved automatically:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">DB_EIO</span></code>: I/O error</li>
+<li><code class="docutils literal notranslate"><span class="pre">DB_ENOMEM</span></code>: No memory available for allocation</li>
+<li><code class="docutils literal notranslate"><span class="pre">DB_EOSERROR</span></code>: General operating system error</li>
+<li><code class="docutils literal notranslate"><span class="pre">DB_ENOSYS</span></code>: A required function is not supported on this platform</li>
+<li><code class="docutils literal notranslate"><span class="pre">DB_ECRC</span></code>: CRC verification failed: database integrity has been compromised</li>
+</ul>
+</div>
+<div class="section" id="open-or-create-iot-storage-database">
+<h2>5.2.1.3. Open or Create IoT Storage Database<a class="headerlink" href="#open-or-create-iot-storage-database" title="Permalink to this headline">¶</a></h2>
+<p>To open a database file named <em>example.ittiadb</em>, creating the file only if it
+does not already exist:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ittia/db/db_iot_storage.h&gt;</span><span class="cp"></span>
+
+<span class="n">dbstatus_t</span> <span class="n">status</span><span class="p">;</span>
+<span class="n">status</span> <span class="o">=</span> <span class="n">db_open_iot_file_storage</span><span class="p">(</span>
+    <span class="s">&quot;example.ittiadb&quot;</span><span class="p">,</span>    <span class="c1">// File name</span>
+    <span class="nb">NULL</span><span class="p">,</span>                 <span class="c1">// Alias</span>
+    <span class="n">DB_OPEN_OR_CREATE</span><span class="p">,</span>    <span class="c1">// Flags</span>
+    <span class="n">DB_DEF_PAGE_SIZE</span><span class="p">,</span>     <span class="c1">// Page size</span>
+    <span class="nb">NULL</span><span class="p">,</span>                 <span class="c1">// Storage cache memory segment</span>
+    <span class="mi">128</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">);</span>          <span class="c1">// Storage cache size</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">DB_SUCCESS</span><span class="p">(</span><span class="n">status</span><span class="p">))</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+    <span class="c1">// Any thread may connect to the storage until it is closed</span>
+    <span class="c1">// ...</span>
+
+    <span class="n">status</span> <span class="o">=</span> <span class="n">db_close_storage</span><span class="p">(</span><span class="s">&quot;example.ittiadb&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">DB_OPEN_OR_CREATE</span></code> with:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">DB_CREATE_OR_OVERWRITE</span></code> to overwrite an existing file, even if it is not a database file.</li>
+<li><code class="docutils literal notranslate"><span class="pre">DB_OPEN_EXISTING</span></code> to open the database only if it already exists.</li>
+<li><code class="docutils literal notranslate"><span class="pre">DB_CREATE_NEW</span></code> to create a new database only if the file does not already exist.</li>
+</ul>
+<p>A large amount of memory is allocated for each open storage. The size of this
+allocation is controlled by the storage cache size argument. The memory is
+deallocated only when the storage is closed.</p>
+<p>The application can avoid this large memory allocation by supplying an aligned
+memory segment for the storage to use. A global or static array is appropriate
+for this purpose, since the memory must remain available until the storage is
+closed. Do not use an array on the C stack for the storage cache.</p>
+<p>For example, to supply a 128 KiB memory segment:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ittia/db/db_iot_storage.h&gt;</span><span class="cp"></span>
+
+<span class="c1">// Each storage cache buffer must be dedicated to one open storage</span>
+<span class="k">static</span> <span class="kt">uint32_t</span> <span class="n">page_cache</span><span class="p">[</span><span class="mi">128</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">/</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)];</span>
+
+<span class="n">dbstatus_t</span> <span class="n">status</span><span class="p">;</span>
+<span class="n">status</span> <span class="o">=</span> <span class="n">db_open_iot_file_storage</span><span class="p">(</span>
+    <span class="s">&quot;example.ittiadb&quot;</span><span class="p">,</span>    <span class="c1">// File name</span>
+    <span class="nb">NULL</span><span class="p">,</span>                 <span class="c1">// Alias</span>
+    <span class="n">DB_OPEN_OR_CREATE</span><span class="p">,</span>    <span class="c1">// Flags</span>
+    <span class="n">DB_DEF_PAGE_SIZE</span><span class="p">,</span>     <span class="c1">// Page size</span>
+    <span class="n">page_cache</span><span class="p">,</span>           <span class="c1">// Page cache memory segment</span>
+    <span class="k">sizeof</span> <span class="n">page_cache</span><span class="p">);</span>   <span class="c1">// Segment size</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">DB_SUCCESS</span><span class="p">(</span><span class="n">status</span><span class="p">))</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+    <span class="c1">// Any thread may connect to the storage until it is closed</span>
+    <span class="c1">// ...</span>
+
+    <span class="n">status</span> <span class="o">=</span> <span class="n">db_close_storage</span><span class="p">(</span><span class="s">&quot;example.ittiadb&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Error codes:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">DB_EEXIST</span></code>: File already exists</li>
+<li><code class="docutils literal notranslate"><span class="pre">DB_ENOENT</span></code>: File doesn’t exist</li>
+<li><code class="docutils literal notranslate"><span class="pre">DB_EACCESS</span></code>: File cannot be opened due to invalid access mode or insufficient file system privileges</li>
+<li><code class="docutils literal notranslate"><span class="pre">DB_ESTORAGE</span></code>: File exists, but is not recognized as a valid database storage</li>
+</ul>
+</div>
+<div class="section" id="connect-to-iot-storage-database">
+<h2>5.2.1.4. Connect to IoT Storage Database<a class="headerlink" href="#connect-to-iot-storage-database" title="Permalink to this headline">¶</a></h2>
+<p>Each thread must connect to a database storage to access its contents through an
+opaque handle.</p>
+<p>To connect to an open database named <em>example.ittiadb</em>:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ittia/db/db_iot_storage.h&gt;</span><span class="cp"></span>
+
+<span class="n">dbstatus_t</span> <span class="n">status</span><span class="p">;</span>
+<span class="n">db_t</span> <span class="n">db</span><span class="p">;</span>
+<span class="n">status</span> <span class="o">=</span> <span class="n">db_connect</span><span class="p">(</span>
+    <span class="o">&amp;</span><span class="n">db</span><span class="p">,</span>                <span class="c1">// Handle</span>
+    <span class="s">&quot;example.ittiadb&quot;</span><span class="p">,</span>  <span class="c1">// Name</span>
+    <span class="nb">NULL</span><span class="p">,</span>               <span class="c1">// User name</span>
+    <span class="nb">NULL</span><span class="p">,</span>               <span class="c1">// Password</span>
+    <span class="nb">NULL</span><span class="p">);</span>              <span class="c1">// Context pointer</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">DB_SUCCESS</span><span class="p">(</span><span class="n">status</span><span class="p">))</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+    <span class="c1">// Access database contents through the `db` handle</span>
+    <span class="c1">// ...</span>
+
+    <span class="n">status</span> <span class="o">=</span> <span class="n">db_disconnect</span><span class="p">(</span><span class="n">db</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The handle assigned by <code class="docutils literal notranslate"><span class="pre">db_connect</span></code> must not be shared with other threads.
+When the handle is no longer needed, and after closing any other associated
+handles, call <code class="docutils literal notranslate"><span class="pre">db_disconnect</span></code> to release connection resources. The connection
+handle is an opaque pointer type that may be copied safely.</p>
+<p>A database storage may require a user name and/or password to successfully
+connect. Otherwise, those arguments are optional.</p>
+<p>Error codes:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">DB_ENOTFOUND</span></code>: Storage name not found, needs to be opened with <code class="docutils literal notranslate"><span class="pre">db_open_iot_file_storage</span></code> first.</li>
+<li><code class="docutils literal notranslate"><span class="pre">DB_EPASSWORD</span></code>: Access password is not valid or access is denied</li>
+</ul>
+</div>
+<div class="section" id="storage-variables">
+<h2>5.2.1.5. Storage Variables<a class="headerlink" href="#storage-variables" title="Permalink to this headline">¶</a></h2>
+<p>A storage variable is a simple way to store global numeric information in a
+database. Storage variables identified by a number, starting from zero, and each
+variable saves a signed 64-bit value.</p>
+<p>The following example saves the number <code class="docutils literal notranslate"><span class="pre">100</span></code> into the first available storage
+variable.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ittia/db/db_iot_storage.h&gt;</span><span class="cp"></span>
+
+<span class="n">dbstatus_t</span> <span class="n">status</span><span class="p">;</span>
+<span class="n">db_largeint_t</span> <span class="n">value</span><span class="p">;</span>
+<span class="n">value</span><span class="p">.</span><span class="n">int64</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+<span class="n">status</span> <span class="o">=</span> <span class="n">db_set_storage_variable</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">DB_FAILED</span><span class="p">(</span><span class="n">status</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;error saving kStorageVariable2: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">status</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The following example reads the value currently stored in the first available
+storage variable:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ittia/db/db_iot_storage.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="n">dbstatus_t</span> <span class="n">status</span><span class="p">;</span>
+<span class="n">db_largeint_t</span> <span class="n">value</span><span class="p">;</span>
+<span class="n">status</span> <span class="o">=</span> <span class="n">db_get_storage_variable</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">DB_SUCCESS</span><span class="p">(</span><span class="n">status</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;kStorageVariable2 = %lld</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">value</span><span class="p">.</span><span class="n">int64</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Applications are recommended to identify storage variables with an enumeration.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// List of storage variables</span>
+<span class="k">enum</span> <span class="p">{</span>
+    <span class="n">kStorageVariable1</span><span class="p">,</span>
+    <span class="n">kStorageVariable2</span><span class="p">,</span>
+    <span class="n">kStorageVariable3</span><span class="p">,</span>
+    <span class="c1">// ...</span>
+<span class="p">};</span>
+
+<span class="n">status</span> <span class="o">=</span> <span class="n">db_get_storage_variable</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">kStorageVariable2</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ingest-data-into-a-time-series">
+<h2>5.2.1.6. Ingest Data into a Time Series<a class="headerlink" href="#ingest-data-into-a-time-series" title="Permalink to this headline">¶</a></h2>
+<p>A time series is a named collection of timestamped values recorded in a database
+storage. All values in a given series must have the same data type.</p>
+<p>Before ingesting timestamped values, the time series must first be opened by
+name with <code class="docutils literal notranslate"><span class="pre">db_open_time_series</span></code> to obtain a series handle. This handle must
+not be shared between threads. When the series is no longer needed, call
+<code class="docutils literal notranslate"><span class="pre">db_close_time_series</span></code> to release the handle.</p>
+<p>The time series is created, if it does not already exist. Up to 65,534 time
+series may be created over the lifetime of a storage.</p>
+<p>To store a 32-bit floating point value at any timestamp, call
+<code class="docutils literal notranslate"><span class="pre">db_time_series_put_float32</span></code>. For best performance, values should be ingested
+in increasing timestamp order.</p>
+<p>A timestamp is represented by the number of microseconds elapsed since the UNIX
+epoch, 1970-01-01 00:00:00 UTC, in the 64-bit signed integer type
+<code class="docutils literal notranslate"><span class="pre">db_timestamp_usec_t</span></code>. To convert a timestamp from individual date and time
+components a microsecond timestamp, use the <code class="docutils literal notranslate"><span class="pre">db_timestamp_to_usec</span></code> function.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ittia/db/db_iot_storage.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="c1">// A handle previously assigned by db_connect</span>
+<span class="n">db_t</span> <span class="n">db</span><span class="p">;</span>
+
+<span class="n">dbstatus_t</span> <span class="n">status</span><span class="p">;</span>
+<span class="n">db_time_series_t</span> <span class="n">series</span><span class="p">;</span>
+<span class="n">status</span> <span class="o">=</span> <span class="n">db_open_time_series</span><span class="p">(</span><span class="o">&amp;</span><span class="n">series</span><span class="p">,</span> <span class="n">db</span><span class="p">,</span> <span class="s">&quot;temperature&quot;</span><span class="p">,</span> <span class="n">DB_COLTYPE_FLOAT32</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">DB_SUCCESS</span><span class="p">(</span><span class="n">status</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">db_timestamp_t</span> <span class="n">kStartTime</span> <span class="o">=</span> <span class="p">{</span> <span class="p">{</span> <span class="p">{</span> <span class="mi">2020</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">}</span> <span class="p">},</span> <span class="mi">0</span> <span class="p">};</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">db_float32_t</span> <span class="n">value</span> <span class="o">=</span> <span class="mf">123.4</span><span class="p">;</span>
+
+    <span class="n">db_timestamp_usec_t</span> <span class="n">sample_time_usec</span><span class="p">;</span>
+    <span class="n">db_timestamp_to_usec</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sample_time_usec</span><span class="p">,</span> <span class="n">kStartTime</span><span class="p">);</span>
+
+    <span class="c1">// Put 123.4 into &quot;temperature&quot; at &quot;2020-12-01 00:00:00&quot;</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">db_time_series_put_float32</span><span class="p">(</span><span class="n">series</span><span class="p">,</span> <span class="n">sample_time_usec</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">DB_FAILED</span><span class="p">(</span><span class="n">status</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;Put timestamp/value failed: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">status</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">db_close_time_series</span><span class="p">(</span><span class="n">series</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>An application can call <code class="docutils literal notranslate"><span class="pre">db_time_series_put_*</span></code> any number of times before
+closing the time series.</p>
+<p>After a timestamp/value pair is put, it is immediately available to queries from
+all database connections. However, to improve performance, it may remain
+buffered in memory until more data has accumulated.</p>
+<p>To explicitly flush buffered data from memory to the database file, call
+<code class="docutils literal notranslate"><span class="pre">db_flush_file</span></code> from any connection:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ittia/db/db_iot_storage.h&gt;</span><span class="cp"></span>
+
+<span class="c1">// A handle previously assigned by db_connect</span>
+<span class="n">db_t</span> <span class="n">db</span><span class="p">;</span>
+
+<span class="n">dbstatus_t</span> <span class="n">flush_result</span> <span class="o">=</span> <span class="n">db_flush_file</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">DB_FLUSH_JOURNAL</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Error codes:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">DB_ENAME</span></code>: Invalid name</li>
+</ul>
+</div>
+<div class="section" id="query-an-individual-time-series">
+<h2>5.2.1.7. Query an Individual Time Series<a class="headerlink" href="#query-an-individual-time-series" title="Permalink to this headline">¶</a></h2>
+<p>An application can query a time series to access the timestamp/value pairs
+stored within any time period. A time period is defined by an start
+timestamp, which is included in the query results, and an end timestamp that is
+excluded from the results.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">db_query_time_series_range_float32</span></code> function reads a series of
+timestamp/value pairs into corresponding arrays supplied by the application.
+Both arrays must have the same size, with at least one element each.</p>
+<p>The following example reads all timestamp/value pairs, 100 at a time, stored in
+the <em>temperature</em> time series on 2020-12-01 from minute one to minute two after
+midnight.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ittia/db/db_iot_storage.h&gt;</span><span class="cp"></span>
+<span class="cp">#define kMaxReadCount 100</span>
+
+<span class="c1">// Query values on 2020-12-01 from 00:01:00 to 00:02:00</span>
+<span class="k">static</span> <span class="k">const</span> <span class="n">db_timestamp_t</span> <span class="n">kStartTime</span> <span class="o">=</span> <span class="p">{</span> <span class="p">{</span> <span class="p">{</span> <span class="mi">2020</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span> <span class="p">}</span> <span class="p">},</span> <span class="mi">0</span> <span class="p">};</span>
+<span class="k">static</span> <span class="k">const</span> <span class="n">db_timestamp_t</span> <span class="n">kStopTime</span> <span class="o">=</span> <span class="p">{</span> <span class="p">{</span> <span class="p">{</span> <span class="mi">2020</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span> <span class="p">}</span> <span class="p">},</span> <span class="mi">0</span> <span class="p">};</span>
+
+<span class="c1">// A handle previously assigned by db_connect</span>
+<span class="n">db_t</span> <span class="n">db</span><span class="p">;</span>
+
+<span class="n">dbstatus_t</span> <span class="n">status</span><span class="p">;</span>
+<span class="n">db_time_series_t</span> <span class="n">series</span><span class="p">;</span>
+<span class="n">status</span> <span class="o">=</span> <span class="n">db_open_time_series</span><span class="p">(</span><span class="o">&amp;</span><span class="n">series</span><span class="p">,</span> <span class="n">db</span><span class="p">,</span> <span class="s">&quot;temperature&quot;</span><span class="p">,</span> <span class="n">DB_COLTYPE_FLOAT32</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">DB_SUCCESS</span><span class="p">(</span><span class="n">status</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">dbstatus_t</span> <span class="n">value_count</span><span class="p">;</span>
+    <span class="n">db_timestamp_usec_t</span> <span class="n">begin_time</span><span class="p">;</span>
+    <span class="n">db_timestamp_usec_t</span> <span class="n">end_time</span><span class="p">;</span>
+    <span class="n">db_timestamp_to_usec</span><span class="p">(</span><span class="o">&amp;</span><span class="n">begin_time</span><span class="p">,</span> <span class="n">kStartTime</span><span class="p">);</span>
+    <span class="n">db_timestamp_to_usec</span><span class="p">(</span><span class="o">&amp;</span><span class="n">end_time</span><span class="p">,</span> <span class="n">kStopTime</span><span class="p">);</span>
+
+    <span class="k">do</span> <span class="p">{</span>
+        <span class="n">db_timestamp_usec_t</span> <span class="n">timestamp_array</span><span class="p">[</span><span class="n">kMaxReadCount</span><span class="p">];</span>
+        <span class="n">db_float32_t</span> <span class="n">value_array</span><span class="p">[</span><span class="n">kMaxReadCount</span><span class="p">];</span>
+
+        <span class="c1">// Read timestamp/value pairs between begin_time and end_time</span>
+        <span class="n">db_timestamp_usec_t</span> <span class="n">next_begin_time</span><span class="p">;</span>
+        <span class="n">value_count</span> <span class="o">=</span> <span class="n">db_query_time_series_range_float32</span><span class="p">(</span>
+            <span class="n">series</span><span class="p">,</span>
+            <span class="n">begin_time</span><span class="p">,</span>      <span class="c1">// start timestamp, inclusive</span>
+            <span class="n">end_time</span><span class="p">,</span>        <span class="c1">// end timestamp, exclusive</span>
+            <span class="n">timestamp_array</span><span class="p">,</span> <span class="c1">// [out] destination for timestamp data</span>
+            <span class="n">value_array</span><span class="p">,</span>     <span class="c1">// [out] destination for value data</span>
+            <span class="n">kMaxReadCount</span><span class="p">,</span>   <span class="c1">// maximum number of timestamp/value pairs to read</span>
+            <span class="o">&amp;</span><span class="n">next_begin_time</span> <span class="c1">// [out] start timestamp for next batch, if successful</span>
+            <span class="p">);</span>
+
+        <span class="c1">// Print timestamp/value pairs</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">value_count</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// see function definition below</span>
+            <span class="n">print_timestamp_value_pair</span><span class="p">(</span>
+                <span class="s">&quot;temperature&quot;</span><span class="p">,</span>
+                <span class="n">timestamp_array</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">value_array</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Iterate to read next batch of timestamp/value pairs</span>
+        <span class="n">begin_time</span> <span class="o">=</span> <span class="n">next_begin_time</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">value_count</span> <span class="o">==</span> <span class="n">kMaxReadCount</span><span class="p">);</span>
+
+    <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">db_close_time_series</span><span class="p">(</span><span class="n">series</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To extract the date and time components of a timestamp read from a query, use
+<code class="docutils literal notranslate"><span class="pre">db_timestamp_from_usec</span></code> to convert the timestamp to <code class="docutils literal notranslate"><span class="pre">db_timestamp_t</span></code>. The following
+function shows how to print a timestamp in a human-readable format:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ittia/db/db_iot_storage.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">void</span> <span class="nf">print_timestamp_value_pair</span><span class="p">(</span>
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">series_name</span><span class="p">,</span>
+    <span class="n">db_timestamp_usec_t</span> <span class="n">sample_time</span><span class="p">,</span>
+    <span class="n">db_float32_t</span> <span class="n">value</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">db_timestamp_t</span> <span class="n">timestamp</span><span class="p">;</span>
+    <span class="n">db_timestamp_from_usec</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">sample_time</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">%s</span><span class="se">\&quot;</span><span class="s">: [</span><span class="se">\&quot;</span><span class="s">%d-%02u-%02u %d:%02u:%02u.%06u</span><span class="se">\&quot;</span><span class="s">, %g],</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+        <span class="n">series_name</span><span class="p">,</span>
+        <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">timestamp</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">date</span><span class="p">.</span><span class="n">year</span><span class="p">,</span>
+        <span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span><span class="n">timestamp</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">date</span><span class="p">.</span><span class="n">month</span><span class="p">,</span>
+        <span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span><span class="n">timestamp</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">date</span><span class="p">.</span><span class="n">day</span><span class="p">,</span>
+        <span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span><span class="n">timestamp</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">time</span><span class="p">.</span><span class="n">hour</span><span class="p">,</span>
+        <span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span><span class="n">timestamp</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">time</span><span class="p">.</span><span class="n">minute</span><span class="p">,</span>
+        <span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span><span class="n">timestamp</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">time</span><span class="p">.</span><span class="n">second</span><span class="p">,</span>
+        <span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span><span class="n">timestamp</span><span class="p">.</span><span class="n">microsec</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>An application can also query the value of a time series as of a given date and
+time. The following example reads the value of the first stored timestamp that
+is greater or equal to one minute after midnight on 2020-12-01:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ittia/db/db_iot_storage.h&gt;</span><span class="cp"></span>
+
+<span class="c1">// Query values on 2020-12-01 from 00:01:00 to 00:02:00</span>
+<span class="k">static</span> <span class="k">const</span> <span class="n">db_timestamp_t</span> <span class="n">kStartTime</span> <span class="o">=</span> <span class="p">{</span> <span class="p">{</span> <span class="p">{</span> <span class="mi">2020</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span> <span class="p">}</span> <span class="p">},</span> <span class="mi">0</span> <span class="p">};</span>
+
+<span class="c1">// A handle previously assigned by db_open_time_series</span>
+<span class="n">db_time_series_t</span> <span class="n">series</span><span class="p">;</span>
+
+<span class="n">db_timestamp_usec_t</span> <span class="n">begin_time</span><span class="p">;</span>
+<span class="n">db_timestamp_to_usec</span><span class="p">(</span><span class="o">&amp;</span><span class="n">begin_time</span><span class="p">,</span> <span class="n">kStartTime</span><span class="p">);</span>
+
+<span class="n">db_timestamp_usec_t</span> <span class="n">timestamp</span><span class="p">;</span>
+<span class="n">db_float32_t</span> <span class="n">value</span><span class="p">;</span>
+
+<span class="c1">// Read value as of a begin timestamp</span>
+<span class="n">dbstatus_t</span> <span class="n">status</span><span class="p">;</span>
+<span class="n">status</span> <span class="o">=</span> <span class="n">db_query_time_series_range_float32</span><span class="p">(</span>
+    <span class="n">series</span><span class="p">,</span>
+    <span class="n">begin_time</span><span class="p">,</span> <span class="c1">// start timestamp, inclusive</span>
+    <span class="n">INT64_MAX</span><span class="p">,</span>  <span class="c1">// end timestamp, exclusive</span>
+    <span class="o">&amp;</span><span class="n">timestamp</span><span class="p">,</span> <span class="c1">// [out] destination for timestamp data</span>
+    <span class="o">&amp;</span><span class="n">value</span><span class="p">,</span>     <span class="c1">// [out] destination for value data</span>
+    <span class="mi">1</span><span class="p">,</span>          <span class="c1">// maximum number of timestamp/value pairs to read</span>
+    <span class="nb">NULL</span>        <span class="c1">// [out] start timestamp for next batch, if successful</span>
+    <span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">DB_SUCCESS</span><span class="p">(</span><span class="n">status</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">print_timestamp_value_pair</span><span class="p">(</span><span class="s">&quot;temperature&quot;</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="query-multiple-time-series">
+<h2>5.2.1.8. Query Multiple Time Series<a class="headerlink" href="#query-multiple-time-series" title="Permalink to this headline">¶</a></h2>
+<p>An application can query many or all time series at once, retrieving all values
+stored within any time period.</p>
+<p>The following example reads all timestamp/value pairs, up to 100 at a time,
+stored in any time series on 2020-12-01 from minute one to minute two after
+midnight.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ittia/db/db_iot_storage.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#define kMaxReadCount 100</span>
+
+<span class="c1">// Query values on 2020-12-01 from 00:01:00 to 00:02:00</span>
+<span class="k">static</span> <span class="k">const</span> <span class="n">db_timestamp_t</span> <span class="n">kStartTime</span> <span class="o">=</span> <span class="p">{</span> <span class="p">{</span> <span class="p">{</span> <span class="mi">2020</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span> <span class="p">}</span> <span class="p">},</span> <span class="mi">0</span> <span class="p">};</span>
+<span class="k">static</span> <span class="k">const</span> <span class="n">db_timestamp_t</span> <span class="n">kStopTime</span> <span class="o">=</span> <span class="p">{</span> <span class="p">{</span> <span class="p">{</span> <span class="mi">2020</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span> <span class="p">}</span> <span class="p">},</span> <span class="mi">0</span> <span class="p">};</span>
+
+<span class="n">db_timestamp_usec_t</span> <span class="n">begin_time</span><span class="p">;</span>
+<span class="n">db_timestamp_usec_t</span> <span class="n">end_time</span><span class="p">;</span>
+<span class="n">db_timestamp_to_usec</span><span class="p">(</span><span class="o">&amp;</span><span class="n">begin_time</span><span class="p">,</span> <span class="n">kStartTime</span><span class="p">);</span>
+<span class="n">db_timestamp_to_usec</span><span class="p">(</span><span class="o">&amp;</span><span class="n">end_time</span><span class="p">,</span> <span class="n">kStopTime</span><span class="p">);</span>
+
+<span class="c1">// Query the set of time series with values stored in a given range</span>
+<span class="n">db_time_series_query_t</span> <span class="n">series_set</span><span class="p">;</span>
+<span class="n">dbstatus_t</span> <span class="n">time_series_count</span> <span class="o">=</span> <span class="n">db_prepare_time_series_query</span><span class="p">(</span>
+    <span class="o">&amp;</span><span class="n">series_set</span><span class="p">,</span>       <span class="c1">// [out] query handle</span>
+    <span class="n">db</span><span class="p">,</span>                <span class="c1">// database handle</span>
+    <span class="nb">NULL</span><span class="p">,</span>              <span class="c1">// series name list</span>
+    <span class="mi">0</span><span class="p">,</span>                 <span class="c1">// series count</span>
+    <span class="o">&amp;</span><span class="n">begin_time</span><span class="p">,</span>       <span class="c1">// start timestamp, inclusive</span>
+    <span class="o">&amp;</span><span class="n">end_time</span><span class="p">,</span>         <span class="c1">// end timestamp, exclusive</span>
+    <span class="n">DB_QUERY_OLDEST_TO_NEWEST</span>
+    <span class="p">);</span>
+
+<span class="n">dbstatus_t</span> <span class="n">value_count</span><span class="p">;</span>
+<span class="k">do</span> <span class="p">{</span>
+    <span class="n">db_timestamp_usec_t</span> <span class="n">sample_time</span><span class="p">;</span>
+    <span class="n">db_fieldno_t</span> <span class="n">field_array</span><span class="p">[</span><span class="n">kMaxReadCount</span><span class="p">];</span>
+    <span class="n">db_float32_t</span> <span class="n">value_array</span><span class="p">[</span><span class="n">kMaxReadCount</span><span class="p">];</span>
+
+    <span class="c1">// Read from the set, one timestamp at a time</span>
+    <span class="n">value_count</span> <span class="o">=</span> <span class="n">db_fetch_next_timestamp_float32</span><span class="p">(</span>
+        <span class="n">series_set</span><span class="p">,</span>     <span class="c1">// query handle</span>
+        <span class="o">&amp;</span><span class="n">sample_time</span><span class="p">,</span>   <span class="c1">// [out] next sample time</span>
+        <span class="n">field_array</span><span class="p">,</span>    <span class="c1">// [out] destination for list of time series fields</span>
+        <span class="n">value_array</span><span class="p">,</span>    <span class="c1">// [out] destination for list of time series values</span>
+        <span class="n">kMaxReadCount</span>
+        <span class="p">);</span>
+
+    <span class="c1">// Print each value found at the timestamp</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">value_count</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">print_timestamp_value_pair</span><span class="p">(</span>
+            <span class="n">db_get_time_series_name</span><span class="p">(</span><span class="n">series_set</span><span class="p">,</span> <span class="n">field_array</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span>
+            <span class="n">sample_time</span><span class="p">,</span>
+            <span class="n">value_array</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+
+<span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">value_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">DB_FAILED</span><span class="p">(</span><span class="n">value_count</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;Query failed: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">status</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">db_close_time_series_query</span><span class="p">(</span><span class="n">series_set</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="remove-time-series-data">
+<h2>5.2.1.9. Remove Time Series Data<a class="headerlink" href="#remove-time-series-data" title="Permalink to this headline">¶</a></h2>
+<p>The database file will grow in size as time series data is ingested. To stop the
+file from growing, data must be periodically removed.</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">db_time_series_remove_before</span></code> to remove data across all time series that
+precedes a given timestamp.</p>
+<p>The following example removes all time series data older than 1:00 AM on
+2020-12-01.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ittia/db/db_iot_storage.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="c1">// Remove values older than 2020-12-01 01:00:00</span>
+<span class="k">static</span> <span class="k">const</span> <span class="n">db_timestamp_t</span> <span class="n">kStopTime</span> <span class="o">=</span> <span class="p">{</span> <span class="p">{</span> <span class="p">{</span> <span class="mi">2020</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">}</span> <span class="p">},</span> <span class="mi">0</span> <span class="p">};</span>
+
+<span class="c1">// A handle previously assigned by db_open_time_series</span>
+<span class="n">db_time_series_t</span> <span class="n">series</span><span class="p">;</span>
+
+<span class="n">db_timestamp_usec_t</span> <span class="n">end_time</span><span class="p">;</span>
+<span class="n">db_timestamp_to_usec</span><span class="p">(</span><span class="o">&amp;</span><span class="n">end_time</span><span class="p">,</span> <span class="n">kStopTime</span><span class="p">);</span>
+
+<span class="n">dbstatus_t</span> <span class="n">result</span> <span class="o">=</span> <span class="n">db_time_series_remove_before</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">end_time</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>To determine the amount of storage currently consumed, use <code class="docutils literal notranslate"><span class="pre">db_file_info</span></code>:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int64_t</span> <span class="n">data_file_bytes</span><span class="p">;</span>  <span class="c1">///&lt; Size of the the data file(s), in bytes</span>
+<span class="kt">int64_t</span> <span class="n">log_file_bytes</span><span class="p">;</span>   <span class="c1">///&lt; Size of the current log file, in bytes</span>
+<span class="kt">int64_t</span> <span class="n">used_data_bytes</span><span class="p">;</span>  <span class="c1">///&lt; Number of used bytes in the data file(s)</span>
+<span class="n">db_file_info_t</span> <span class="n">info</span><span class="p">;</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">DB_SUCCESS</span><span class="p">(</span><span class="n">db_file_info</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">info</span><span class="p">)))</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Using %lld of %lld data bytes</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+           <span class="n">info</span><span class="p">.</span><span class="n">used_data_bytes</span><span class="p">,</span>
+           <span class="n">info</span><span class="p">.</span><span class="n">data_file_bytes</span><span class="p">);</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Log file is %lld bytes</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+           <span class="n">info</span><span class="p">.</span><span class="n">log_file_bytes</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Database Manual</h3>
+          <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../general-information/index.html">1. General Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation/index.html">2. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/index.html">3. Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../storage-engines/index.html">4. Database Engines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. APIs &amp; Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../native-development/index.html">5.1. Building C and C++ API Programs</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.2. ITTIA DB IoT C API</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.2.1. Time Series Storage C API</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#initialize-iot-storage-environment">5.2.1.1. Initialize IoT Storage Environment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-handling">5.2.1.2. Error Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#open-or-create-iot-storage-database">5.2.1.3. Open or Create IoT Storage Database</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#connect-to-iot-storage-database">5.2.1.4. Connect to IoT Storage Database</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#storage-variables">5.2.1.5. Storage Variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ingest-data-into-a-time-series">5.2.1.6. Ingest Data into a Time Series</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#query-an-individual-time-series">5.2.1.7. Query an Individual Time Series</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#query-multiple-time-series">5.2.1.8. Query Multiple Time Series</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#remove-time-series-data">5.2.1.9. Remove Time Series Data</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stream.html">5.2.2. IoT Stream Embedded C API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../c/index.html">5.3. ITTIA DB SQL C API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cpp/index.html">5.4. ITTIA DB SQL C++ API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../data-types/index.html">6. Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">7. Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../errors.html">8. Error Codes</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="../../search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="index.html" title="5.2. ITTIA DB IoT C API"
+              >previous</a> |
+            <a href="stream.html" title="5.2.2. IoT Stream Embedded C API Reference"
+              >next</a>
+          </div>
+          <div role="note" aria-label="source link">
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, ITTIA L.L.C..
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

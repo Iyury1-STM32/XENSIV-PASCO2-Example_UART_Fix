@@ -1,0 +1,26 @@
+#titlearea {
+	height: 97px;
+}
+
+#projectlogo img {
+	margin-left: 20px;
+	margin-top: 12px;
+	padding-top: 8px;
+	padding-right: 25px;
+}
+
+#projectname {
+	font: 15pt Arial, Helvetica, geneva
+}
+
+a:link {
+	color: #000080;
+}
+
+a:visited, .contents a:visited {
+	color: #336699;
+}
+
+a:hover {
+	text-decoration: none;
+}

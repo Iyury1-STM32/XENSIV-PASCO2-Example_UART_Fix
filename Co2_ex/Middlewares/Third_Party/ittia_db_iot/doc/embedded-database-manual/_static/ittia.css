@@ -1,0 +1,183 @@
+div.header .rel {
+	background: #001d4f;
+	padding: 10px;
+}
+div.header div.headertitle a {
+	color: black;
+}
+div.header p.logo {
+	float: left;
+}
+
+img.logo {
+	width: 190px;
+}
+
+div.header div.headertitle {
+	margin-left: 200px;
+	margin-top: 120px;
+}
+
+body div.header div.rel a {
+	padding: 10px 20px;
+}
+body div.header-wrapper,
+body div.footer-wrapper {
+	border: none
+}
+div.sidebar li.toctree-l4 a {
+  background-color: transparent;
+  border: none;
+  margin-left: 3em;
+  border-bottom: 1px solid #dddddd;
+}
+div.sidebar li.toctree-l5 a {
+  background-color: transparent;
+  border: none;
+  margin-left: 4em;
+  border-bottom: 1px solid #dddddd;
+}
+div.sidebar li.toctree-l1.current li.toctree-l2 a.current {
+  border-right: 5px solid #b00000;
+  border-bottom: 1px solid #b00000;
+}
+
+img {
+	max-width: 100%
+}
+
+pre {
+	width: auto;
+	overflow: auto;
+}
+
+blockquote {
+	overflow: auto;
+}
+
+table {
+	margin-left: auto; 
+	margin-right: auto; 
+	margin-top: 1em;
+	margin-bottom: 1em;
+	border-collapse: collapse;
+	border-bottom: 1px solid black;
+	text-align: left;
+}
+
+table caption {
+	margin-bottom: 1em;
+}
+
+table td, th {
+	vertical-align: middle;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+}
+
+table caption span.caption-number {
+	font-style: normal;
+}
+
+table.full-width {
+	width: 100%
+}
+
+table thead tr th {
+	border: 1px solid black;
+	background: #ccc;
+}
+
+table td {
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+}
+
+table .row-even td {
+	background: #fff;
+}
+
+table .row-odd td {
+	background: #eee;
+}
+
+p.caption {
+	font-weight: bold;
+} 
+
+div.figure p.caption span.caption-text {
+	font-weight: normal;
+}
+
+div.figure p.caption span.caption-number {
+	font-style: normal;
+	font-weight: normal;
+}
+div.figure p.caption {
+	margin-top: 1em;
+}
+
+.sidebar {
+	position: sticky;
+	top: 2em;
+}
+
+div.document .sidebar {
+	position: relative;
+	top: 0;
+	margin-left: 1em;
+	padding-left: 1em;
+	border-left: 1px solid black;
+	background: white;
+}
+
+div.document li.toctree-l1 {
+	margin: 0;
+}
+
+div.toctree-wrapper.compound {
+	margin-bottom: 1em;
+}
+
+div.toctree-wrapper.compound ul {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+blockquote table.docutils {
+	margin-left: 0;
+	margin-bottom: 2em;
+}
+
+.figure,
+.image-reference {
+	display: block;
+	margin: 2em 0;
+}
+
+body div.document .docutils.literal {
+	background: none;
+	color: #b00000;
+}
+
+table .line-block {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+table.stream-result,
+table.stream-result th:nth-child(2),
+table.stream-result tr:nth-child(1) td:nth-child(2),
+table.stream2-result,
+table.stream2-result th:nth-child(2),
+table.stream2-result th:nth-child(4),
+table.stream2-result tr:nth-child(1) td:nth-child(2),
+table.stream2-result tr:nth-child(1) td:nth-child(4) {
+	background: none;
+	border: none;
+}
+
+table.stream-result td em,
+table.stream2-result td em {
+	color: #b00000;
+}

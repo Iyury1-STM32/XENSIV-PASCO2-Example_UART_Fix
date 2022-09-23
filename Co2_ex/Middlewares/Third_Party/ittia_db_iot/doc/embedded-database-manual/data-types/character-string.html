@@ -1,0 +1,209 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>6.2. Character String Types &#8212; ITTIA DB IoT Embedded Database Manual</title>
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/ittia.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6.3. Date and Time Types" href="date-time.html" />
+    <link rel="prev" title="6.1. Numeric Types" href="numeric.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+          <p class="logo"><a href="../index.html">
+            <img class="logo" src="../_static/logo.png" alt="Logo"/>
+          </a></p>
+        <div class="headertitle"><a
+          href="../index.html">ITTIA DB IoT Embedded Database Manual</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="numeric.html" title="6.1. Numeric Types"
+             accesskey="P">previous</a>
+           |
+          <a href="date-time.html" title="6.3. Date and Time Types"
+             accesskey="N">next</a>
+           |
+          <a href="../contents.html">Contents</a>
+           |
+          <a href="../../c-api-reference/index.html">C API</a>
+           |
+          <a href="../../cpp-api-reference/index.html">C++ API</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="character-string-types">
+<h1>6.2. Character String Types<a class="headerlink" href="#character-string-types" title="Permalink to this headline">¶</a></h1>
+<p>ITTIA DB IoT supports four character formats: ANSI, UTF-8, UTF-16, and
+UTF-32. When a character column is created, the maximum size must be
+provided as parameter n, though when data is stored, only as much space
+as is needed will be used.</p>
+<p>Unicode is the best character format, and should be used whenever
+possible. The Unicode encodings supported by ITTIA DB IoT ̵ UTF-8,
+UTF-16, and UTF-32 ̵ are each able to store the entire range of Unicode
+characters. ITTIA DB will automatically convert between Unicode
+encodings when a database column is bound to a variable, so always
+select the encoding that provides the most compact representation for
+the column type. UTF-8 is best for Latin text and many European
+languages, while UTF-16 is best for Asian languages.</p>
+<p>To store a string in UTF-8 encoding, use the <code class="docutils literal notranslate"><span class="pre">utf8str</span></code> type.
+Similarly, use <code class="docutils literal notranslate"><span class="pre">utf16str</span></code> for UTF-16 encoding and <code class="docutils literal notranslate"><span class="pre">utf32str</span></code> for
+UTF-32 encoding. The type <code class="docutils literal notranslate"><span class="pre">nvarchar</span></code> is an alias for <code class="docutils literal notranslate"><span class="pre">utf16str</span></code>.</p>
+<p>For Unicode encodings, the maximum size is given in code units. Each
+Unicode character requires one or more code units when encoded in UTF-8
+or UTF-16.</p>
+<table border="1" class="docutils" id="id1">
+<caption><span class="caption-number">Table 6.4: </span><span class="caption-text">Unicode Encodings</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="48%" />
+<col width="52%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Encoding</th>
+<th class="head">Code Unit</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>UTF-8</td>
+<td>1 byte</td>
+</tr>
+<tr class="row-odd"><td>UTF-16</td>
+<td>2 bytes</td>
+</tr>
+<tr class="row-even"><td>UTF-32</td>
+<td>4 bytes</td>
+</tr>
+</tbody>
+</table>
+<p>As an alternative to Unicode, ITTIA DB IoT also supports the ANSI
+character format with the <code class="docutils literal notranslate"><span class="pre">ansistr</span></code> type, which is also aliased as
+<code class="docutils literal notranslate"><span class="pre">varchar</span></code>. ITTIA DB assumes that ANSI character strings are encoded
+using the current locale, which is a platform-dependent setting. The
+most common encoding is ISO 8859-1.</p>
+<p>A string literal is formed by enclosing text in single quotes, e.g.
+<code class="docutils literal notranslate"><span class="pre">'value'</span></code>. A normal string literal should always use the same encoding as
+the rest of the query string.</p>
+<p>To use the single quote character (<code class="docutils literal notranslate"><span class="pre">'</span></code>) inside a string literal, escape it
+with another single quote. For example, use <code class="docutils literal notranslate"><span class="pre">'can''t'</span></code> to create the string
+“can’t”.</p>
+<p>A natural language string (NLS) literal is formed by the letter N
+followed by text enclosed in single quotes, e.g. <code class="docutils literal notranslate"><span class="pre">N</span> <span class="pre">'value'</span></code>. A
+natural language string literal should always use a Unicode encoding.
+<a class="reference internal" href="#sql-string-literal-encoding-table"><span class="std std-numref">Table 6.5, &quot;String Literal Encoding&quot;</span></a>, lists the data
+type of string and NLS literals each supported query string encoding.</p>
+<span id="sql-string-literal-encoding-table"></span><table border="1" class="docutils" id="id2">
+<caption><span class="caption-number">Table 6.5: </span><span class="caption-text">String Literal Encoding</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="49%" />
+<col width="26%" />
+<col width="26%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Query String Encoding</th>
+<th class="head">String Literal
+Type</th>
+<th class="head">NLS Literal Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_CURSOR_ENCODING_ANSI</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">varchar</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">utf8str</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_CURSOR_ENCODING_UTF8</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">utf8str</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">utf8str</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_CURSOR_ENCODING_UTF16</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">utf16str</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">utf16str</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_CURSOR_ENCODING_UTF32</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">utf32str</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">utf32str</span></code></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Database Manual</h3>
+          <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general-information/index.html">1. General Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">2. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">3. Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage-engines/index.html">4. Database Engines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">5. APIs &amp; Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">6. Data Types</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="numeric.html">6.1. Numeric Types</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6.2. Character String Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="date-time.html">6.3. Date and Time Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="binary.html">6.4. Binary Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="null.html">6.5. NULL Values</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">7. Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../errors.html">8. Error Codes</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="numeric.html" title="6.1. Numeric Types"
+              >previous</a> |
+            <a href="date-time.html" title="6.3. Date and Time Types"
+              >next</a>
+          </div>
+          <div role="note" aria-label="source link">
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, ITTIA L.L.C..
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,147 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>7.1. Introduction &#8212; ITTIA DB IoT Embedded Database Manual</title>
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/ittia.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="7.2. Database Storage Encryption" href="database-encryption.html" />
+    <link rel="prev" title="7. Security" href="index.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+          <p class="logo"><a href="../index.html">
+            <img class="logo" src="../_static/logo.png" alt="Logo"/>
+          </a></p>
+        <div class="headertitle"><a
+          href="../index.html">ITTIA DB IoT Embedded Database Manual</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="index.html" title="7. Security"
+             accesskey="P">previous</a>
+           |
+          <a href="database-encryption.html" title="7.2. Database Storage Encryption"
+             accesskey="N">next</a>
+           |
+          <a href="../contents.html">Contents</a>
+           |
+          <a href="../../c-api-reference/index.html">C API</a>
+           |
+          <a href="../../cpp-api-reference/index.html">C++ API</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="introduction">
+<h1>7.1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>ITTIA DB provides strong security features to prevent unauthorized access to data and
+resilience against potential attacks.These capabilities alongside ITTIA’s security expertise
+allow device manufacturers and embedded system integrators to build solutions where sensitive
+data is protect both at rest and in motion. ITTIA DB SQL security features include encryption,
+authentication, and plugins for development of custom security capabilities.</p>
+<p>To protect the confidentiality and integrity of the data from unauthorized access, database
+files on removable storage media should be encrypted. ITTIA DB SQL provides strong AES encryption
+that protects the entire database and stored data.</p>
+<p>ITTIA DB SQL supports that authentication and protection of remote client/server communication.
+Remote communication can be authenticated using methods such as SCRAM which does not reveal
+passwords over the network or using a fully encrypted TLS connection. ITTIA DB SQL can also
+restrict access to a database through client/server communications with storage-level passwords.
+Additional security, where required, is also available through OpenSSL which encrypts remote
+connections.</p>
+<p>ITTIA DB is developed and released under strict security considerations imposed by ITTIA’s
+SDL (Secure Development Lifecycle). Security aspects are embedded throughout the product cycle
+from design, coding, verification, to maintenance.</p>
+<a class="reference internal image-reference" href="../_images/SDL.png"><img alt="ITTIA Device Security" src="../_images/SDL.png" style="width: 100%;" /></a>
+<ul class="simple">
+<li><strong>Security Planning:</strong> Security training and plans</li>
+<li><strong>Threat Model:</strong> Identify product security risks</li>
+<li><strong>Secure Design:</strong> Security is built in by design</li>
+<li><strong>Secure Coding:</strong> Static analysis and coding standards</li>
+<li><strong>Security Testing:</strong> Vulnerability and penetration tests</li>
+<li><strong>Incident Response:</strong> Incident detection and remedy</li>
+</ul>
+<p>ITTIA offers capabilities to secure data and expertise to customize for
+specific use cases and embedded systems. With ITTIA DB SQL, data is always
+protected, and only authorized access is permitted. ITTIA’s SDL ensures
+security and privacy are built into our products from the start, rather than
+bolted on afterwards.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Database Manual</h3>
+          <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general-information/index.html">1. General Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">2. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">3. Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage-engines/index.html">4. Database Engines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">5. APIs &amp; Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/index.html">6. Data Types</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">7. Security</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7.1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database-encryption.html">7.2. Database Storage Encryption</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../errors.html">8. Error Codes</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="index.html" title="7. Security"
+              >previous</a> |
+            <a href="database-encryption.html" title="7.2. Database Storage Encryption"
+              >next</a>
+          </div>
+          <div role="note" aria-label="source link">
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, ITTIA L.L.C..
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

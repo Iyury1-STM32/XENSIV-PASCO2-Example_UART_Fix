@@ -1,0 +1,281 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>4.1. On-Disk/Flash File Storage &#8212; ITTIA DB IoT Embedded Database Manual</title>
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/ittia.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.2. In-Memory IoT Stream Processing" href="iot-stream.html" />
+    <link rel="prev" title="4. Database Engines" href="index.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+          <p class="logo"><a href="../index.html">
+            <img class="logo" src="../_static/logo.png" alt="Logo"/>
+          </a></p>
+        <div class="headertitle"><a
+          href="../index.html">ITTIA DB IoT Embedded Database Manual</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="index.html" title="4. Database Engines"
+             accesskey="P">previous</a>
+           |
+          <a href="iot-stream.html" title="4.2. In-Memory IoT Stream Processing"
+             accesskey="N">next</a>
+           |
+          <a href="../contents.html">Contents</a>
+           |
+          <a href="../../c-api-reference/index.html">C API</a>
+           |
+          <a href="../../cpp-api-reference/index.html">C++ API</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="on-disk-flash-file-storage">
+<span id="file-storage"></span><h1>4.1. On-Disk/Flash File Storage<a class="headerlink" href="#on-disk-flash-file-storage" title="Permalink to this headline">¶</a></h1>
+<p>A file storage database is saved to disk continuously. Data is organized
+into large pages to take advantage of block device performance
+characteristics. The algorithms used to access data in a file storage
+database offer consistent overall performance, even as the size of the
+database grows to exceed the size of main memory.</p>
+<p>To create a file storage, use <a class="reference internal" href="../api/c/getting-started.html#c-create-and-open-database"><span class="std std-ref">db_create_file_storage</span></a> in C applications and <a class="reference internal" href="../api/cpp/getting-started.html#cpp-create-and-open-database"><span class="std std-ref">Connection::open
+with FileStorageConfig</span></a> in C++ applications.</p>
+<div class="section" id="database-and-log-files">
+<span id="database-files"></span><h2>4.1.1. Database and Log Files<a class="headerlink" href="#database-and-log-files" title="Permalink to this headline">¶</a></h2>
+<p>Each ITTIA DB SQL database file is a document on the file system
+identified by its file name. ITTIA DB SQL will permit any extension, but
+<code class="docutils literal notranslate"><span class="pre">.ittiadb</span></code> or <code class="docutils literal notranslate"><span class="pre">.db</span></code> is recommended. This document contains the
+catalog, data, indexes, and settings for the database. A database file
+can be created at any time and all administration can be performed
+through the ITTIA DB SQL C API.</p>
+<p>The transaction and replication journals are stored in a log file in the
+same directory as the database file. The log file is named after the
+database file with the suffix <code class="docutils literal notranslate"><span class="pre">-log</span></code>. Database recovery requires the
+log file; removing or deleting the log file may result in an
+inconsistent or corrupt database under certain circumstances.</p>
+<p>A database file can be safely copied to another location or file name by:</p>
+<ol class="arabic simple">
+<li>Close all connections to the database, then copy the database and its
+log file with file system commands. If the database file is renamed
+in the process, the log file must be similarly renamed.</li>
+</ol>
+<p>If replication is configured for a database, log file rotation is
+automatically enabled. The log file is periodically archived by renaming
+it with a suffix like <code class="docutils literal notranslate"><span class="pre">-lar.0000000000</span></code> in place of <code class="docutils literal notranslate"><span class="pre">-log</span></code>; The
+numeric part of the suffix is incremented each time a log file is
+archived. Archived log files are only used in replication and are
+automatically deleted when no longer needed. Removing an archived log
+file prematurely will not affect recovery, but may disrupt replication.</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">Online backup does not copy any archived log files. However, these
+files are never modified so they can be safely copied before the
+backup is started.</p>
+</div>
+<p>Log rotation for a database named <code class="docutils literal notranslate"><span class="pre">example.ittiadb</span></code> is depicted in
+<a class="reference internal" href="#log-rotation-fig"><span class="std std-numref">Figure 4.1, &quot;Log Files and Log Rotation&quot;</span></a>. Only the database file and log
+file are required to access the database, protect data with crash
+recovery, or create an online backup. Ad hoc replication and
+synchronization also depend on the archived log files to store
+transaction journal records until they are exchanged with all peers.</p>
+<div class="align-center figure" id="id4">
+<span id="log-rotation-fig"></span><a class="reference internal image-reference" href="../_images/log-rotation.png"><img alt="Log Files and Log Rotation" src="../_images/log-rotation.png" style="width: 90.0%;" /></a>
+<p class="caption"><span class="caption-number">Figure 4.1: </span><span class="caption-text">Log Files and Log Rotation</span></p>
+</div>
+<p>Each database file may be opened by only one process at a time. On most
+platforms this requirement is enforced by locking the file as long as any
+connection is open. However, ITTIA DB IoT allows multiple threads within the
+same application process to access the database concurrently. See
+<a class="reference internal" href="../tutorial/mvcc/index.html#freertos-mvcc-api"><span class="std std-numref">Section 3.3, &quot;Local Multithreaded Connections&quot;</span></a>, for more information on accessing the
+database from multiple threads.</p>
+</div>
+<div class="section" id="file-storage-table-types">
+<span id="id1"></span><h2>4.1.2. File Storage Table Types<a class="headerlink" href="#file-storage-table-types" title="Permalink to this headline">¶</a></h2>
+<p>When a table is created, one of several table types can be selected. The
+table type affects the overhead and performance of storing and accessing
+data.</p>
+<p>File storage databases support the following table types:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#key-heap-table-type"><span class="std std-ref">Key Heap Table Type</span></a> (default)</li>
+<li><a class="reference internal" href="#clustered-table-type"><span class="std std-ref">Clustered Table Type</span></a></li>
+</ul>
+<p>The table type controls how the data is represented inside the database.
+However, it does not affect how the data is accessed. From an application’s
+perspective, a table is always a collection of rows and columns with zero or
+more indexes.</p>
+<p>The most efficient table type depends on the number of indexes created
+on the table and the size of the primary key. A clustered table has the
+most compact representation for a table with only one index or an
+integer primary key, while a key heap table is more compact when there
+are many indexes and a large primary keys.</p>
+<p>B+ tree indexes have a shallow tree structure to minimize disk I/O as
+depicted in <a class="reference internal" href="#b-tree-fig"><span class="std std-numref">Figure 4.2, &quot;B+ Tree Index Organization&quot;</span></a>.
+<a class="reference internal" href="#key-heap-table-type"><span class="std std-ref">Key Heap Table Type</span></a>, and <a class="reference internal" href="#clustered-table-type"><span class="std std-ref">Clustered Table Type</span></a> use B+ tree indexes.</p>
+<div class="align-center figure" id="id5">
+<span id="b-tree-fig"></span><a class="reference internal image-reference" href="../_images/b+-tree-index-organization.png"><img alt="b+-tree-index-organization" src="../_images/b+-tree-index-organization.png" style="width: 75%;" /></a>
+<p class="caption"><span class="caption-number">Figure 4.2: </span><span class="caption-text">B+ Tree Index Organization</span></p>
+</div>
+<p>Reading a page from disk is an expensive operation and each node in the B+
+tree is a page. The organization of a B+ tree ensures that even in a very
+large table, any key can be located with very few page read operations. The
+B+ tree contains a full copy of the data in each index column, so that full
+rows do not need to be loaded from disk when using an index.</p>
+</div>
+<div class="section" id="key-heap-table-type">
+<span id="id2"></span><h2>4.1.3. Key Heap Table Type<a class="headerlink" href="#key-heap-table-type" title="Permalink to this headline">¶</a></h2>
+<p>A key heap table uses a hidden 8 byte key to identify each row. Indexes
+on a key heap table use a copy of this key to locate rows when fetching
+data, as shown in <a class="reference internal" href="#key-heap-fig"><span class="std std-numref">Figure 4.3, &quot;Key Heap Table Organization&quot;</span></a>. One unique
+index can be designated as the primary key.</p>
+<div class="align-center figure" id="id6">
+<span id="key-heap-fig"></span><a class="reference internal image-reference" href="../_images/key-heap-table-organization.png"><img alt="Key Heap Table Organization" src="../_images/key-heap-table-organization.png" style="width: 75%;" /></a>
+<p class="caption"><span class="caption-number">Figure 4.3: </span><span class="caption-text">Key Heap Table Organization</span></p>
+</div>
+</div>
+<div class="section" id="clustered-table-type">
+<span id="id3"></span><h2>4.1.4. Clustered Table Type<a class="headerlink" href="#clustered-table-type" title="Permalink to this headline">¶</a></h2>
+<p>A clustered table, as shown in <a class="reference internal" href="#cluster-fig"><span class="std std-numref">Figure 4.4, &quot;Clustered Table
+Organization&quot;</span></a>, groups rows according to the order specified by
+an index. This improves performance when accessing a batch of rows with the
+cluster index because related rows are often stored in the same page.
+However, other indexes on the same table do not benefit from clustering. The
+clustering index is specified when the table is created and cannot be changed
+without dropping the table.</p>
+<div class="align-center figure" id="id7">
+<span id="cluster-fig"></span><a class="reference internal image-reference" href="../_images/cluster-table-organization.png"><img alt="Clustered Table Organization" src="../_images/cluster-table-organization.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Figure 4.4: </span><span class="caption-text">Clustered Table Organization</span></p>
+</div>
+<p>A clustered table has many benefits:</p>
+<ol class="arabic simple">
+<li>Improved performance when accessing data through the primary key.</li>
+<li>Storage overhead is typically reduced.</li>
+<li>Improved insert performance.</li>
+<li>Improved update performance when updating fields outside the primary
+key.</li>
+</ol>
+<p>A clustered table has the following limitations:</p>
+<ol class="arabic simple">
+<li>The table must have a primary key and the application must provide a
+value for the primary key whenever a row is inserted. Sequence
+generators are available for this purpose.</li>
+<li>The primary key definition cannot be changed without dropping the
+table.</li>
+</ol>
+<p>The clustering index must meet the following conditions:</p>
+<ol class="arabic simple">
+<li>The clustered index is the table’s primary key.</li>
+<li>The primary key covers the first column or columns of the table, in order.</li>
+</ol>
+<ol class="arabic simple" start="2">
+<li>All index fields are NOT NULL.</li>
+<li>No variable-width index field exceeds 255 bytes.</li>
+<li>The total size of the index fields is at most (32 - <code class="docutils literal notranslate"><span class="pre">v</span></code>) bytes,
+where <code class="docutils literal notranslate"><span class="pre">v</span></code> is the number of.variable-width index fields.</li>
+</ol>
+</div>
+<div class="section" id="time-series-storage">
+<h2>4.1.5. Time Series Storage<a class="headerlink" href="#time-series-storage" title="Permalink to this headline">¶</a></h2>
+<p>ITTIA DB Time Series Storage offers an optimized method to store and query
+sequences of timestamped values.</p>
+<p>You can store many series in a database file. Each time series is identified by
+a name and contains a sequence of timestamp/value pairs.</p>
+<p>Time Series Storage has many benefits:</p>
+<ol class="arabic simple">
+<li>Query data across multiple time series.</li>
+<li>Ability to ingest out of order.</li>
+<li>Overwrite values at previously ingested timestamps.</li>
+<li>Automatic wrap around.</li>
+</ol>
+<p>Unsupported Capabilities:</p>
+<ol class="arabic simple">
+<li>Time series does not have in-memory storage but does have in-memory stream processing.</li>
+</ol>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Database Manual</h3>
+          <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general-information/index.html">1. General Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">2. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">3. Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. Database Engines</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.1. On-Disk/Flash File Storage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#database-and-log-files">4.1.1. Database and Log Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file-storage-table-types">4.1.2. File Storage Table Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#key-heap-table-type">4.1.3. Key Heap Table Type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#clustered-table-type">4.1.4. Clustered Table Type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#time-series-storage">4.1.5. Time Series Storage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="iot-stream.html">4.2. In-Memory IoT Stream Processing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">5. APIs &amp; Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/index.html">6. Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">7. Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../errors.html">8. Error Codes</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="index.html" title="4. Database Engines"
+              >previous</a> |
+            <a href="iot-stream.html" title="4.2. In-Memory IoT Stream Processing"
+              >next</a>
+          </div>
+          <div role="note" aria-label="source link">
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, ITTIA L.L.C..
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

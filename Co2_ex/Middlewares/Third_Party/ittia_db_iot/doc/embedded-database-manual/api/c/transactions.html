@@ -1,0 +1,152 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>5.3.3. Transactions &#8212; ITTIA DB IoT Embedded Database Manual</title>
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/ittia.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.3.4. Dynamic Rows" href="rows.html" />
+    <link rel="prev" title="5.3.2. Database Design" href="database-design.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+          <p class="logo"><a href="../../index.html">
+            <img class="logo" src="../../_static/logo.png" alt="Logo"/>
+          </a></p>
+        <div class="headertitle"><a
+          href="../../index.html">ITTIA DB IoT Embedded Database Manual</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="database-design.html" title="5.3.2. Database Design"
+             accesskey="P">previous</a>
+           |
+          <a href="rows.html" title="5.3.4. Dynamic Rows"
+             accesskey="N">next</a>
+           |
+          <a href="../../contents.html">Contents</a>
+           |
+          <a href="../../../c-api-reference/index.html">C API</a>
+           |
+          <a href="../../../cpp-api-reference/index.html">C++ API</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="transactions">
+<h1>5.3.3. Transactions<a class="headerlink" href="#transactions" title="Permalink to this headline">¶</a></h1>
+<p>All data access operations must occur inside a transaction. A
+transaction is a logical group of operations that must all succeed or
+fail together. Changes made to the database do not become permanent
+until the transaction is committed. A transaction can also be aborted,
+which will undo any changes made since the transaction was started.</p>
+<p>To start a transaction, call the <code class="docutils literal notranslate"><span class="pre">db_begin_tx()</span></code> function.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">db_begin_tx</span><span class="p">(</span><span class="n">hdb</span><span class="p">,</span> <span class="n">DB_DEFAULT_ISOLATION</span> <span class="o">|</span> <span class="n">DB_LOCK_SHARED</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>To commit the changes made during the transaction, call
+<code class="docutils literal notranslate"><span class="pre">db_commit_tx()</span></code>. The completion parameter determines how quickly the
+changes made in this transaction will be flushed from the database cache
+to permanent storage.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">db_commit_tx</span><span class="p">(</span><span class="n">hdb</span><span class="p">,</span> <span class="n">DB_FORCED_COMPLETION</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When the commit function returns successfully, any modifications
+made within the transaction are guaranteed to be completely written
+to the storage media.</p>
+</div>
+<p>To cancel the changes made during the transaction, call
+<code class="docutils literal notranslate"><span class="pre">db_abort_tx()</span></code>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">db_abort_tx</span><span class="p">(</span><span class="n">hdb</span><span class="p">,</span> <span class="n">DB_FORCED_COMPLETION</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Database Manual</h3>
+          <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../general-information/index.html">1. General Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation/index.html">2. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/index.html">3. Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../storage-engines/index.html">4. Database Engines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. APIs &amp; Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../native-development/index.html">5.1. Building C and C++ API Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iot/index.html">5.2. ITTIA DB IoT C API</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.3. ITTIA DB SQL C API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="getting-started.html">5.3.1. Getting Started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="database-design.html">5.3.2. Database Design</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.3.3. Transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rows.html">5.3.4. Dynamic Rows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="table-cursors.html">5.3.5. C Table Cursors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../cpp/index.html">5.4. ITTIA DB SQL C++ API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../data-types/index.html">6. Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">7. Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../errors.html">8. Error Codes</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="../../search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="database-design.html" title="5.3.2. Database Design"
+              >previous</a> |
+            <a href="rows.html" title="5.3.4. Dynamic Rows"
+              >next</a>
+          </div>
+          <div role="note" aria-label="source link">
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, ITTIA L.L.C..
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

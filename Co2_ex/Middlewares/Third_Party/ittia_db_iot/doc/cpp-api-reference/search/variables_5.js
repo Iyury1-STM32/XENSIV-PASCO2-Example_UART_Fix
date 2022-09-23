@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['field_5fflags_1744',['field_flags',['../../c-api-reference/a00562.html#a9132221aebb1b80f5e5473fcfeaba5c2',1,'db_indexfield_t::field_flags()'],['../../c-api-reference/a00494.html#a5bfb970cae0c8f168b34d5360b44964c',1,'db_fielddef_t::field_flags()']]],
+  ['field_5fno_1745',['field_no',['../../c-api-reference/a00502.html#ac36dfa6998669be5c342cb08d9323d9e',1,'db_bind_t']]],
+  ['field_5fprec_1746',['field_prec',['../../c-api-reference/a00494.html#a2180d7a3aff2e0e1506218fb7bbcfd95',1,'db_fielddef_t']]],
+  ['field_5fsize_1747',['field_size',['../../c-api-reference/a00494.html#ac569a505ddde41f7506a200d791e8725',1,'db_fielddef_t']]],
+  ['field_5fvalue_1748',['field_value',['../../c-api-reference/a00494.html#af46a2315e85f0abfe06d6cdecd997d28',1,'db_fielddef_t']]],
+  ['field_5fwidth_1749',['field_width',['../../c-api-reference/a00494.html#acf7e2316b681eb8b9e63e8b21abd1c73',1,'db_fielddef_t']]],
+  ['fieldno_1750',['fieldno',['../../c-api-reference/a00562.html#a276f94812c8f35e87b28b0298c4140ff',1,'db_indexfield_t']]],
+  ['fields_1751',['fields',['../../c-api-reference/a00570.html#afdd512400ad4cd64a7607f39d4c23d35',1,'db_foreign_key_def_t::fields()'],['../../c-api-reference/a00566.html#a2ecc55a4faa344a8eb0838afcb2cfb76',1,'db_indexdef_t::fields()'],['../../c-api-reference/a00578.html#a0b663ce57d4582b4fb2f9693d65d9b1c',1,'db_tabledef_t::fields()']]],
+  ['file_5fmode_1752',['file_mode',['../../c-api-reference/a00546.html#a5ffd157db24c455aabd7775c1a35850d',1,'db_backup_t::file_mode()'],['../../c-api-reference/a00474.html#a7c1accb18eb3d21761ecb5f3f0cb0bc4',1,'db_file_storage_config_t::file_mode()']]],
+  ['first_5fhit_1753',['first_hit',['../../c-api-reference/a00506.html#a2844cd938c79f5e2e2fd7d7b21f8a278',1,'db_bufmgr_stat_t']]],
+  ['first_5fmiss_1754',['first_miss',['../../c-api-reference/a00506.html#abc8d4944e60cb6e6ced269a7ade27197',1,'db_bufmgr_stat_t']]],
+  ['first_5fpin_1755',['first_pin',['../../c-api-reference/a00506.html#a7ee8394805d8da97d9e0166b7e580ff5',1,'db_bufmgr_stat_t']]],
+  ['fixed_1756',['fixed',['../../c-api-reference/a00510.html#aa34a4ea6365163c7965ab049a072a88f',1,'db_buf_stat_t']]],
+  ['fk_5fname_1757',['fk_name',['../../c-api-reference/a00570.html#ab35db1ccb98a37049e8104d104f6253f',1,'db_foreign_key_def_t']]],
+  ['flags_1758',['flags',['../../c-api-reference/a00658.html#a42eb91356657d32a568672baf7d3a006',1,'db_rep_exchange_t::flags()'],['../../c-api-reference/a00646.html#a870bfdd0c3a1ca1f9937a798794017fe',1,'db_rep_snapshot_info_t::flags()'],['../../c-api-reference/a00582.html#a032c83aba0ce1f0bbe3453c8007ad33e',1,'db_table_cursor_t::flags()']]],
+  ['flush_5fbuffers_1759',['flush_buffers',['../../c-api-reference/a00474.html#ac9f92a504b277c575b2cae450f7cc667',1,'db_file_storage_config_t']]],
+  ['force_5fflush_1760',['force_flush',['../../c-api-reference/a00506.html#a0a340d56eb69d2b2561e838518df926a',1,'db_bufmgr_stat_t']]],
+  ['foreign_5fkeys_1761',['foreign_keys',['../../c-api-reference/a00578.html#a0eadb4782cdf81e0d4108591e9aafc35',1,'db_tabledef_t']]],
+  ['format_5fid_1762',['format_id',['../../c-api-reference/a00550.html#af2a8cd6367481418a8a1985ea1da6819',1,'db_xid_t']]],
+  ['frame_5fscan_1763',['frame_scan',['../../c-api-reference/a00506.html#a132f442bfb3a9d46b4f561ad4a1dae0f',1,'db_bufmgr_stat_t']]],
+  ['free_5fbytes_1764',['free_bytes',['../../c-api-reference/a00514.html#a7283e52afbbb1ce10d0a8a4c66f1dba3',1,'db_file_storage_stat_t']]],
+  ['free_5fpage_5fcount_1765',['free_page_count',['../../c-api-reference/a00514.html#a236c587edbe65bd7421bdfbb1c564a7a',1,'db_file_storage_stat_t']]],
+  ['frequency_1766',['frequency',['../../c-api-reference/a00654.html#ab3b56f6ff40ef2f8637ef9e84a543b17',1,'db_rep_exchange_statistics_t']]]
+];

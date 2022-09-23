@@ -1,0 +1,174 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>7.2. Database Storage Encryption &#8212; ITTIA DB IoT Embedded Database Manual</title>
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/ittia.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="8. Error Codes" href="../errors.html" />
+    <link rel="prev" title="7.1. Introduction" href="introduction.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+          <p class="logo"><a href="../index.html">
+            <img class="logo" src="../_static/logo.png" alt="Logo"/>
+          </a></p>
+        <div class="headertitle"><a
+          href="../index.html">ITTIA DB IoT Embedded Database Manual</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="introduction.html" title="7.1. Introduction"
+             accesskey="P">previous</a>
+           |
+          <a href="../errors.html" title="8. Error Codes"
+             accesskey="N">next</a>
+           |
+          <a href="../contents.html">Contents</a>
+           |
+          <a href="../../c-api-reference/index.html">C API</a>
+           |
+          <a href="../../cpp-api-reference/index.html">C++ API</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="database-storage-encryption">
+<h1>7.2. Database Storage Encryption<a class="headerlink" href="#database-storage-encryption" title="Permalink to this headline">¶</a></h1>
+<p>When an application opens a database file directly, it has unrestricted
+access to all the data. To prevent unauthorized access, the database file can
+be encrypted using storage encryption using AES to protect the entire
+database file. Applications can also provide the database with encryption
+callback functions to leverage hardware encryption and other algorithms.</p>
+<p>Database encryption protects database data stored on a device from attacks
+and misuse. ITTIA DB IoT encryption and decryption is developed with
+performance in mind and has minimal performance impact for data management
+and replication. By default ITTIA uses AES 256 for stronger security, but AES 128
+is also supported, if a shorter key is required.</p>
+<div class="section" id="encrypt-a-database-file">
+<h2>7.2.1. Encrypt a Database File<a class="headerlink" href="#encrypt-a-database-file" title="Permalink to this headline">¶</a></h2>
+<p>To encrypt a <a class="reference internal" href="../storage-engines/file.html#file-storage"><span class="std std-ref">On-Disk/Flash File Storage</span></a> database, select the cipher and supply an
+encryption key when the database is first created as a local file.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The encryption key is never shared with other processes, so an encrypted
+database cannot be created with a remote client URI.</p>
+</div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">extern</span> <span class="k">const</span> <span class="kt">char</span> <span class="n">encryption_key</span><span class="p">[</span><span class="mi">256</span> <span class="o">/</span> <span class="mi">8</span><span class="p">];</span>
+
+<span class="k">using</span> <span class="n">storage</span><span class="o">::</span><span class="n">ittiadb</span><span class="o">::</span><span class="n">Connection</span><span class="p">;</span>
+<span class="n">Connection</span><span class="o">::</span><span class="n">AuthInfo</span> <span class="n">auth_info</span><span class="p">;</span>
+<span class="n">Connection</span><span class="o">::</span><span class="n">FileStorageConfig</span> <span class="n">storage_cfg</span><span class="p">;</span>
+
+<span class="c1">// Set AES-256 encryption parameters</span>
+<span class="n">storage_cfg</span><span class="p">.</span><span class="n">auth_info</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">auth_info</span><span class="p">;</span>
+<span class="n">auth_info</span><span class="p">.</span><span class="n">set_cipher</span><span class="p">(</span><span class="n">DB_CIPHER_AES256_CTR</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">encryption_key</span><span class="p">);</span>
+
+<span class="c1">// Create encrypted database file</span>
+<span class="n">Connection</span> <span class="nf">db</span><span class="p">(</span><span class="s">&quot;example.ittiadb&quot;</span><span class="p">);</span>
+<span class="n">db</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">Connection</span><span class="o">::</span><span class="n">CreateAlways</span><span class="p">,</span> <span class="n">storage_cfg</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The encryption key passed to <code class="docutils literal notranslate"><span class="pre">set_cipher</span></code> can use any plain data type with
+a sufficiently large size and stable binary format.</p>
+</div>
+<div class="section" id="access-an-encrypted-database">
+<h2>7.2.2. Access an Encrypted Database<a class="headerlink" href="#access-an-encrypted-database" title="Permalink to this headline">¶</a></h2>
+<p>To open an existing database, the first connection in each process must
+supply the correct cipher and encryption key. Attempting to open a database
+for the first time without the key correct key will fail with an
+<code class="docutils literal notranslate"><span class="pre">DB_ESTORAGE</span></code> error.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Set AES-256 encryption parameters</span>
+<span class="n">storage_cfg</span><span class="p">.</span><span class="n">auth_info</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">auth_info</span><span class="p">;</span>
+<span class="n">auth_info</span><span class="p">.</span><span class="n">set_cipher</span><span class="p">(</span><span class="n">DB_CIPHER_AES256_CTR</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">encryption_key</span><span class="p">);</span>
+
+<span class="n">db</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">storage</span><span class="o">::</span><span class="n">ittiadb</span><span class="o">::</span><span class="n">Connection</span><span class="o">::</span><span class="n">OpenExisting</span><span class="p">,</span> <span class="n">storage_cfg</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>To protect remote access to an encrypted database file before starting the server. All
+connections are required to supply the password to access a
+password-protected database.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Database Manual</h3>
+          <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general-information/index.html">1. General Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">2. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">3. Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage-engines/index.html">4. Database Engines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">5. APIs &amp; Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/index.html">6. Data Types</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">7. Security</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="introduction.html">7.1. Introduction</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7.2. Database Storage Encryption</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#encrypt-a-database-file">7.2.1. Encrypt a Database File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#access-an-encrypted-database">7.2.2. Access an Encrypted Database</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../errors.html">8. Error Codes</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="introduction.html" title="7.1. Introduction"
+              >previous</a> |
+            <a href="../errors.html" title="8. Error Codes"
+              >next</a>
+          </div>
+          <div role="note" aria-label="source link">
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, ITTIA L.L.C..
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

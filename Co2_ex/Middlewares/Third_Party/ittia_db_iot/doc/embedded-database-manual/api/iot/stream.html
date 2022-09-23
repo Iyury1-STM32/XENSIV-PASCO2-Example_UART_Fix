@@ -1,0 +1,448 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>5.2.2. IoT Stream Embedded C API Reference &#8212; ITTIA DB IoT Embedded Database Manual</title>
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/ittia.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.3. ITTIA DB SQL C API" href="../c/index.html" />
+    <link rel="prev" title="5.2.1. Time Series Storage C API" href="c.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+          <p class="logo"><a href="../../index.html">
+            <img class="logo" src="../../_static/logo.png" alt="Logo"/>
+          </a></p>
+        <div class="headertitle"><a
+          href="../../index.html">ITTIA DB IoT Embedded Database Manual</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="c.html" title="5.2.1. Time Series Storage C API"
+             accesskey="P">previous</a>
+           |
+          <a href="../c/index.html" title="5.3. ITTIA DB SQL C API"
+             accesskey="N">next</a>
+           |
+          <a href="../../contents.html">Contents</a>
+           |
+          <a href="../../../c-api-reference/index.html">C API</a>
+           |
+          <a href="../../../cpp-api-reference/index.html">C++ API</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="iot-stream-embedded-c-api-reference">
+<span id="stream-c-api"></span><h1>5.2.2. IoT Stream Embedded C API Reference<a class="headerlink" href="#iot-stream-embedded-c-api-reference" title="Permalink to this headline">¶</a></h1>
+<p>Developers can access ITTIA IoT Stream Processing through an embedded C
+API. Through the embedded API, developers create one or more continuous
+queries to process data.</p>
+<p>To process data with each continuous query, an application must, in the
+following order:</p>
+<ol class="arabic simple">
+<li>Set up a stream processing environment</li>
+<li>Register data sources and streaming operators</li>
+<li>Process the continuous query pipeline</li>
+</ol>
+<div class="section" id="set-up-a-stream-processing-environment">
+<h2>5.2.2.1. Set up a Stream Processing Environment<a class="headerlink" href="#set-up-a-stream-processing-environment" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="initialize-stream-environment">
+<h3>5.2.2.1.1. Initialize Stream Environment<a class="headerlink" href="#initialize-stream-environment" title="Permalink to this headline">¶</a></h3>
+<p>The stream processing environment must be initialized before creating any
+continuous queries.
+Invoke the following code exactly once:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ittia/db.h&gt;</span><span class="cp"></span>
+
+<span class="n">db_init_ex</span><span class="p">(</span><span class="n">DB_API_VER</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-an-iot-stream">
+<h3>5.2.2.1.2. Create an IoT Stream<a class="headerlink" href="#create-an-iot-stream" title="Permalink to this headline">¶</a></h3>
+<p>An application first creates an empty stream, represented as a directed graph.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ittia/db/db_stream.h&gt;</span><span class="cp"></span>
+
+<span class="n">dbstatus_t</span> <span class="n">status</span><span class="p">;</span>
+<span class="n">db_stream_graph_t</span> <span class="n">graph</span><span class="p">;</span>
+<span class="k">static</span> <span class="kt">int32_t</span> <span class="n">buffer</span><span class="p">[</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">];</span>
+
+<span class="n">status</span> <span class="o">=</span> <span class="n">db_stream_create_graph</span><span class="p">(</span><span class="o">&amp;</span><span class="n">graph</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="k">sizeof</span> <span class="n">buffer</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">DB_FAILED</span><span class="p">(</span><span class="n">status</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;Database init error: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">status</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// ...</span>
+<span class="c1">// Define nodes and filters here</span>
+<span class="c1">// ...</span>
+<span class="c1">// Use stream to process data</span>
+<span class="c1">// ...</span>
+
+<span class="n">status</span> <span class="o">=</span> <span class="n">db_stream_free_graph</span><span class="p">(</span><span class="n">graph</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">DB_FAILED</span><span class="p">(</span><span class="n">status</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;Database init error: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">status</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="error-handling">
+<h3>5.2.2.1.3. Error Handling<a class="headerlink" href="#error-handling" title="Permalink to this headline">¶</a></h3>
+<p>For additional information on error handling, see <a class="reference internal" href="c.html#errorhandling"><span class="std std-numref">5.2.1.2. Error Handling</span></a>.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">void</span> <span class="nf">check</span><span class="p">(</span><span class="n">dbstatus_t</span> <span class="n">status</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">DB_FAILED</span><span class="p">(</span><span class="n">status</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Database error: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">status</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="register-data-sources-and-streaming-operators">
+<h2>5.2.2.2. Register Data Sources and Streaming Operators<a class="headerlink" href="#register-data-sources-and-streaming-operators" title="Permalink to this headline">¶</a></h2>
+<p>An IoT Stream receives data from one or more data sources.
+They must be registered in the streaming environment. The following example demonstrates how to set up
+the stream environment shown below.</p>
+<div class="align-center figure" id="id1">
+<a class="reference internal image-reference" href="../../_images/stream_simple_ex.png"><img alt="ITTIA IoT Stream Environment" src="../../_images/stream_simple_ex.png" style="width: 80.0%;" /></a>
+<p class="caption"><span class="caption-number">Figure 5.1: </span><span class="caption-text">ITTIA IoT Stream Processing Environment</span></p>
+</div>
+<p>A stream with four fields is shown below: a sensor ID number, a sensor type attribute, a sample timestamp, and a sample
+value.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ittia/db/db_stream.h&gt;</span><span class="cp"></span>
+
+<span class="c1">// Define fields for each sensor data record</span>
+<span class="k">enum</span> <span class="p">{</span>
+    <span class="n">kSensorId</span><span class="p">,</span>
+    <span class="n">kSensorType</span><span class="p">,</span>
+    <span class="n">kSampleTime</span><span class="p">,</span>
+    <span class="n">kSampleValue</span><span class="p">,</span>
+<span class="p">};</span>
+<span class="k">static</span> <span class="k">const</span> <span class="n">db_fielddef_t</span> <span class="n">fields</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">{</span> <span class="n">kSensorId</span><span class="p">,</span> <span class="s">&quot;sensor_id&quot;</span><span class="p">,</span> <span class="n">DB_COLTYPE_UINT64</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">DB_NOT_NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">kSensorType</span><span class="p">,</span> <span class="s">&quot;sensor_type&quot;</span><span class="p">,</span> <span class="n">DB_COLTYPE_UINT64</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">DB_NOT_NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">kSampleTime</span><span class="p">,</span> <span class="s">&quot;sample_time&quot;</span><span class="p">,</span> <span class="n">DB_COLTYPE_TIMESTAMP</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">DB_NOT_NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">kSampleValue</span><span class="p">,</span> <span class="s">&quot;sample_value&quot;</span><span class="p">,</span> <span class="n">DB_COLTYPE_FLOAT64</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">DB_NOT_NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span> <span class="p">},</span>
+<span class="p">};</span>
+
+<span class="k">static</span> <span class="kt">size_t</span> <span class="n">nfields</span> <span class="o">=</span> <span class="n">DB_ARRAY_DIM</span><span class="p">(</span><span class="n">fields</span><span class="p">);</span>
+
+<span class="n">dbstatus_t</span> <span class="n">status</span><span class="p">;</span>
+<span class="n">db_stream_graph_t</span> <span class="n">graph</span><span class="p">;</span>
+<span class="k">static</span> <span class="kt">int32_t</span> <span class="n">buffer</span><span class="p">[</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">];</span>
+<span class="n">db_stream_node_t</span> <span class="n">s0</span><span class="p">,</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">;</span>
+<span class="kt">int32_t</span> <span class="n">row_count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="n">status</span> <span class="o">=</span> <span class="n">db_stream_create_graph</span><span class="p">(</span><span class="o">&amp;</span><span class="n">graph</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="k">sizeof</span> <span class="n">buffer</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">DB_SUCCESS</span><span class="p">(</span><span class="n">status</span><span class="p">))</span> <span class="p">{</span>
+    <span class="cm">/* Create input node */</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">db_stream_create_row_input</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s0</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">nfields</span><span class="p">,</span> <span class="n">kSampleTime</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">DB_SUCCESS</span><span class="p">(</span><span class="n">status</span><span class="p">)){</span>
+    <span class="cm">/* Create filter node with equality operation */</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">db_stream_create_filter_uint64</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s1</span><span class="p">,</span> <span class="n">s0</span><span class="p">,</span> <span class="n">kSensorId</span><span class="p">,</span> <span class="n">DB_SEEK_EQUAL</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">DB_SUCCESS</span><span class="p">(</span><span class="n">status</span><span class="p">)){</span>
+    <span class="cm">/* Create output node */</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">db_stream_create_row_output</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s2</span><span class="p">,</span> <span class="n">s1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">process_filtered_sensor_data</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">row_count</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><em>See</em> <a class="reference internal" href="#operations"><span class="std std-numref">5.2.2.4. Streaming Operations</span></a> <em>for additional operations to perform.</em></p>
+</div>
+<div class="section" id="process-the-continuous-query-pipeline">
+<h2>5.2.2.3. Process the Continuous Query Pipeline<a class="headerlink" href="#process-the-continuous-query-pipeline" title="Permalink to this headline">¶</a></h2>
+<p>A continuous query reads data from a stream of one or more fields and applies
+operators to produce refined output.
+Use <code class="docutils literal notranslate"><span class="pre">db_stream_get_tag</span></code> to identify the type of operation to perform:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">+</span></code> <em>Append</em></li>
+<li><code class="docutils literal notranslate"><span class="pre">-</span></code> <em>Delete</em></li>
+<li><code class="docutils literal notranslate"><span class="pre">U</span></code> <em>Update</em></li>
+</ul>
+<div class="section" id="create-a-callback-function">
+<h3>5.2.2.3.1. Create a Callback Function<a class="headerlink" href="#create-a-callback-function" title="Permalink to this headline">¶</a></h3>
+<p>A callback function is used to process the data each time a query node is read from.
+The following example processes the stream that is output
+by the continuous query:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ittia/db/db_stream.h&gt;</span><span class="cp"></span>
+
+<span class="kt">void</span> <span class="nf">process_filtered_sensor_data</span><span class="p">(</span><span class="n">db_stream_node_t</span> <span class="n">s</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span> <span class="n">argument</span><span class="p">){</span>
+    <span class="kt">int32_t</span> <span class="o">*</span> <span class="n">row_count</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int32_t</span><span class="o">*</span><span class="p">)</span><span class="n">argument</span><span class="p">;</span>
+    <span class="o">++*</span><span class="n">row_count</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">tag</span> <span class="o">=</span> <span class="n">db_stream_get_tag</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+    <span class="kt">uint64_t</span> <span class="n">sensor_id</span> <span class="o">=</span> <span class="n">db_stream_get_uint64</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">kSensorId</span><span class="p">);</span>
+    <span class="kt">int32_t</span> <span class="n">sensor_type</span> <span class="o">=</span> <span class="n">db_stream_get_sint32</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">kSensorType</span><span class="p">);</span>
+    <span class="n">db_timestamp_usec_t</span> <span class="n">sample_time</span> <span class="o">=</span> <span class="n">db_stream_get_timestamp_usec</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">kSampleTime</span><span class="p">);</span>
+    <span class="n">db_float64_t</span> <span class="n">sample_value</span> <span class="o">=</span> <span class="n">db_stream_get_float64</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">kSampleValue</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="query-processing">
+<span id="stream-query-processing"></span><h3>5.2.2.3.2. Query Processing<a class="headerlink" href="#query-processing" title="Permalink to this headline">¶</a></h3>
+<p>The following example prints output whenever the result of the continuous query changes:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ittia/db/db_stream.h&gt;</span><span class="cp"></span>
+
+<span class="cm">/* A handle to previously assigned stream output node */</span>
+<span class="n">db_stream_node_t</span> <span class="n">s0</span><span class="p">;</span>
+
+<span class="c1">// Initial simulation state</span>
+<span class="k">static</span> <span class="kt">int64_t</span> <span class="n">simulation_row_count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">static</span> <span class="kt">int64_t</span> <span class="n">now_ms</span> <span class="o">=</span> <span class="n">start_timestamp_ms</span><span class="p">;</span>
+
+<span class="c1">// Simulation state</span>
+<span class="kt">uint64_t</span> <span class="n">sensor_id</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="kt">int32_t</span> <span class="n">sensor_type</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="n">db_timestamp_usec_t</span> <span class="n">sample_time</span><span class="p">;</span>
+<span class="n">db_float64_t</span> <span class="n">sample_value</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+
+<span class="k">while</span> <span class="p">(</span><span class="n">simulation_row_count</span> <span class="o">&lt;</span> <span class="n">sample_count</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Simulate input</span>
+    <span class="n">sample_time</span> <span class="o">=</span> <span class="n">now_ms</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">;</span>
+    <span class="n">sensor_id</span> <span class="o">=</span> <span class="n">sensor_id</span> <span class="o">%</span> <span class="n">sensor_count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">sample_value</span> <span class="o">=</span> <span class="mf">30.0</span> <span class="o">+</span> <span class="p">(</span><span class="n">simulation_row_count</span> <span class="o">%</span> <span class="mi">100</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.4</span><span class="p">;</span>
+
+    <span class="c1">// Mutate simulation state for next sample</span>
+    <span class="o">++</span><span class="n">simulation_row_count</span><span class="p">;</span>
+    <span class="n">now_ms</span> <span class="o">+=</span> <span class="n">increment_timestamp_ms</span><span class="p">;</span>
+
+    <span class="c1">// Process input</span>
+    <span class="n">db_stream_set_uint64</span><span class="p">(</span><span class="n">s0</span><span class="p">,</span> <span class="n">kSensorId</span><span class="p">,</span> <span class="n">sensor_id</span><span class="p">);</span>
+    <span class="n">db_stream_set_sint32</span><span class="p">(</span><span class="n">s0</span><span class="p">,</span> <span class="n">kSensorType</span><span class="p">,</span> <span class="n">sensor_type</span><span class="p">);</span>
+    <span class="n">db_stream_set_timestamp_usec</span><span class="p">(</span><span class="n">s0</span><span class="p">,</span> <span class="n">kSampleTime</span><span class="p">,</span> <span class="n">sample_time</span><span class="p">);</span>
+    <span class="n">db_stream_set_float64</span><span class="p">(</span><span class="n">s0</span><span class="p">,</span> <span class="n">kSampleValue</span><span class="p">,</span> <span class="n">sample_value</span><span class="p">);</span>
+    <span class="n">db_stream_process</span><span class="p">(</span><span class="n">s0</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="additional-streaming-operations">
+<span id="operations"></span><h2>5.2.2.4. Additional Streaming Operations<a class="headerlink" href="#additional-streaming-operations" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="aggregate-nodes-in-an-iot-stream">
+<h3>5.2.2.4.1. Aggregate Nodes in an IoT Stream<a class="headerlink" href="#aggregate-nodes-in-an-iot-stream" title="Permalink to this headline">¶</a></h3>
+<p>To aggregate nodes, the callback function must be modified to handle a running total.
+The following example shows how to modify the callback function to aggregate nodes:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ittia/db/db_stream.h&gt;</span><span class="cp"></span>
+
+<span class="kt">void</span> <span class="nf">process_aggregate</span><span class="p">(</span><span class="n">db_stream_node_t</span> <span class="n">s</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span> <span class="n">argument</span><span class="p">){</span>
+    <span class="n">db_float64_t</span> <span class="o">*</span> <span class="n">average_value</span> <span class="o">=</span> <span class="p">(</span><span class="n">db_float64_t</span><span class="o">*</span><span class="p">)</span><span class="n">argument</span><span class="p">;</span>
+
+    <span class="kt">char</span> <span class="n">tag</span> <span class="o">=</span> <span class="n">db_stream_get_tag</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+    <span class="k">enum</span> <span class="p">{</span>
+        <span class="n">kCount</span><span class="p">,</span>
+        <span class="n">kSum</span>
+    <span class="p">};</span>
+    <span class="kt">uint64_t</span> <span class="n">row_count</span> <span class="o">=</span> <span class="n">db_stream_get_sint64</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">kCount</span><span class="p">);</span>
+    <span class="kt">uint64_t</span> <span class="n">sum_value</span> <span class="o">=</span> <span class="n">db_stream_get_uint64</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">kSum</span><span class="p">);</span>
+
+    <span class="o">*</span><span class="n">average_value</span> <span class="o">=</span> <span class="n">sum_value</span> <span class="o">/</span> <span class="n">row_count</span><span class="p">;</span>
+    <span class="n">number_updates</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* Handles to previously assigned input node */</span>
+<span class="n">db_stream_node_t</span> <span class="n">s0</span><span class="p">;</span>
+
+<span class="n">db_aggregate_t</span> <span class="n">aggregate_list</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span> <span class="n">DB_AGGREGATE_COUNT</span><span class="p">,</span> <span class="n">DB_AGGREGATE_SUM</span> <span class="p">};</span>
+
+<span class="n">dbstatus_t</span> <span class="n">status</span><span class="p">;</span>
+<span class="n">db_stream_node_t</span> <span class="n">s1</span><span class="p">;</span>
+
+<span class="n">status</span> <span class="o">=</span> <span class="n">db_stream_create_aggregates</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s1</span><span class="p">,</span> <span class="n">s0</span><span class="p">,</span> <span class="n">field_list</span><span class="p">,</span> <span class="n">aggregate_list</span><span class="p">,</span> <span class="n">DB_ARRAY_DIM</span><span class="p">(</span><span class="n">aggregate_list</span><span class="p">);</span>
+
+<span class="k">if</span><span class="p">(</span><span class="n">DB_SUCCESS</span><span class="p">(</span><span class="n">status</span><span class="p">)){</span>
+    <span class="c1">// process intermediate stream query results</span>
+    <span class="n">db_stream_node_t</span> <span class="n">s2</span><span class="p">;</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">db_stream_create_row_output</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s2</span><span class="p">,</span> <span class="n">s1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">process_aggregate</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">row_count</span><span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">if</span><span class="p">(</span><span class="n">DB_SUCCESS</span><span class="p">(</span><span class="n">status</span><span class="p">)){</span>
+
+    <span class="c1">// ...process query results here</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-a-time-window-for-an-iot-stream">
+<h3>5.2.2.4.2. Create a Time Window for an IoT Stream<a class="headerlink" href="#create-a-time-window-for-an-iot-stream" title="Permalink to this headline">¶</a></h3>
+<p>The following example shows how to add a timestamp filter to a continuous query:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ittia/db/db_stream.h&gt;</span><span class="cp"></span>
+
+<span class="cm">/* A reference to previously created input node */</span>
+<span class="n">db_stream_node_t</span> <span class="n">s0</span><span class="p">;</span>
+
+<span class="c1">// Add time interval window: last 10 milliseconds</span>
+<span class="kt">int32_t</span> <span class="n">interval_usec</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">;</span>
+
+<span class="c1">// Size of window queue buffer</span>
+<span class="kt">size_t</span> <span class="n">buffer_row_count</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+
+<span class="n">dbstatus_t</span> <span class="n">status</span><span class="p">;</span>
+<span class="n">db_stream_node_t</span> <span class="n">s1</span><span class="p">;</span>
+<span class="n">status</span> <span class="o">=</span> <span class="n">db_stream_create_time_interval_window</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s1</span><span class="p">,</span> <span class="n">s0</span><span class="p">,</span> <span class="n">interval_usec</span><span class="p">,</span> <span class="n">buffer_row_count</span><span class="p">);</span>
+
+<span class="k">if</span><span class="p">(</span><span class="n">DB_SUCCESS</span><span class="p">(</span><span class="n">status</span><span class="p">)){</span>
+    <span class="c1">// process intermediate stream results</span>
+    <span class="n">db_stream_node_t</span> <span class="n">s2</span><span class="p">;</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">db_stream_create_row_output</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s2</span><span class="p">,</span> <span class="n">s1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">process_aggregate</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">row_count</span><span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">if</span><span class="p">(</span><span class="n">DB_SUCCESS</span><span class="p">(</span><span class="n">status</span><span class="p">)){</span>
+
+    <span class="c1">// ... process query results</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="join-iot-streams">
+<h3>5.2.2.4.3. Join IoT Streams<a class="headerlink" href="#join-iot-streams" title="Permalink to this headline">¶</a></h3>
+<p>The following example combines input from sensor 1 with input from sensor 2
+that arrives during the same one second window:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ittia/db/db_stream.h&gt;</span><span class="cp"></span>
+
+<span class="cm">/* Handle to previously initialized stream graph */</span>
+<span class="n">db_stream_graph_t</span> <span class="n">graph</span><span class="p">;</span>
+
+<span class="cm">/* Define another stream to join with */</span>
+<span class="k">static</span> <span class="k">const</span> <span class="n">db_fielddef_t</span> <span class="n">pressure_fields</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">{</span> <span class="n">kSensorId</span><span class="p">,</span> <span class="s">&quot;sensor_id&quot;</span><span class="p">,</span> <span class="n">DB_COLTYPE_UINT64</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">DB_NOT_NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">kSampleTime</span><span class="p">,</span> <span class="s">&quot;sample_time&quot;</span><span class="p">,</span> <span class="n">DB_COLTYPE_TIMESTAMP</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">DB_NOT_NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">kPressurePa</span><span class="p">,</span> <span class="s">&quot;temperature_C&quot;</span><span class="p">,</span> <span class="n">DB_COLTYPE_FLOAT64</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">DB_NOT_NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span> <span class="p">},</span>
+<span class="p">};</span>
+
+<span class="k">static</span> <span class="k">const</span> <span class="kt">size_t</span> <span class="n">pressure_nfields</span>  <span class="o">=</span> <span class="n">DB_ARRAY_DIM</span><span class="p">(</span><span class="n">pressure_fields</span><span class="p">);</span>
+
+<span class="c1">// Create input node with buffer for one row</span>
+<span class="n">db_stream_node_t</span> <span class="n">s0</span><span class="p">;</span>
+<span class="n">db_stream_create_row_input</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s0</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">pressure_fields</span><span class="p">,</span> <span class="n">pressure_nfields</span><span class="p">,</span> <span class="n">kSampleTime</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="c1">// Create another input node with buffer for one row</span>
+<span class="n">db_stream_node_t</span> <span class="n">s1</span><span class="p">;</span>
+<span class="n">db_stream_create_row_input</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s1</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">nfields</span><span class="p">,</span> <span class="n">kSampleTime</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="n">db_stream_node_t</span> <span class="n">s2</span><span class="p">;</span>
+<span class="n">db_stream_node_t</span> <span class="n">join_sources</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="n">s0</span><span class="p">,</span> <span class="n">s1</span> <span class="p">};</span>
+<span class="n">db_fieldno_t</span> <span class="n">join_keys</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="n">kSensorId</span><span class="p">,</span> <span class="n">kSensorId</span> <span class="p">};</span>
+<span class="kt">int32_t</span> <span class="n">interval_usec</span> <span class="o">=</span> <span class="mi">1000</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">;</span>
+
+<span class="n">dbstatus_t</span> <span class="n">status</span><span class="p">;</span>
+
+<span class="n">status</span> <span class="o">=</span> <span class="n">db_stream_create_join_all_within</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s2</span><span class="p">,</span> <span class="n">join_sources</span><span class="p">,</span> <span class="n">join_keys</span><span class="p">,</span> <span class="n">DB_ARRAY_DIM</span><span class="p">(</span><span class="n">join_sources</span><span class="p">),</span> <span class="n">interval_usec</span><span class="p">);</span>
+
+<span class="k">if</span><span class="p">(</span><span class="n">DB_SUCCESS</span><span class="p">(</span><span class="n">status</span><span class="p">)){</span>
+
+    <span class="c1">// ... create query here</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Database Manual</h3>
+          <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../general-information/index.html">1. General Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation/index.html">2. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/index.html">3. Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../storage-engines/index.html">4. Database Engines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. APIs &amp; Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../native-development/index.html">5.1. Building C and C++ API Programs</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.2. ITTIA DB IoT C API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="c.html">5.2.1. Time Series Storage C API</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.2.2. IoT Stream Embedded C API Reference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#set-up-a-stream-processing-environment">5.2.2.1. Set up a Stream Processing Environment</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#initialize-stream-environment">5.2.2.1.1. Initialize Stream Environment</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#create-an-iot-stream">5.2.2.1.2. Create an IoT Stream</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#error-handling">5.2.2.1.3. Error Handling</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#register-data-sources-and-streaming-operators">5.2.2.2. Register Data Sources and Streaming Operators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#process-the-continuous-query-pipeline">5.2.2.3. Process the Continuous Query Pipeline</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#create-a-callback-function">5.2.2.3.1. Create a Callback Function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#query-processing">5.2.2.3.2. Query Processing</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#additional-streaming-operations">5.2.2.4. Additional Streaming Operations</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#aggregate-nodes-in-an-iot-stream">5.2.2.4.1. Aggregate Nodes in an IoT Stream</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#create-a-time-window-for-an-iot-stream">5.2.2.4.2. Create a Time Window for an IoT Stream</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#join-iot-streams">5.2.2.4.3. Join IoT Streams</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../c/index.html">5.3. ITTIA DB SQL C API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cpp/index.html">5.4. ITTIA DB SQL C++ API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../data-types/index.html">6. Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">7. Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../errors.html">8. Error Codes</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="../../search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="c.html" title="5.2.1. Time Series Storage C API"
+              >previous</a> |
+            <a href="../c/index.html" title="5.3. ITTIA DB SQL C API"
+              >next</a>
+          </div>
+          <div role="note" aria-label="source link">
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, ITTIA L.L.C..
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

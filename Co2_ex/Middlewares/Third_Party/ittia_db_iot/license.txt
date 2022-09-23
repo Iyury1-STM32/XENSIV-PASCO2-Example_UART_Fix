@@ -1,0 +1,798 @@
+ITTIA DB EVALUATION LICENSE AGREEMENT
+=====================================
+
+IMPORTANT - READ CAREFULLY: THIS IS A BINDING LICENSE AGREEMENT BETWEEN
+YOU AND ITTIA L.L.C. FOR THE ACCOMPANYING ITTIA DATABASE SOFTWARE AND
+ANY RELATED DOCUMENTATION. BY DOWNLOADING AND INSTALLING, YOU (ON BEHALF
+OF YOURSELF OR AS AN AUTHORIZED REPRESENTATIVE OR ON BEHALF OF AN
+ENTITY) AGREE TO ALL THE TERMS AND CONDITIONS OF THIS AGREEMENT
+REGARDING YOUR USE OF THE DATABASE SOFTWARE AND ACKNOWLEDGE AND AGREE
+WITH ALL THE TERMS AND CONDITION. IF YOU DO NOT AGREE, DELETE AND
+DESTROY THE DATABASE SOFTWARE AND DO NOT PROCEED.
+
+1.  NOTICE. This is a legal evaluation license ("Agreement") between you
+    ("LICENSEE") and ITTIA L.L.C, a Washington Limited Liability Company
+    ("ITTIA"). By installing, copying, or otherwise using the Database
+    Software accompanying this Agreement, which includes computer
+    software and "online" or electronic documentation, associated media,
+    benchmarks, and printed materials, you agree to be bound by the
+    terms and conditions of this Agreement. The right to use the
+    Database Software is time limited. All rights granted to LICENSEE in
+    this Agreement will be void after the end of the evaluation period,
+    which is no later than 30 days after LICENSEE received the Database
+    Software.
+
+2.  SUBJECT MATTER OF THE LICENSE. This Agreement is a novation of all
+    prior agreements, and integration of all proposals and
+    representations between ITTIA and LICENSEE, regarding all ITTIA
+    software in your possession for evaluation, including the contents
+    of any sealed media package(s), earlier releases of the software,
+    all accompanying written materials, whether contained in manuals,
+    sealed media package(s) or otherwise (hereafter referred to as
+    "Database Software").
+
+3.  LICENSE TO EVALUATE. ITTIA grants LICENSEE a limited, non-exclusive,
+    nonassignable, nontransferable license to make and use copies of the
+    Database Software for the sole purpose of evaluating the Database
+    Software. This license offers the right to evaluate the Database
+    Software for development of computer programs in compiled, linked,
+    executable form ("Product"), provided Product that includes the
+    Database Software does not constitute a database management system
+    that could be used to commercially compete with the Database
+    Software. The evaluation version of the Database Software may be
+    limited to one million transactions, three tables, and five indexes
+    per database. LICENSEE shall not use the Database Software, or any
+    portion thereof, for any production or commercial purpose, only for
+    evaluation.
+
+4.  BENCHMARK TESTING. LICENSEE shall not disclose the results of any
+    benchmark test of the Database Software to any third party without
+    ITTIA's prior written approval.
+
+5.  OTHER RESTRICTIONS. The license(s) granted herein are personal to
+    the LICENSEE specified during the evaluation period. The LICENSEE
+    may be an individual or organization. The LICENSEE may be a division
+    or subsidiary of a larger organization or the affiliate of a smaller
+    organization.  Additional licenses for development and distribution
+    by the LICENSEE or its affiliates must be separately obtained from
+    ITTIA. LICENSEE may not develop (beyond prototypes), use, reproduce,
+    modify, distribute, disclose, or transfer the Database Software
+    except as allowed by this license Agreement. LICENSEE may not sell,
+    sublicense, rent, lease, assign, give, or otherwise transfer any
+    part of the Database Software or this license. LICENSEE may not
+    retain copies, even of prior versions of the Database Software,
+    after the termination of this license. LICENSEE's obligations under
+    this Agreement survive any termination of the licenses granted by
+    this Agreement. You shall not distribute any software statically or
+    dynamically linked with the Database Software.
+
+6.  REVERSE ENGINEERING. As the LICENSEE, you may not reverse engineer,
+    disassemble, or decompile the Database Software, or otherwise
+    attempt to discover the source code of the Database Software, except
+    where expressly permitted by the applicable law to obtain
+    compatibility with other software programs, and only after prior
+    written notification and approval by ITTIA.
+
+7.  DATABASE SOFTWARE ACCESS. Access to the Database Software shall be
+    limited to employees and contractors of LICENSEE who (i) require
+    access to the Database Software for the purposes of evaluation and
+    (ii) have signed a confidentiality agreement in which such employee
+    or contractor agrees to protect third party confidential information
+    with terms no less stringent than those set forth in this Agreement.
+    LICENSEE agrees that any breach by any employee or contractor of
+    such employee's and contractor's obligations under such
+    confidentiality agreements shall also constitute a breach by
+    LICENSEE hereunder. LICENSEE shall maintain and, upon ITTIA's
+    reasonable request, provide to ITTIA, the names of all employees and
+    contractors who have had access to the Database Software.
+
+8.  OWNERSHIP AND INTELLECTUAL PROPERTY RIGHTS. The Database Software is
+    owned by ITTIA and is protected by national intellectual laws and
+    international treaty provisions. The Database Software contains
+    proprietary information. Therefore, you must protect the Database
+    Software like any other material protected by intellectual property
+    laws (such as copyright, patent, and/or trade secret), ensuring that
+    anyone with access to the Database Software refrains from
+    unauthorized reproduction, use or disclosure. ITTIA retains all
+    rights not expressly granted. No title, property rights or copyright
+    in the Database Software or in any modifications to the Database
+    Software shall pass to the LICENSEE under any circumstances.
+    LICENSEE may not remove, obscure or alter any copyright, trademark,
+    patent, trade secret, confidential, or other proprietary notices on
+    or in the Database Software.
+
+9.  TERMINATION. This license is granted for evaluation purposes only.
+    All grants of license herein expire 30 days after receiving the
+    Database Software. After this date, you must either purchase the
+    software license with the appropriate license agreement or destroy
+    all copies of the Database Software and all derivative works. The
+    license granted herein may also be terminated by returning or
+    destroying all copies of the Database Software materials within your
+    control and so notifying ITTIA in writing. The above licenses,
+    including your right to use the Database Software, will terminate
+    automatically if you infringe ITTIA copyrights or breach this
+    Agreement. Termination of your licenses does not affect your
+    obligations under this Agreement. ITTIA reserve the right to
+    terminate this Agreement with no cause, with 48 hours’notice.
+
+10. EXPORT AND COMPLIANCE WITH LAWS AND POLICIES. LICENSEE agrees to
+    comply with all applicable laws, regulations, rulings, and executive
+    orders and any other applicable jurisdictions including but not
+    limited to those relating to the export or re-export of the Database
+    Software, and with all applicable international laws which must be
+    complied with in order to protect or preserve ITTIA's copyright(s),
+    trade secrets(s) and other Intellectual Proprietary Rights in and to
+    the Database Software.
+
+11. LIMITED WARRANTY. THE DATABASE SOFTWARE, WHEN INCORPORATED INTO THE
+    PRODUCT, IS PROVIDED "AS IS" AND WITHOUT ANY OTHER WARRANTY OF ANY
+    KIND.  ITTIA DISCLAIMS ALL OTHER WARRANTIES, EITHER EXPRESS OR
+    IMPLIED, INCLUDING THE WARRANTIES OF MERCHANTABILITY, AND FITNESS
+    FOR A PARTICULAR PURPOSE. NO ORAL OR WRITTEN INFORMATION OR ADVICE
+    GIVEN BY ITTIA, ITS DEALERS, DISTRIBUTORS, AGENTS, OR EMPLOYEES
+    SHALL CREATE A WARRANTY OR IN ANY WAY INCREASE THE SCOPE OF THIS
+    WARRANTY AND THE LICENSEE MAY NOT RELY ON ANY SUCH INFORMATION OR
+    ADVICE.
+
+12. LIMITED LIABILITY AND INDEMNIFICATION. ITTIA SHALL NOT BE LIABLE FOR
+    ANY SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+    NOT LIMITED TO, DAMAGES FOR LOSS OF BUSINESS, LOSS OF PROFITS, COSTS
+    OF COVER, OR THE LIKE) ARISING OUT OF THE USE OR INABILITY TO USE
+    THE DATABASE SOFTWARE (WHETHER ARISING IN CONTRACT, TORT,
+    NEGLIGENCE, OR OTHERWISE) EVEN IF ITTIA OR ITS REPRESENTATIVES HAVE
+    BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. IN PARTICULAR, THE
+    LICENSEE RECOGNIZES THAT THE DATABASE SOFTWARE MAY BE PART OF A
+    SYSTEM USED TO CONTROL EXPENSIVE OR DANGEROUS EQUIPMENT. ITTIA SHALL
+    NOT BE LIABLE FOR ANY DAMAGE OR INJURY RESULTING FROM THE OPERATION
+    OF SUCH EQUIPMENT. LICENSEE agrees to indemnify, defend and hold
+    ITTIA harmless from any claim, lawsuit, legal proceeding,
+    settlement, or judgment (including without limitation ITTIA's
+    reasonable the United States and local attorneys' and expert
+    witnesses' fees and costs) arising out of or in connection with the
+    copying, marketing, performance or other distribution of the
+    Products.  In no event will ITTIA liability arising out of this
+    agreement exceed the aggregate amount received by ITTIA from
+    LICENSEE under this Agreement.
+
+13. THE LIMITED WARRANTY AND LIMITED LIABILITY SPECIFIED IN THIS
+    AGREEMENT ARE FUNDAMENTAL ELEMENTS OF THE BASIS OF THE BARGAIN
+    BETWEEN ITTIA AND THE LICENSEE. ITTIA WOULD NOT BE ABLE TO PROVIDE
+    THE DATABASE SOFTWARE WITHOUT SUCH LIMITATIONS.
+
+14. NON-DISCLOSURE OF CONFIDENTIAL INFORMATION. The parties agree that
+    Confidential Information shall mean information covering the
+    following: (i) pricing of the Database Software (ii) the Database
+    Software, (iii) the technology, ideas, know-how, documentation,
+    processes, algorithms, and trade secrets or associated trademarks
+    with the Database Software, (iv) the LICENSEE's project and business
+    details, disclosed by either of the parties to the other party under
+    this Agreement. Both parties agree to maintain Confidential
+    Information in confidence by using a reasonable degree of care in
+    order to ensure that no unauthorized persons shall have access to
+    the Confidential Information. The parties agree that the terms of
+    this section shall continue in full force and effect irrespective of
+    the expiration or termination of this Agreement for a period of five
+    (5) years from the Effective Date (as specified below) of this
+    Agreement unless otherwise specified in a future agreement between
+    the parties. ITTIA and LICENSEE further agree that each party shall
+    protect the existence and terms of this Agreement, including
+    information about the evaluation of the Database Software in
+    LICENSEE's business and terms around such use, as Confidential
+    Information. Confidential Information shall not include that
+    information which (i) becomes part of the public domain through no
+    breach by any of the parties; (ii) is independently developed
+    without the use of Confidential Information; or (iii) is rightfully
+    disclosed by a third party.
+
+15. U.S. GOVERNMENT RESTRICTED RIGHTS. ITTIA software and documentation
+    are provided with restricted rights. Use, duplication, or disclosure
+    by the Government is subject to restrictions.
+
+16. SEVERABILITY. Whenever possible, each provision of this Agreement
+    shall be interpreted in such a manner as to be valid and effective
+    under applicable law. If any provision is invalid, the remaining
+    provisions remain enforceable.
+
+17. EXPORT LICENSES. You agree that You will not export any United
+    States source technical data acquired from ITTIA, or the Database
+    Software, to any country for which the United States Government or
+    any agency, at the time of export, requires an export license or
+    other governmental approval without first obtaining the license or
+    approval required by applicable United States law.
+
+18. Injunctive Relief. LICENSEE agrees that its breach of this Agreement
+    will cause ITTIA irreparable harm for which recovery of monetary
+    damages would be inadequate and that ITTIA will therefore be
+    entitled to seek timely injunctive relief to protect ITTIA's rights
+    in addition to any and all remedies available by law.
+
+19. Export Control. All software and technical information delivered
+    under this Agreement are subject to U.S. export controls under the
+    Export Administration Regulations (the "EAR") or the International
+    Traffic in Arms Regulations (the "ITAR") and may be subject to
+    export, re-export, or import regulations in other countries.
+    LICENSEE agrees to strictly comply with all such laws and
+    regulations. LICENSEE will not export or re-export the software and
+    technical information, directly or indirectly, to (1) any countries
+    that are subject to US export restrictions (currently including, but
+    not necessarily limited to, Cuba, Iran, North Korea, Sudan, and
+    Syria); (2) any end-user who LICENSEE knows or has reason to know
+    will utilize them in the design, development or production of
+    nuclear, chemical or biological weapons, or rocket systems, space
+    launch vehicles, and sounding rockets, or unmanned air vehicle
+    systems; or (3) any end-user who has been prohibited from
+    participating in US export transactions by any federal agency of the
+    US government.
+
+20. LAW AND JURISDICTION. The governing law for this Agreement is the
+    law of California State, the U.S.A. and any disputes which have not
+    been capable of resolution by friendly negotiation shall be brought
+    before the Federal Courts in Orange County, California State, USA.
+    The United Nations Convention on the International Sale of Goods
+    does not apply to this Agreement. Any controversy or claim arising
+    out of or relating to this Agreement, or the breach thereof, shall
+    be settled by binding arbitration in Orange County, California under
+    the Commercial Arbitration Rules of the American Arbitration
+    Association by one arbitrator appointed in accordance with said
+    rules. Judgment on the award rendered by the arbitrator may be
+    entered in any court having jurisdiction thereof. Notwithstanding
+    the foregoing, the parties may apply to any court of competent
+    jurisdiction for injunctive relief without breach of this
+    arbitration provision. If any provision or provisions of this
+    Agreement are determined to be invalid, illegal, or unenforceable,
+    the validity, legality, and enforceability of the remaining
+    provisions of this Agreement will not in any way be affected or
+    impaired thereby. The prevailing party in such proceeding will be
+    entitled to recover its costs and expenses, including reasonable
+    attorneys' fees.
+
+Ver. 20220608
+
+ITTIA DB CONSOLE SOFTWARE LICENSE AGREEMENT
+===========================================
+
+IMPORTANT - READ CAREFULLY: THIS IS A BINDING LICENSE AGREEMENT BETWEEN
+YOU AND ITTIA L.L.C. FOR THE ACCOMPANYING ITTIA DATABASE SOFTWARE AND
+ANY RELATED DOCUMENTATION. BY DOWNLOADING AND INSTALLING, YOU (ON BEHALF
+OF YOURSELF OR AS AN AUTHORIZED REPRESENTATIVE OR ON BEHALF OF AN
+ENTITY) AGREE TO ALL THE TERMS AND CONDITIONS OF THIS AGREEMENT
+REGARDING YOUR USE OF THE DATABASE SOFTWARE AND ACKNOWLEDGE AND AGREE
+WITH ALL THE TERMS AND CONDITION. IF YOU DO NOT AGREE, DELETE AND
+DESTROY THE DATABASE SOFTWARE AND DO NOT PROCEED.
+
+ITTIA DB Console Software License Agreement ("IDBC") is a supplementary
+license for the ITTIA DB ("Database Software" product. IDBC includes
+third-party licenses and amends the terms and conditions of ITTIA DB
+SOFTWARE LICENSE AGREEMENT and ITTIA DB EVALUATION LICENSE AGREEMENT.
+LICENSEE is only authorized to use the ITTIA DB Console Software when it
+agrees to both this IDBC and ITTIA Database Software terms and
+conditions.
+
+DEFINITIONS.
+
+"Open Source Software" or "OSS" refers to any software that contains or is
+derived in any manner (in whole or in part) from any software that is
+distributed as open-source code pursuant to an OSS License or similar
+distribution models, including, but not limited to, software subject to
+a license published by the Open Source Initiative (http://opensource.org/).
+
+"OSS License" means a license requiring (as a condition of use,
+modification, or distribution) that the ITTIA DB Console Software, or
+any portion thereof, or other materials combined or distributed with the
+ITTIA Database Software, or any portion thereof, be: (i) disclosed or
+distributed in source code form, including hardware description
+language, software source code, or other similar form; (ii) licensed for
+the purpose of making derivative works; or (iii) licensed or
+redistributable at no charge. Notwithstanding the foregoing, OSS License
+includes any license identified as an open source license by the Open
+Source Initiative (http://opensource.org), Free Software Foundation
+(http://www.fsf.org) or other similar open source organization or listed
+by the Software Package Data Exchange (SPDX) Workgroup under the Linux
+Foundation ().
+
+TERMS AND CONDITIONS.
+
+1.  DEVELOPMENT LICENSE. ITTIA DB Console is an optional software
+    component that extends the capabilities of the ITTIA Database
+    Software and can only be installed by any LICENSEE with a valid
+    commercial ITTIA Database Software license.  DBC license is
+    exclusively valid when you have active and valid commercial ITTIA
+    Database Software license for all Authorized Developers involved in
+    your Product development and Project. Subject to the terms and
+    conditions of the ITTIA Database Software Agreement and IDBC ITTIA
+    grants to you a limited, non-exclusive, personal, non-sublicensable,
+    non-transferable, non-assignable license for the ITTIA Console
+    Software.
+
+2.  OPEN SOURCE SOFTWARE; OTHER THIRD-PARTY LICENSING CONSIDERATIONS.
+
+3.  OPEN SOURCE SOFTWARE. ITTIA DB Console contains certain Open Source
+    Software. Open Source Software are identified in the Schedule-A of
+    this IDBC agreement. Notwithstanding anything else herein, all Open
+    Source Software delivered as part of ITTIA DB Console Software is
+    also subject to the relevant third-party OSS License (including any
+    proprietary notices, disclaimers, requirements and/or extended use
+    rights outlined in such OSS License, to the extent applicable) and
+    in the event of any conflict between the terms of this Agreement and
+    the OSS License for the specific use case, then the OSS license
+    shall prevail with respect to the specific third-party Open Source
+    Software.
+
+4.  OTHER THIRD-PARTY LICENSES. Before using any of the Software
+    (including any Updates) included in the ITTIA DB Console, LICENSEE
+    shall review and agree to the special third-party licenses set out
+    in the Schedule-A.
+
+**ENTIRE AGREEMENT.** This Agreement contains the entire agreement
+between ITTIA and LICENSEE for evaluation and there are no other
+promises or conditions in any other oral or written agreement.
+
+Schedule-A
+----------
+
+THIRD-PARTY OPEN-SOURCE SOFTWARE LICENSES
+
+Library Name: Civetweb
+
+Copyright (c) 2013-2020 The CivetWeb developers
+([CREDITS.md](https://github.com/civetweb/civetweb/blob/master/CREDITS.md))
+
+Copyright (c) 2004-2013 Sergey Lyubka; Copyright (c) 2013 No Face Press, LLC
+(Thomas Davis); Copyright (c) 2013 F-Secure Corporation; Permission is hereby
+granted, free of charge, to any person obtaining a copy of this software and
+associated documentation files (the "Software"), to deal in the Software
+without restriction, including without limitation the rights to use, copy,
+modify, merge, publish, distribute, sublicense, and/or sell copies of the
+Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS
+IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Library Name: yaml-cpp
+
+Copyright: 2008 Jesse Beder <jbeder@gmail.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS
+IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+AND NONINFRINGEMENT. IN NO EVENT SHALL THE X CONSORTIUM BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+OR OTHER DEALINGS IN THE SOFTWARE.
+
+Library Name: @fortawesome/fontawesome-svg-core
+
+Font Awesome Free License
+
+Font Awesome Free is free, open source, and GPL friendly. You can use it for
+commercial projects, open source projects, or really almost whatever you want.
+Full Font Awesome Free license: https://fontawesome.com/license/free. # Icons:
+CC BY 4.0 License (https://creativecommons.org/licenses/by/4.0/). In the Font
+Awesome Free download, the CC BY 4.0 license applies to all icons packaged as
+SVG and JS file types.
+
+# Fonts: SIL OFL 1.1 License (https://scripts.sil.org/OFL)
+
+In the Font Awesome Free download, the SIL OFL license applies to all icons
+packaged as web and desktop font files.
+
+# Code: MIT License (https://opensource.org/licenses/MIT)
+
+In the Font Awesome Free download, the MIT license applies to all non-font and
+non-icon files.
+
+# Attribution
+
+Attribution is required by MIT, SIL OFL, and CC BY licenses. Downloaded Font
+Awesome Free files already contain embedded comments with sufficient
+attribution, so you shouldn't need to do anything additional when using these
+files normally.
+
+We've kept attribution comments terse, so we ask that you do not actively work
+to remove them from files, especially code. They're a great way for folks to
+learn about Font Awesome.
+
+# Brand Icons
+
+All brand icons are trademarks of their respective owners. The use of these
+trademarks does not indicate endorsement of the trademark holder by Font
+Awesome, nor vice versa. **Please do not use brand logos for any purpose except
+to represent the company, product, or service to which they refer.**
+
+Library Name: @fortawesome/vue-fontawesome
+
+Copyright 2018 Fonticons, Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHERLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+Library Name: axios
+
+Copyright (c) 2014-present Matt Zabriskie
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Library Name: bootstrap
+
+Copyright (c) 2011-2019 Twitter, Inc.
+
+Copyright (c) 2011-2019 The Bootstrap Authors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Library Name: bootstrap-vue
+
+Copyright (c) 2016-2019 - BootstrapVue
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Library Name: chart.js
+
+Copyright (c) 2018 Chart.js Contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS
+IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Library Name: css-loader
+
+Copyright JS Foundation and other contributors Permission is hereby granted,
+free of charge, to any person obtaining a copy of this software and associated
+documentation files (the 'Software'), to deal in the Software without
+restriction, including without limitation the rights to use, copy, modify,
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+to permit persons to whom the Software is furnished to do so, subject to the
+following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED 'AS
+IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Library Name: is-buffer
+
+Copyright (c) Feross Aboukhadijeh
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS
+IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Library Name: lodash
+
+Copyright OpenJS Foundation and other contributors <https://openjsf.org/>
+
+Based on Underscore.js, copyright Jeremy Ashkenas, DocumentCloud and
+Investigative Reporters & Editors <http://underscorejs.org/>
+
+This software consists of voluntary contributions made by many individuals. For
+exact contribution history, see the revision history available at
+https://github.com/lodash/lodash
+
+The following license applies to all parts of this software except as
+documented below:
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Library Name: moment
+
+Copyright (c) JS Foundation and other contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS
+IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Library Name: popper.js
+
+Copyright (c) 2019 Federico Zivolo
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Library Name: portal-vue
+
+Copyright (c) 2017 Thorsten Lünborg
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS
+IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Library Name: process
+
+Copyright (c) 2013 Roman Shtylman <shtylman@gmail.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the 'Software'), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED 'AS
+IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Library Name: vue
+
+Copyright (c) 2013-present, Yuxi (Evan) You
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS
+IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Library Name: vue-chartjs
+
+Copyright (c) 2016 Jakub Juszczak
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS
+IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Library Name: vue-functional-data-merge
+
+Copyright (c) 2017 Alex Regan
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS
+IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Library Name: vue-loader
+
+Copyright (c) 2015-present Yuxi (Evan) You
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS
+IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Library Name: vue-router
+
+Copyright (c) 2013-present Evan You
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS
+IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Library Name: webpack
+
+Copyright JS Foundation and other contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the 'Software'), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED 'AS
+IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

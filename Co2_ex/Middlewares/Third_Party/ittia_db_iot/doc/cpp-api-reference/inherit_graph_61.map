@@ -1,0 +1,20 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$a00658.html" title="Bind traits for pointers of unknown size." alt="" coords="5,333,211,374"/>
+<area shape="rect" id="node2" href="$a00662.html" title=" " alt="" coords="260,5,504,61"/>
+<area shape="rect" id="node4" href="$a00662.html" title=" " alt="" coords="270,85,494,141"/>
+<area shape="rect" id="node6" href="$a00662.html" title=" " alt="" coords="263,165,501,221"/>
+<area shape="rect" id="node8" href="$a00662.html" title=" " alt="" coords="266,245,498,301"/>
+<area shape="rect" id="node10" href="$a00662.html" title=" " alt="" coords="259,325,505,381"/>
+<area shape="rect" id="node12" href="$a00662.html" title=" " alt="" coords="259,405,505,461"/>
+<area shape="rect" id="node14" href="$a00662.html" title=" " alt="" coords="266,485,498,541"/>
+<area shape="rect" id="node16" href="$a00662.html" title=" " alt="" coords="269,565,495,621"/>
+<area shape="rect" id="node18" href="$a00662.html" title="Bind traits for NUL&#45;terminated character strings." alt="" coords="282,646,482,687"/>
+<area shape="rect" id="node3" href="$a00794.html" title="Bind traits for NUL&#45;terminated array of db_ansi_t type." alt="" coords="553,13,740,54"/>
+<area shape="rect" id="node5" href="$a00782.html" title="Bind traits for NUL&#45;terminated array of db_utf8_t type." alt="" coords="553,93,740,134"/>
+<area shape="rect" id="node7" href="$a00798.html" title="Bind traits for NUL&#45;terminated const array of db_utf8_t type." alt="" coords="553,173,740,214"/>
+<area shape="rect" id="node9" href="$a00790.html" title="Bind traits for NUL&#45;terminated array of db_utf32_t type." alt="" coords="553,253,740,294"/>
+<area shape="rect" id="node11" href="$a00802.html" title="Bind traits for NUL&#45;terminated const array of db_utf16_t type." alt="" coords="553,333,740,374"/>
+<area shape="rect" id="node13" href="$a00806.html" title="Bind traits for NUL&#45;terminated const array of db_utf32_t type." alt="" coords="553,413,740,454"/>
+<area shape="rect" id="node15" href="$a00786.html" title="Bind traits for NUL&#45;terminated array of db_utf16_t type." alt="" coords="553,493,740,534"/>
+<area shape="rect" id="node17" href="$a00778.html" title="Bind traits for NUL&#45;terminated array of db_ansi_t type." alt="" coords="553,573,740,614"/>
+</map>

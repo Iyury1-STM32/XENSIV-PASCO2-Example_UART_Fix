@@ -1,0 +1,499 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>5.3.2. Database Design &#8212; ITTIA DB IoT Embedded Database Manual</title>
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/ittia.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.3.3. Transactions" href="transactions.html" />
+    <link rel="prev" title="5.3.1. Getting Started" href="getting-started.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+          <p class="logo"><a href="../../index.html">
+            <img class="logo" src="../../_static/logo.png" alt="Logo"/>
+          </a></p>
+        <div class="headertitle"><a
+          href="../../index.html">ITTIA DB IoT Embedded Database Manual</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="getting-started.html" title="5.3.1. Getting Started"
+             accesskey="P">previous</a>
+           |
+          <a href="transactions.html" title="5.3.3. Transactions"
+             accesskey="N">next</a>
+           |
+          <a href="../../contents.html">Contents</a>
+           |
+          <a href="../../../c-api-reference/index.html">C API</a>
+           |
+          <a href="../../../cpp-api-reference/index.html">C++ API</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="database-design">
+<h1>5.3.2. Database Design<a class="headerlink" href="#database-design" title="Permalink to this headline">¶</a></h1>
+<p>Tables and related database objects must be created before storing data in a
+database. ITTIA DB IoT supports database design through API functions.
+This section describes how to design a schema in a C program without using SQL statements.</p>
+<div class="section" id="column-types">
+<span id="c-api-column-types"></span><h2>5.3.2.1. Column Types<a class="headerlink" href="#column-types" title="Permalink to this headline">¶</a></h2>
+<p>ITTIA DB IoT can store data in a wide range of types. Every column has a
+<a class="reference internal" href="../../data-types/index.html#data-types"><span class="std std-ref">data type</span></a>, which limits the kind of data that can be
+stored in that column. This ensures that data is always in the expected
+format when retrieved from the database and imposes a hard limit on the
+amount of storage needed for each row.</p>
+<p>To select the type of a column, set the <code class="docutils literal notranslate"><span class="pre">field_type</span></code> of a <code class="docutils literal notranslate"><span class="pre">db_fielddef_t</span></code>
+structure to the schema identifier listed in <a class="reference internal" href="#c-column-types-table"><span class="std std-numref">Table 5.1, &quot;C Column
+Types&quot;</span></a>, when a table is created as described in
+<a class="reference internal" href="#c-schema-definition"><span class="std std-numref">Section 5.3.2.2, &quot;Tables, Fields and Indexes&quot;</span></a>. To
+access data stored in a column, use the data type identifier to bind the
+column to a variable of the listed C data type. See <a class="reference internal" href="rows.html#c-rows"><span class="std std-numref">Section 5.3.4,
+&quot;Rows&quot;</span></a>, for more information about binding a column in a row to a
+variable.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p>Column types in the same category can be bound to the C data type of
+any other column type in the same category. For example, a column of
+type <code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_SINT8</span></code> can be bound to a variable of type
+<code class="docutils literal notranslate"><span class="pre">int32_t</span></code> with the <code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_SINT32</span></code> identifier. Or a column
+of type <code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_UTF8STR</span></code> can be bound to a variable of type
+<code class="docutils literal notranslate"><span class="pre">db_utf16_t</span></code> with the <code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_UTF16STR</span></code> identifier. Data in
+the variable will be automatically converted to the database format.</p>
+<p class="last">Data can be lost when converting to a smaller numeric format. Data
+is not lost when converting between Unicode string types, provided
+that the maximum string length is not exceeded.</p>
+</div>
+<span id="c-column-types-table"></span><table border="1" class="docutils" id="id3">
+<caption><span class="caption-number">Table 5.1: </span><span class="caption-text">C Column Types</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="14%" />
+<col width="33%" />
+<col width="19%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Category</th>
+<th class="head">Schema Identifier</th>
+<th class="head">C Data Type</th>
+<th class="head">C Data Type Identifier</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td rowspan="8">Integer</td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_SINT8</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">int8_t</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_SINT8</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_SINT16</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">int16_t</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_SINT16</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_SINT32</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">int32_t</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_SINT32</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_SINT64</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">int64_t</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_SINT64</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_UINT8</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">uint8_t</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_SINT8</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_UINT16</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">uint16_t</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_SINT16</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_UINT32</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">uint32_t</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_SINT32</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_UINT64</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">uint64_t</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_SINT64</span></code></td>
+</tr>
+<tr class="row-even"><td rowspan="2">Floating Point</td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_FLOAT32</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">db_float32_t</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_FLOAT32</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_FLOAT64</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">db_float64_t</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_FLOAT64</span></code></td>
+</tr>
+<tr class="row-even"><td>Fixed Point</td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_CURRENCY</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">int32_t</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_SINT32</span></code></td>
+</tr>
+<tr class="row-odd"><td>ANSI String</td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_ANSISTR</span></code></td>
+<td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">db_ansi_t</span> <span class="pre">*</span></code>,</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">*</span></code></div>
+</div>
+</td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_ANSISTR</span></code></td>
+</tr>
+<tr class="row-even"><td rowspan="3">Unicode String</td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_UTF8STR</span></code></td>
+<td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">db_utf8_t</span> <span class="pre">*</span></code>,</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">*</span></code></div>
+</div>
+</td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_UTF8STR</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_UTF16STR</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">db_utf16_t</span> <span class="pre">*</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_UTF16STR</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_UTF32STR</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">db_utf32_t</span> <span class="pre">*</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_UTF32STR</span></code></td>
+</tr>
+<tr class="row-odd"><td>Boolean</td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_BOOLEAN</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">db_boolean_t</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_BOOLEAN</span></code></td>
+</tr>
+<tr class="row-even"><td rowspan="4">Date and Time</td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_DATE</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">db_date_t</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_DATE</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_TIME</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">db_time_t</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_TIME</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_DATETIME</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">db_datetime_t</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_DATETIME</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_TIMESTAMP</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">db_timestamp_t</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_TIMESTAMP</span></code></td>
+</tr>
+<tr class="row-even"><td rowspan="2">Time Interval</td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_INTERVAL_DAY_TO_SECOND</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">db_interval_t</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_INTERVAL_DAY_TO_SECOND</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_INTERVAL_YEAR_TO_MONTH</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">db_interval_t</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_INTERVAL_DAY_TO_SECOND</span></code></td>
+</tr>
+<tr class="row-even"><td>Time Series</td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_TIME_SERIES</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">db_time_series_t</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_TIME_SERIES</span></code></td>
+</tr>
+<tr class="row-odd"><td rowspan="2">Binary</td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_BINARY</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_BINARY</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DB_COLTYPE_BLOB</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">db_blob_t</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DB_VARTYPE_BLOB</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Column types are discussed in detail in <a class="reference internal" href="../../data-types/index.html#sql-column-types"><span class="std std-numref">Table 6.6, &quot;Column Types&quot;</span></a>.</p>
+</div>
+<div class="section" id="tables-and-fields">
+<span id="c-schema-definition"></span><h2>5.3.2.2. Tables and Fields<a class="headerlink" href="#tables-and-fields" title="Permalink to this headline">¶</a></h2>
+<p>To create a table, first describe the table’s fields as arrays of
+<code class="docutils literal notranslate"><span class="pre">db_fielddef_t</span></code>. Describe indexes as arrays of <code class="docutils literal notranslate"><span class="pre">db_indexfield_t</span></code> and
+<code class="docutils literal notranslate"><span class="pre">db_index_def_t</span></code>. Then call <code class="docutils literal notranslate"><span class="pre">db_create_table()</span></code> and
+<code class="docutils literal notranslate"><span class="pre">db_create_index()</span></code> to create the table and its indexes.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define MAX_CONTACT_NAME  50</span>
+<span class="cp">#define MAX_FILE_NAME     50</span>
+
+<span class="k">static</span> <span class="n">db_fielddef_t</span> <span class="n">contact_fields</span><span class="p">[]</span> <span class="o">=</span>
+<span class="p">{</span>
+<span class="cp">#define CONTACT_ID              0</span>
+<span class="cp">#define CONTACT_NAME            1</span>
+<span class="cp">#define CONTACT_RING_ID         2</span>
+<span class="cp">#define CONTACT_PICTURE_NAME    3</span>
+<span class="cp">#define CONTACT_PICTURE         4</span>
+    <span class="p">{</span> <span class="n">CONTACT_ID</span><span class="p">,</span>           <span class="s">&quot;id&quot;</span><span class="p">,</span>           <span class="n">DB_COLTYPE_UINT64</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span>                <span class="mi">0</span><span class="p">,</span> <span class="n">DB_NOT_NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">CONTACT_NAME</span><span class="p">,</span>         <span class="s">&quot;name&quot;</span><span class="p">,</span>         <span class="n">DB_COLTYPE_WCHARSTR</span><span class="p">,</span> <span class="n">MAX_CONTACT_NAME</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">DB_NOT_NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">CONTACT_RING_ID</span><span class="p">,</span>      <span class="s">&quot;ring_id&quot;</span><span class="p">,</span>      <span class="n">DB_COLTYPE_UINT64</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span>                <span class="mi">0</span><span class="p">,</span> <span class="n">DB_NULLABLE</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">CONTACT_PICTURE_NAME</span><span class="p">,</span> <span class="s">&quot;picture_name&quot;</span><span class="p">,</span> <span class="n">DB_COLTYPE_ANSISTR</span><span class="p">,</span>  <span class="n">MAX_FILE_NAME</span><span class="p">,</span>    <span class="mi">0</span><span class="p">,</span> <span class="n">DB_NULLABLE</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">CONTACT_PICTURE</span><span class="p">,</span>      <span class="s">&quot;picture&quot;</span><span class="p">,</span>      <span class="n">DB_COLTYPE_BLOB</span><span class="p">,</span>     <span class="mi">0</span><span class="p">,</span>                <span class="mi">0</span><span class="p">,</span> <span class="n">DB_NULLABLE</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span> <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Next define the table as <code class="docutils literal notranslate"><span class="pre">db_tabledef_t</span></code> using the field definitions
+created above.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">db_tabledef_t</span> <span class="n">contact_table</span> <span class="o">=</span>
+<span class="p">{</span>
+    <span class="n">DB_ALLOC_INITIALIZER</span><span class="p">(),</span>
+    <span class="n">DB_TABLETYPE_DEFAULT</span><span class="p">,</span>
+    <span class="s">&quot;contact&quot;</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">,</span> <span class="cm">/* Number of fields in the table. */</span>
+    <span class="n">contact_fields</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="nb">NULL</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="nb">NULL</span>
+<span class="p">};</span>
+
+<span class="n">db_result_t</span> <span class="n">rc</span><span class="p">;</span>
+
+<span class="n">rc</span> <span class="o">=</span> <span class="n">db_create_table</span><span class="p">(</span><span class="n">hdb</span><span class="p">,</span> <span class="n">contact_table</span><span class="o">-&gt;</span><span class="n">table_name</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">contact_table</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">rc</span> <span class="o">==</span> <span class="n">DB_FAIL</span><span class="p">)</span>
+     <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;Unable to create table</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="primary-keys-unique-keys-and-indexes">
+<span id="c-keys"></span><h2>5.3.2.3. Primary Keys, Unique Keys, and Indexes<a class="headerlink" href="#primary-keys-unique-keys-and-indexes" title="Permalink to this headline">¶</a></h2>
+<p>ITTIA DB IoT supports three types of indexes:</p>
+<dl class="docutils">
+<dt><strong>DB_MULTISET_INDEX</strong></dt>
+<dd>The same values can occur in the index multiple times. A multiset
+index will never prevent a row from being inserted.</dd>
+<dt><strong>DB_UNIQUE_INDEX</strong></dt>
+<dd>The index fields for each row must be unique. The same values cannot
+occur in more than one row. However, <code class="docutils literal notranslate"><span class="pre">NULL</span></code> can occur in more than one
+row because NULL is not a value.</dd>
+<dt><strong>DB_PRIMARY_INDEX</strong></dt>
+<dd>The primary key index is identical to a unique index, except that
+all fields must use the <code class="docutils literal notranslate"><span class="pre">DB_NOT_NULL</span></code> flag. Each table can have at
+most one primary key index.</dd>
+</dl>
+<p>First, describe which fields will be include in the index with an array
+of <code class="docutils literal notranslate"><span class="pre">db_indexfield_t</span></code>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="n">db_indexfield_t</span> <span class="n">contact_by_id_fields</span><span class="p">[]</span> <span class="o">=</span>
+<span class="p">{</span>
+    <span class="p">{</span> <span class="n">CONTACT_ID</span><span class="p">,</span> <span class="mi">0</span> <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Define the attributes of the index as <code class="docutils literal notranslate"><span class="pre">db_indexdef_t</span></code>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="n">db_indexdef_t</span> <span class="n">contact_index</span> <span class="o">=</span>
+<span class="p">{</span>
+    <span class="n">DB_ALLOC_INITIALIZER</span><span class="p">(),</span>
+    <span class="n">DB_INDEXTYPE_DEFAULT</span><span class="p">,</span>
+    <span class="s">&quot;by_id&quot;</span><span class="p">,</span>
+    <span class="n">DB_PRIMARY_INDEX</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">,</span>  <span class="cm">/* Number of fields in the index. */</span>
+    <span class="n">contact_by_id_fields</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Create the indexes by calling <code class="docutils literal notranslate"><span class="pre">db_create_index()</span></code> for each index.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">rc</span> <span class="o">=</span> <span class="n">db_create_index</span><span class="p">(</span><span class="n">hdb</span><span class="p">,</span> <span class="n">contact_table</span><span class="o">-&gt;</span><span class="n">table_name</span><span class="p">,</span> <span class="n">contact_index</span><span class="o">-&gt;</span><span class="n">index_name</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">contact_index</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">rc</span> <span class="o">==</span> <span class="n">DB_FAIL</span><span class="p">)</span>
+     <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;Unable to create index</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="foreign-keys">
+<span id="id1"></span><h2>5.3.2.4. Foreign Keys<a class="headerlink" href="#foreign-keys" title="Permalink to this headline">¶</a></h2>
+<p>A foreign key defines a relationship between two tables. Foreign keys
+are used to enforce the existence of related rows by referencing columns
+in another table.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">db_foreign_key_def_t</span> <span class="n">phone_number_foreign_keys</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&quot;CONTACT_REF&quot;</span><span class="p">,</span>
+    <span class="cm">/* Reference the contact table. */</span>
+    <span class="s">&quot;contact&quot;</span><span class="p">,</span>
+    <span class="cm">/* Match type only applies to compound keys (on more than one column.) */</span>
+    <span class="n">DB_FK_MATCH_SIMPLE</span><span class="p">,</span>
+    <span class="cm">/* Protect referenced rows from update or delete. */</span>
+    <span class="n">DB_FK_ACTION_RESTRICT</span><span class="p">,</span> <span class="cm">/* update_rule */</span>
+    <span class="n">DB_FK_ACTION_RESTRICT</span><span class="p">,</span> <span class="cm">/* delete_rule */</span>
+    <span class="cm">/* Checks cannot be deferred until commit. */</span>
+    <span class="n">DB_FK_NOT_DEFERRABLE</span><span class="p">,</span>
+    <span class="cm">/* Checks occur immediately by default. */</span>
+    <span class="n">DB_FK_CHECK_IMMEDIATE</span><span class="p">,</span>
+    <span class="cm">/* Reference the ID field in the contact table. */</span>
+    <span class="mi">1</span><span class="p">,</span>
+    <span class="p">{</span>
+        <span class="p">{</span> <span class="n">PHONE_CONTACT_ID</span><span class="p">,</span> <span class="n">CONTACT_ID</span> <span class="p">},</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>If the foreign key uses more than one field, at least one of which can
+be null, then select an appropriate match option. If not, both match
+options have equivalent behavior.</p>
+<dl class="docutils">
+<dt><strong>DB_FK_MATCH_SIMPLE</strong></dt>
+<dd>Some fields in the foreign key may be null, in which case no row is
+referenced. A row is only referenced when no foreign key fields are
+null.</dd>
+<dt><strong>DB_FK_MATCH_FULL</strong></dt>
+<dd>All fields in the foreign key must be null if any are null. A row is
+only referenced when no foreign key fields are null.</dd>
+</dl>
+<p>When a row is updated or deleted in the referenced table, the database
+will act according to the <code class="docutils literal notranslate"><span class="pre">update_rule</span></code> or <code class="docutils literal notranslate"><span class="pre">delete_rule</span></code>, respectively, in
+the foreign key.</p>
+<dl class="docutils">
+<dt><strong>DB_FK_ACTION_RESTRICT</strong></dt>
+<dd>The action cannot be performed on a referenced row.</dd>
+<dt><strong>DB_FK_ACTION_CASCADE</strong></dt>
+<dd>When the action is performed on key fields in a referenced row, the
+same action is performed on referencing rows.</dd>
+<dt><strong>DB_FK_ACTION_SETNULL</strong></dt>
+<dd>When the action is performed on key fields in a referenced row, all
+foreign key fields in referencing rows are set to null.</dd>
+<dt><strong>DB_FK_ACTION_SETDEFAULT</strong></dt>
+<dd>When the action is performed on key fields in a referenced row, all
+foreign key fields in referencing rows are set to their default
+values.</dd>
+</dl>
+<p>Foreign keys are always checked immediately whenever a row is inserted
+into the referencing table, deleted in the referenced table, or updated
+in either table. Always use <code class="docutils literal notranslate"><span class="pre">DB_FK_NOT_DEFERRABLE</span></code> and
+<code class="docutils literal notranslate"><span class="pre">DB_FK_CHECK_IMMEDIATE</span></code>. Other options are not currently supported.</p>
+<p>Call <code class="docutils literal notranslate"><span class="pre">db_create_foreign_key()</span></code> to add each foreign key to the referencing
+table.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">rc</span> <span class="o">=</span> <span class="n">db_create_foreign_key</span><span class="p">(</span><span class="n">hdb</span><span class="p">,</span> <span class="s">&quot;phone_number&quot;</span><span class="p">,</span> <span class="n">phone_number_foreign_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">rc</span> <span class="o">==</span> <span class="n">DB_FAIL</span><span class="p">)</span>
+     <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;Unable to create foreign key</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="sequence-generators">
+<span id="id2"></span><h2>5.3.2.5. Sequence Generators<a class="headerlink" href="#sequence-generators" title="Permalink to this headline">¶</a></h2>
+<p>Sequence generators are used to generate unique, increasing integer
+values. A sequence generator is created with an initial starting value
+and will then retrieve successive numbers in the sequence. Each
+generated number is always greater than all previous numbers produced by
+the sequence generator. This provides a convenient source for unique
+identifiers.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Sequences may contain gaps, and so should not be used in situations
+where numbers cannot be skipped, such as matching with sequence
+numbers pre-printed on paper forms.</p>
+</div>
+<p>To create a sequence define a <code class="docutils literal notranslate"><span class="pre">db_seqdef_t</span></code> with a name and initial
+value then call the <code class="docutils literal notranslate"><span class="pre">db_create_sequence()</span></code> function.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">db_seqdef_t</span> <span class="n">contact_id_sequence</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&quot;contact_id&quot;</span><span class="p">,</span>
+    <span class="p">{{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">}},</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="p">{{</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">}},</span> <span class="p">{{</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">}},</span> <span class="p">{{</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">}}</span>
+<span class="p">};</span>
+
+<span class="n">rc</span> <span class="o">=</span> <span class="n">db_create_sequence</span><span class="p">(</span><span class="n">hdb</span><span class="p">,</span> <span class="n">contact_id_sequence</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">contact_id_sequence</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">rc</span> <span class="o">==</span> <span class="n">DB_FAIL</span><span class="p">)</span>
+       <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;Unable to create sequence %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">contact_id_sequence</span><span class="o">-&gt;</span><span class="n">seq_name</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>A sequence generator may be used to create a table with an identity column
+that is generated automatically:</p>
+<ol class="arabic simple">
+<li>Create a sequence generator.</li>
+<li>Define an integer field with <code class="docutils literal notranslate"><span class="pre">DB_IDENTITY</span></code> set in <code class="docutils literal notranslate"><span class="pre">field_flags</span></code>.</li>
+<li>Create a table with the same name as the sequence generator and exactly one
+identity field.</li>
+</ol>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Database Manual</h3>
+          <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../general-information/index.html">1. General Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation/index.html">2. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/index.html">3. Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../storage-engines/index.html">4. Database Engines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. APIs &amp; Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../native-development/index.html">5.1. Building C and C++ API Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iot/index.html">5.2. ITTIA DB IoT C API</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.3. ITTIA DB SQL C API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="getting-started.html">5.3.1. Getting Started</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.3.2. Database Design</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#column-types">5.3.2.1. Column Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tables-and-fields">5.3.2.2. Tables and Fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#primary-keys-unique-keys-and-indexes">5.3.2.3. Primary Keys, Unique Keys, and Indexes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#foreign-keys">5.3.2.4. Foreign Keys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sequence-generators">5.3.2.5. Sequence Generators</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="transactions.html">5.3.3. Transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rows.html">5.3.4. Dynamic Rows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="table-cursors.html">5.3.5. C Table Cursors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../cpp/index.html">5.4. ITTIA DB SQL C++ API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../data-types/index.html">6. Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">7. Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../errors.html">8. Error Codes</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="../../search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="getting-started.html" title="5.3.1. Getting Started"
+              >previous</a> |
+            <a href="transactions.html" title="5.3.3. Transactions"
+              >next</a>
+          </div>
+          <div role="note" aria-label="source link">
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, ITTIA L.L.C..
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

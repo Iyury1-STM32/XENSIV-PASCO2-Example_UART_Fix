@@ -1,0 +1,179 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>5.1.1. Microsoft Visual Studio &#8212; ITTIA DB IoT Embedded Database Manual</title>
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/ittia.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.1.2. GNU gcc" href="gnu.html" />
+    <link rel="prev" title="5.1. Building C and C++ API Programs" href="index.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+          <p class="logo"><a href="../../index.html">
+            <img class="logo" src="../../_static/logo.png" alt="Logo"/>
+          </a></p>
+        <div class="headertitle"><a
+          href="../../index.html">ITTIA DB IoT Embedded Database Manual</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="index.html" title="5.1. Building C and C++ API Programs"
+             accesskey="P">previous</a>
+           |
+          <a href="gnu.html" title="5.1.2. GNU gcc"
+             accesskey="N">next</a>
+           |
+          <a href="../../contents.html">Contents</a>
+           |
+          <a href="../../../c-api-reference/index.html">C API</a>
+           |
+          <a href="../../../cpp-api-reference/index.html">C++ API</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="microsoft-visual-studio">
+<h1>5.1.1. Microsoft Visual Studio<a class="headerlink" href="#microsoft-visual-studio" title="Permalink to this headline">¶</a></h1>
+<p>Complete the following steps to add ITTIA DB IoT to a Visual C++ Project:</p>
+<ol class="arabic simple">
+<li>Open Visual Studio and create a new Win32 Console Application project.</li>
+<li>Open the settings for your project from the menu: <em>Project</em> →
+<em>Properties</em>.</li>
+<li>Select All Configurations from the Configuration list.</li>
+<li>Select the property page: <em>Configuration Properties</em> → <em>C/C++</em> →
+<em>General</em>.</li>
+<li>Add <code class="docutils literal notranslate"><span class="pre">$DBDIR\include</span></code> to the <em>Additional Include Directories</em>
+property.</li>
+<li>Select the property page: <em>Configuration Properties</em> → <em>Linker</em>
+→ <em>General</em>.</li>
+<li>Add <code class="docutils literal notranslate"><span class="pre">$DBDIR\lib</span></code> to the <em>Additional Library Directories</em> property.</li>
+<li>Select the property page: <em>Configuration Properties</em> → <em>Linker</em>
+→ <em>Input</em>.</li>
+<li>Add <code class="docutils literal notranslate"><span class="pre">ittiadb.lib</span></code> to the <em>Additional Dependencies</em> property.</li>
+<li>Press <em>OK</em> to close the project settings dialog.</li>
+<li>Add application source code files to the project. You can use the <a class="reference internal" href="../iot/c.html#time-series-c-api"><span class="std std-ref">Time Series storage</span></a> to help you get started.</li>
+<li>Copy <code class="docutils literal notranslate"><span class="pre">ittiadb.dll</span></code> from <code class="docutils literal notranslate"><span class="pre">$DBDIR\bin</span></code> to the project
+directory.</li>
+<li>Build and run your application.</li>
+</ol>
+<p>In the above steps, replace <code class="docutils literal notranslate"><span class="pre">$DBDIR</span></code> with the directory where ITTIA DB IoT
+is installed, including the product and compiler version folders. For
+example: <code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files\ITTIA</span> <span class="pre">DB</span> <span class="pre">IoT\8.2.0\msvc2015_64</span></code>.</p>
+<p>For any project that uses the C++ API, follow these additional steps:</p>
+<ol class="arabic">
+<li><p class="first">Add the project <code class="docutils literal notranslate"><span class="pre">$DBDIR\src\storage.vcxproj</span></code> to the workspace, using
+the menu item: <em>File</em> → <em>Add</em> → <em>Existing Project</em>.</p>
+</li>
+<li><p class="first">Answer <em>Yes</em> when asked whether you should convert and open this
+project.</p>
+</li>
+<li><p class="first">Include the <em>storage</em> project as a dependency for your project. Select
+your project, then go to the menu item: <em>Project</em> → <em>Project</em>
+Dependencies.</p>
+</li>
+<li><p class="first">Check <em>storage</em> in the list that is presented and press <em>OK</em>.</p>
+</li>
+<li><p class="first">Open the settings for your project again and select the property page:
+<em>Configuration Properties</em> → <em>C++</em> → <em>Code Generation</em>.</p>
+</li>
+<li><p class="first">Select Release from the Configuration list. Set the <em>Runtime Library</em>
+property to <em>Multi-threaded DLL (/MD)</em>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This step is necessary because all projects must be compiled using
+the same runtime library. Alternatively, you can change the <em>Runtime
+Library</em> setting for the <em>storage</em> project to match the desired
+setting for your project.</p>
+</div>
+</li>
+<li><p class="first">Select <em>Debug</em> from the <em>Configuration</em> list. Set the <em>Runtime Library</em>
+property to <em>Multi-threaded Debug DLL (/MDd)</em>.</p>
+</li>
+</ol>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Database Manual</h3>
+          <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../general-information/index.html">1. General Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation/index.html">2. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/index.html">3. Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../storage-engines/index.html">4. Database Engines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. APIs &amp; Drivers</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.1. Building C and C++ API Programs</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.1.1. Microsoft Visual Studio</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gnu.html">5.1.2. GNU gcc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iar.html">5.1.3. IAR Embedded Workbench</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../iot/index.html">5.2. ITTIA DB IoT C API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c/index.html">5.3. ITTIA DB SQL C API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cpp/index.html">5.4. ITTIA DB SQL C++ API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../data-types/index.html">6. Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">7. Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../errors.html">8. Error Codes</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="../../search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="index.html" title="5.1. Building C and C++ API Programs"
+              >previous</a> |
+            <a href="gnu.html" title="5.1.2. GNU gcc"
+              >next</a>
+          </div>
+          <div role="note" aria-label="source link">
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, ITTIA L.L.C..
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

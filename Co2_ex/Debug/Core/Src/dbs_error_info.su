@@ -1,0 +1,2 @@
+../Core/Src/dbs_error_info.c:233:18:dbs_get_error_info	40	static
+../Core/Src/dbs_error_info.c:261:1:dbs_find_error	24	static
