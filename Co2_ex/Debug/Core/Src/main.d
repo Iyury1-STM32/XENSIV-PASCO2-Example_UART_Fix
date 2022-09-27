@@ -43,7 +43,6 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Core/Inc/tx_user.h ../LevelX/App/lx_user.h \
  ../Drivers/BSP/Components/mx25lm51245g/mx25lm51245g.h \
  ../Core/Inc/mx25lm51245g_conf.h ../Core/Inc/app_threadx.h \
- ../Core/Inc/xensiv_pasco2_platform.h ../Core/Inc/xensiv_pasco2_regs.h \
  ../Core/Inc/xensiv_pasco2.h ../Core/Inc/xensiv_pasco2_regs.h \
  ../Core/Inc/xensiv_pasco2_platform.h
 ../Core/Inc/main.h:
@@ -93,8 +92,6 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/BSP/Components/mx25lm51245g/mx25lm51245g.h:
 ../Core/Inc/mx25lm51245g_conf.h:
 ../Core/Inc/app_threadx.h:
-../Core/Inc/xensiv_pasco2_platform.h:
-../Core/Inc/xensiv_pasco2_regs.h:
 ../Core/Inc/xensiv_pasco2.h:
 ../Core/Inc/xensiv_pasco2_regs.h:
 ../Core/Inc/xensiv_pasco2_platform.h:

@@ -71,7 +71,6 @@
 #define	PUBLISHER_TASK_PRIORITY    11
 #define	kMaxReadCount 100
 
-
 // 2022-07-15 07:00:00
 #define START_TIMESTAMP 1655276400
 /* USER CODE END PD */
@@ -90,14 +89,11 @@ TX_THREAD               pub_thread;
 db_auth_info_t          db_auth_info = { DB_CIPHER_NONE, NULL, 0, NULL, NULL };
 
 TX_SEMAPHORE meas_rdy_sem;
-
 TX_SEMAPHORE pco2_timer_sem;
 TX_TIMER pco2_timer;
 TX_TIMER meas_watchdog;
 
-
 db_float32_t value = 0.0f;
-
 
 /* USER CODE END PV */
 
@@ -113,7 +109,6 @@ static void meas_watchdog_expired(ULONG arg);
 
 int32_t pasco2_init(void);
 int32_t pasco2_read(float *value);
-
 
 /* USER CODE END PFP */
 
@@ -194,8 +189,7 @@ UINT App_ThreadX_Init(VOID *memory_ptr)
 	Error_Handler();
   }
 
-
-  /* Initialize XENSIV PASCO2 sensor */
+  /* Initialize seamphore for PASCO2 sensor */
   tx_semaphore_create(&meas_rdy_sem,
                 "measurement semp", 0);
 
@@ -203,18 +197,19 @@ UINT App_ThreadX_Init(VOID *memory_ptr)
   tx_semaphore_create(&pco2_timer_sem,
                 "PASCO2 semp", 0);
 
-
   tx_timer_create(&pco2_timer,
                 "PASCO2 timer",
 				pasco2_timer_expired,
                 0, 1000,
                 1000, TX_AUTO_ACTIVATE);
 
+  /* Initialize watchdog timer for measurement task */
   tx_timer_create(&meas_watchdog,
                 "measurement watchodg",
 				meas_watchdog_expired,
                 0, 120000,
 				120000, TX_NO_ACTIVATE );
+
   /* USER CODE END App_ThreadX_Init */
 
   return ret;
@@ -240,6 +235,9 @@ tx_kernel_enter();
 
 /* USER CODE BEGIN 0 */
 
+/* The measurement task samples from the PASCO2 sensor every 10 seconds and saves the value in a
+ * time series to ITTIA DB
+ */
 static void measurementTask(ULONG thread_input)
 {
 	db_t database;
@@ -253,10 +251,8 @@ static void measurementTask(ULONG thread_input)
 		printf("%s (%d) %s\n", err.name, status, err.description);
 		Error_Handler();
 	}
-	/* Open a time series for temperature data. */
+	/* Open a time series for CO2 data. */
 	db_timestamp_usec_t sample_time_usec;
-
-
 	HAL_Delay(1000);
 	db_time_series_t series;
 	status = db_open_time_series(&series, database, "co2 ppm", DB_COLTYPE_FLOAT32);
@@ -266,15 +262,20 @@ static void measurementTask(ULONG thread_input)
 		printf("Time series error\r\n");
 
 	}
+
+	/* Begin measurement task loop */
 	while(1) {
 		#ifdef APPDEBUG
 			printf("Measurement thread running\n\r");
 		#endif
+		/* Wait for timer semaphore so the infrared emitter can cool off */
 		tx_semaphore_get(&pco2_timer_sem, TX_WAIT_FOREVER );
+		/* Activate watchdog timer */
 		tx_timer_activate(&meas_watchdog);
 
-		sample_time_usec = time(0) * 1000000ull;
+		/* Take measurement with time stamp */
 		pasco2_read(&value);
+		sample_time_usec = time(0) * 1000000ull;
 
 		/* Add a timestamp/value pair to to the series. */
 		status = db_time_series_put_float32(series, sample_time_usec, value);
@@ -284,13 +285,17 @@ static void measurementTask(ULONG thread_input)
 			printf("%s (%d) %s\n", err.name, status, err.description);
 		}
 
+		/* Deactivate watchdog timer */
 		tx_timer_deactivate(&meas_watchdog);
 
 		#ifdef APPDEBUG
 		printf("Measurement thread complete\n\r");
 		#endif
 
+		/* Indicate measurement is ready using semaphore */
 		tx_semaphore_ceiling_put(&meas_rdy_sem, 1);
+
+		/* Give up CPU for publisher and subscriber tasks to run */
 		tx_thread_relinquish();
 
 	}
@@ -298,6 +303,8 @@ static void measurementTask(ULONG thread_input)
 
 }
 
+// The publisher task will wait for PASCO2 measurements to be ready, read the value from the ITTIA DB
+// time series, then publish the data to an MQTT topic.
 static void publisherTask(ULONG thread_input)
 {
 	db_t database;
@@ -331,7 +338,6 @@ static void publisherTask(ULONG thread_input)
 		Error_Handler();
 	}
 
-
 	/* Open database for periodic reads */
 	status = db_connect(
 			&database,  // [out] Handle
@@ -347,8 +353,8 @@ static void publisherTask(ULONG thread_input)
 		Error_Handler();
 	}
 
+	/* Open a time series for CO2 data. */
 	HAL_Delay(1000);
-
 	db_time_series_t series;
 	status = db_open_time_series(&series, database, "co2 ppm", DB_COLTYPE_FLOAT32);
 	if (DB_SUCCESS(status)) {
@@ -357,16 +363,13 @@ static void publisherTask(ULONG thread_input)
 		printf("Time series error\r\n");
 	}
 
-
-	/* Start measurement thread */
+	/* Start PASCO2 sensor and the measurement thread */
 	pasco2_init();
-
 	tx_thread_resume(&meas_thread);
 
+	/* Begin publisher task loop */
 	db_timestamp_usec_t begin_time = 0;
-
 	db_timestamp_usec_t timestamp;
-
 	while(1) {
 		#ifdef APPDEBUG
 		printf("Publisher thread running\n\r");
@@ -375,7 +378,7 @@ static void publisherTask(ULONG thread_input)
 			#ifdef APPDEBUG
 			printf("Measurement ready\n\r");
 			#endif
-			// Read timestamp/value pairs between begin_time and end_time
+			// Read next timestamp/value pair
 			status = db_query_time_series_range_float32(
 				series,
 				begin_time,      // start timestamp, inclusive
@@ -398,7 +401,10 @@ static void publisherTask(ULONG thread_input)
 			#endif
 		}
 
+		// Delay can be removed
 		HAL_Delay(2000);
+
+		// Give up CPU so measurement and publisher tasks can run
 		tx_thread_relinquish();
 
 	}
@@ -406,8 +412,12 @@ static void publisherTask(ULONG thread_input)
 
 }
 
+/**
+  * @brief  Initalize PASCO2 sensor
+  * @param void
+  * @retval int - return status
+  */
 int32_t pasco2_init(void) {
-
     int32_t res = xensiv_pasco2_init();
 	if (res != XENSIV_PASCO2_OK) {
 	  printf("PASCO2 I2C Initialization Errorno: %ld\r\n", res);
@@ -417,6 +427,11 @@ int32_t pasco2_init(void) {
 	return res;
 }
 
+/**
+  * @brief Read from PASCO2 sensor
+  * @param float * value - measurement value
+  * @retval int - return status
+  */
 int32_t pasco2_read(float *value) {
 	uint16_t ppm;
 	int32_t res;

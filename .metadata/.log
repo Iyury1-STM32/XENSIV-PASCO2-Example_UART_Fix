@@ -1,0 +1,33 @@
+!SESSION 2022-09-27 11:43:10.132 -----------------------------------------------
+eclipse.buildId=Version 1.10.1
+java.version=11.0.14.1
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2022-09-27 11:44:15.787
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2022-09-27 11:44:15.878
+!MESSAGE Log4j initialized with config file C:\Github\XENSIV-PASCO2-Example\.metadata\.log4j.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2022-09-27 11:44:19.981
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2022-09-27 11:47:36.636
+!MESSAGE Indexed 'Co2_ex' (464 sources, 508 headers) in 20.8 sec: 49,368 declarations; 197,066 references; 3 unresolved inclusions; 74 syntax errors; 1,334 unresolved names (0.54%)
+!SESSION 2022-09-27 14:30:18.457 -----------------------------------------------
+eclipse.buildId=Version 1.10.1
+java.version=11.0.14.1
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2022-09-27 14:30:47.797
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2022-09-27 14:30:47.872
+!MESSAGE Log4j initialized with config file C:\Github\XENSIV-PASCO2-Example\.metadata\.log4j.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2022-09-27 14:31:04.260
+!MESSAGE Started RMI Server, listening on port 41337

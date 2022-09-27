@@ -1,0 +1,479 @@
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * @file    pasco2_example.c
+  * @author  Ian Yurychuk
+  * @brief   Example based on ITTIA DB IoT Workshop application for STM32,
+  * 		 which incorporates measurements from the XENSIV PASCO2 sensor by
+  * 		 Infineon AG.
+  ******************************************************************************
+  */
+
+/**************************************************************************/
+/*                                                                        */
+/*      Copyright (c) 2005-2022 by ITTIA L.L.C. All rights reserved.      */
+/*                                                                        */
+/*  This software is copyrighted by and is the sole property of ITTIA     */
+/*  L.L.C.  All rights, title, ownership, or other interests in the       */
+/*  software remain the property of ITTIA L.L.C.  This software may only  */
+/*  be used in accordance with the corresponding license agreement.  Any  */
+/*  unauthorized use, duplication, transmission, distribution, or         */
+/*  disclosure of this software is expressly forbidden.                   */
+/*                                                                        */
+/*  This Copyright notice may not be removed or modified without prior    */
+/*  written consent of ITTIA L.L.C.                                       */
+/*                                                                        */
+/*  ITTIA L.L.C. reserves the right to modify this software without       */
+/*  notice.                                                               */
+/*                                                                        */
+/*  info@ittia.com                                                        */
+/*  http://www.ittia.com                                                  */
+/*                                                                        */
+/*                                                                        */
+/**************************************************************************/
+
+/* USER CODE END Header */
+
+/* Includes ------------------------------------------------------------------*/
+#include "app_threadx.h"
+
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
+#include "main.h"
+#include "stm32u5xx_hal_cryp.h"
+#include "b_u585i_iot02a_env_sensors.h"
+#include <stdio.h>
+#include <time.h>
+#include <sys/time.h>
+#include <ittia/db/db_iot_storage.h>
+#include "dbs_error_info.h"
+#include "xensiv_pasco2_platform.h"
+#include "xensiv_pasco2_regs.h"
+#include "xensiv_pasco2.h"
+/* USER CODE END Includes */
+
+/* Private typedef -----------------------------------------------------------*/
+/* USER CODE BEGIN PTD */
+
+/* USER CODE END PTD */
+
+/* Private define ------------------------------------------------------------*/
+/* USER CODE BEGIN PD */
+#define DEFAULT_STACK_SIZE               (16 * 1024)
+
+#define kDbPageSize (1 * 1024)
+#define kDbCacheSize (64 * 1024)
+#define kDbFile "ex1_table.ittiadb"
+
+// FileX thread has higher priority than either of these
+#define MEASUREMENT_TASK_PRIORITY    11
+#define	SUBSCRIBER_TASK_PRIORITY    11
+#define	PUBLISHER_TASK_PRIORITY    11
+#define	kMaxReadCount 100
+
+// 2022-07-15 07:00:00
+#define START_TIMESTAMP 1655276400
+/* USER CODE END PD */
+
+/* Private macro -------------------------------------------------------------*/
+/* USER CODE BEGIN PM */
+
+#define APPDEBUG
+
+/* USER CODE END PM */
+
+/* Private variables ---------------------------------------------------------*/
+/* USER CODE BEGIN PV */
+TX_THREAD               meas_thread;
+TX_THREAD               pub_thread;
+db_auth_info_t          db_auth_info = { DB_CIPHER_NONE, NULL, 0, NULL, NULL };
+
+TX_SEMAPHORE meas_rdy_sem;
+TX_SEMAPHORE pco2_timer_sem;
+TX_TIMER pco2_timer;
+TX_TIMER meas_watchdog;
+
+db_float32_t value = 0.0f;
+
+/* USER CODE END PV */
+
+/* Private function prototypes -----------------------------------------------*/
+/* USER CODE BEGIN PFP */
+
+static void measurementTask(ULONG thread_input);
+//static void subscriberTask(ULONG thread_input);
+static void publisherTask(ULONG thread_input);
+static void print_timestamp_value_pair(const char* series_name, db_timestamp_usec_t sample_time, db_float32_t value);
+static void pasco2_timer_expired(ULONG arg);
+static void meas_watchdog_expired(ULONG arg);
+
+int32_t pasco2_init(void);
+int32_t pasco2_read(float *value);
+
+/* USER CODE END PFP */
+
+/**
+  * @brief  Application ThreadX Initialization.
+  * @param memory_ptr: memory pointer
+  * @retval int
+  */
+UINT App_ThreadX_Init(VOID *memory_ptr)
+{
+  UINT ret = TX_SUCCESS;
+  TX_BYTE_POOL *byte_pool = (TX_BYTE_POOL*)memory_ptr;
+
+   /* USER CODE BEGIN App_ThreadX_MEM_POOL */
+  (void)byte_pool;
+  /* USER CODE END App_ThreadX_MEM_POOL */
+
+  /* USER CODE BEGIN App_ThreadX_Init */
+  CHAR * pointer = TX_NULL;
+
+  /* Put system definition stuff in here, e.g. thread creates and other assorted
+     create information. */
+
+  /* Allocate the stack for measurement thread. */
+  ret = tx_byte_allocate(byte_pool, (VOID **) &pointer, DEFAULT_STACK_SIZE, TX_NO_WAIT);
+
+  /* Check DEFAULT_STACK_SIZE allocation*/
+  if (ret != TX_SUCCESS)
+  {
+    /* Failed at allocating memory */
+    Error_Handler();
+  }
+
+  /* Create the measurement thread. */
+  ret = tx_thread_create(&meas_thread, "measurement thread", measurementTask, 0,
+          pointer, DEFAULT_STACK_SIZE,
+          MEASUREMENT_TASK_PRIORITY, MEASUREMENT_TASK_PRIORITY,
+          TX_NO_TIME_SLICE, TX_DONT_START);
+
+  /* Check measurement thread creation */
+  if (ret != TX_SUCCESS)
+  {
+    /* Failed at thread creation memory */
+    Error_Handler();
+  }
+
+  /* Allocate the stack for publisher thread. */
+  ret = tx_byte_allocate(byte_pool, (VOID **) &pointer, DEFAULT_STACK_SIZE, TX_NO_WAIT);
+
+  /* Check DEFAULT_STACK_SIZE allocation*/
+  if (ret != TX_SUCCESS)
+  {
+    /* Failed at allocating memory */
+    Error_Handler();
+  }
+
+  /* Create the reader thread. */
+  ret = tx_thread_create(&pub_thread, "publisher thread", publisherTask, 0,
+          pointer, DEFAULT_STACK_SIZE,
+          PUBLISHER_TASK_PRIORITY, PUBLISHER_TASK_PRIORITY,
+          TX_NO_TIME_SLICE, TX_AUTO_START);
+
+  /* Check reader thread creation */
+  if (ret != TX_SUCCESS)
+  {
+    /* Failed at allocating memory */
+    Error_Handler();
+  }
+  dbstatus_t dbstatus;
+
+  /* Initialize database library */
+  dbstatus = db_init_ex(DB_API_VER, NULL);
+
+  if (dbstatus != DB_NOERROR) {
+	/* Failed at initializing database library */
+	dbs_error_info_t err = dbs_get_error_info(dbstatus);
+	printf("%s (%d) %s\n", err.name, dbstatus, err.description);
+	Error_Handler();
+  }
+
+  /* Initialize seamphore for PASCO2 sensor */
+  tx_semaphore_create(&meas_rdy_sem,
+                "measurement semp", 0);
+
+  /* Initialize timer for PASCO2 sensor */
+  tx_semaphore_create(&pco2_timer_sem,
+                "PASCO2 semp", 0);
+
+  tx_timer_create(&pco2_timer,
+                "PASCO2 timer",
+				pasco2_timer_expired,
+                0, 1000,
+                1000, TX_AUTO_ACTIVATE);
+
+  /* Initialize watchdog timer for measurement task */
+  tx_timer_create(&meas_watchdog,
+                "measurement watchodg",
+				meas_watchdog_expired,
+                0, 120000,
+				120000, TX_NO_ACTIVATE );
+
+  /* USER CODE END App_ThreadX_Init */
+
+  return ret;
+}
+
+/**
+* @brief  MX_ThreadX_Init
+* @param  None
+* @retval None
+*/
+void MX_ThreadX_Init(void)
+{
+/* USER CODE BEGIN  Before_Kernel_Start */
+
+/* USER CODE END  Before_Kernel_Start */
+
+tx_kernel_enter();
+
+/* USER CODE BEGIN  Kernel_Start_Error */
+
+/* USER CODE END  Kernel_Start_Error */
+}
+
+/* USER CODE BEGIN 0 */
+
+static void measurementTask(ULONG thread_input)
+{
+	db_t database;
+	dbstatus_t status;
+
+	/* Connect to database */
+	status = db_connect(&database, kDbFile, NULL, NULL, NULL);
+	if (status != DB_NOERROR) {
+		printf("Error opening database from writer:\n");
+		dbs_error_info_t err = dbs_get_error_info(status);
+		printf("%s (%d) %s\n", err.name, status, err.description);
+		Error_Handler();
+	}
+	/* Open a time series for temperature data. */
+	db_timestamp_usec_t sample_time_usec;
+	HAL_Delay(1000);
+	db_time_series_t series;
+	status = db_open_time_series(&series, database, "co2 ppm", DB_COLTYPE_FLOAT32);
+	if (DB_SUCCESS(status)) {
+	  printf("Measurement time series opened successfully\n\r");
+	} else {
+		printf("Time series error\r\n");
+
+	}
+
+	/* Begin measurement task while loop */
+	while(1) {
+		#ifdef APPDEBUG
+			printf("Measurement thread running\n\r");
+		#endif
+		/* Wait for timer semaphore so infrared emitter can cool off */
+		tx_semaphore_get(&pco2_timer_sem, TX_WAIT_FOREVER );
+		/* Activate watchdog timer */
+		tx_timer_activate(&meas_watchdog);
+
+		sample_time_usec = time(0) * 1000000ull;
+		pasco2_read(&value);
+
+		/* Add a timestamp/value pair to to the series. */
+		status = db_time_series_put_float32(series, sample_time_usec, value);
+		if (DB_FAILED(status)) {
+			printf("Put timestamp/value failed:\n");
+			dbs_error_info_t err = dbs_get_error_info(status);
+			printf("%s (%d) %s\n", err.name, status, err.description);
+		}
+
+		/* Deactivate watchdog timer */
+		tx_timer_deactivate(&meas_watchdog);
+
+		#ifdef APPDEBUG
+		printf("Measurement thread complete\n\r");
+		#endif
+
+		tx_semaphore_ceiling_put(&meas_rdy_sem, 1);
+		tx_thread_relinquish();
+
+	}
+	(void)db_close_time_series(series);
+
+}
+
+static void publisherTask(ULONG thread_input)
+{
+	db_t database;
+	dbstatus_t status;
+
+	/* Create database (we do it here because the reader is started automatically) */
+	while (true) {
+		static uint32_t page_cache[(kDbCacheSize - sizeof(uint32_t) + 1) / sizeof(uint32_t)];
+		status = db_open_iot_file_storage(
+				kDbFile,                  // File name
+				NULL,                     // Alias
+				DB_CREATE_OR_OVERWRITE,   // Flags
+				kDbPageSize,              // Page size
+				page_cache,               // Memory segment
+				sizeof page_cache,        // Segment size
+				&db_auth_info);           // Security settings
+		if (status != DB_ESTATE) {
+			break;
+		}
+
+		/* FileX media is not ready. */
+		tx_thread_sleep(TX_TIMER_TICKS_PER_SECOND * 1u);
+
+		/* Repeat until another thread calls db_set_filex_media(). */
+	}
+
+	if (status != DB_NOERROR) {
+		printf("Error creating database file:\n\r");
+		dbs_error_info_t err = dbs_get_error_info(status);
+		printf("%s (%d) %s\n", err.name, status, err.description);
+		Error_Handler();
+	}
+
+
+	/* Open database for periodic reads */
+	status = db_connect(
+			&database,  // [out] Handle
+			kDbFile,    // Database name
+			NULL,       // User name
+			NULL,       // Password
+			NULL);      // Context pointer
+
+	if (status != DB_NOERROR) {
+		printf("Error opening database from reader:\n\r");
+		dbs_error_info_t err = dbs_get_error_info(status);
+		printf("%s (%d) %s\n", err.name, status, err.description);
+		Error_Handler();
+	}
+
+	HAL_Delay(1000);
+
+	db_time_series_t series;
+	status = db_open_time_series(&series, database, "co2 ppm", DB_COLTYPE_FLOAT32);
+	if (DB_SUCCESS(status)) {
+	  printf("Publisher time series opened successfully\r\n");
+	} else {
+		printf("Time series error\r\n");
+	}
+
+
+	/* Start measurement thread */
+	pasco2_init();
+
+	tx_thread_resume(&meas_thread);
+
+	db_timestamp_usec_t begin_time = 0;
+
+	db_timestamp_usec_t timestamp;
+
+	while(1) {
+		#ifdef APPDEBUG
+		printf("Publisher thread running\n\r");
+		#endif
+		if(tx_semaphore_get(&meas_rdy_sem, TX_NO_WAIT) == TX_SUCCESS) {
+			#ifdef APPDEBUG
+			printf("Measurement ready\n\r");
+			#endif
+			// Read timestamp/value pairs between begin_time and end_time
+			status = db_query_time_series_range_float32(
+				series,
+				begin_time,      // start timestamp, inclusive
+				INT64_MAX,        // end timestamp, exclusive
+				&timestamp, // [out] destination for timestamp data
+				&value,     // [out] destination for value data
+				1,   // maximum number of timestamp/value pairs to read
+				NULL // [out] start timestamp for next batch, if successful
+			);
+			if (DB_SUCCESS(status)) {
+				print_timestamp_value_pair(
+						"co2 ppm",
+						timestamp,
+						value);
+				begin_time = timestamp + 1;
+			}
+		} else {
+			#ifdef APPDEBUG
+			printf("Measurement not ready\n\r");
+			#endif
+		}
+
+		HAL_Delay(2000);
+		tx_thread_relinquish();
+
+	}
+	(void)db_close_time_series(series);
+
+}
+
+int32_t pasco2_init(void) {
+
+    int32_t res = xensiv_pasco2_init();
+	if (res != XENSIV_PASCO2_OK) {
+	  printf("PASCO2 I2C Initialization Errorno: %ld\r\n", res);
+	} else {
+	  printf("PASCO2 Initialized\r\n");
+	}
+	return res;
+}
+
+int32_t pasco2_read(float *value) {
+	uint16_t ppm;
+	int32_t res;
+	xensiv_pasco2_start_single_mode();
+
+	HAL_Delay(2000);
+	res = xensiv_pasco2_get_result(&ppm);
+	if (res != XENSIV_PASCO2_OK) {
+	  printf("CO2 PPM Read error %ld\r\n", res);
+	} else {
+	  printf("CO2 PPM Read Successfully\r\n");
+	}
+	printf("PPM = %d\r\n", ppm);
+
+	*value = (float)ppm;
+
+	return res;
+}
+
+static void pasco2_timer_expired(ULONG arg) {
+	  tx_semaphore_ceiling_put(&pco2_timer_sem, 1);
+}
+
+static void meas_watchdog_expired(ULONG arg) {
+	  tx_thread_suspend(&meas_thread);
+	  printf("Measurement timeout, Measurement thread suspended\n\r");
+}
+
+static void print_timestamp_value_pair(
+	const char* series_name,
+	db_timestamp_usec_t sample_time,
+	db_float32_t value)
+{
+	db_timestamp_t timestamp;
+	db_timestamp_from_usec(&timestamp, sample_time);
+	printf("\"%s\": [\"%d-%02u-%02u %d:%02u:%02u.%06u\", %g],\r\n",
+		series_name,
+		(int)timestamp.datetime.date.year,
+		(unsigned)timestamp.datetime.date.month,
+		(unsigned)timestamp.datetime.date.day,
+		(unsigned)timestamp.datetime.time.hour,
+		(unsigned)timestamp.datetime.time.minute,
+		(unsigned)timestamp.datetime.time.second,
+		(unsigned)timestamp.microsec,
+		value);
+}
+
+int _gettimeofday( struct timeval *tv, void *tzvp )
+{
+	ULONG tx_ticks = tx_time_get();
+
+    tv->tv_sec = START_TIMESTAMP + tx_ticks / TX_TIMER_TICKS_PER_SECOND;
+    tv->tv_usec = (tx_ticks % TX_TIMER_TICKS_PER_SECOND) * (TX_TIMER_TICKS_PER_SECOND / 1000000ull);
+    return 0;
+}
+
+void App_Set_DB_Crypt(void * hcryp)
+{
+	db_auth_info.cipher_type = DB_CIPHER_HARDWARE_AES_CTR;
+	db_auth_info.cipher_data = hcryp;
+	db_auth_info.cipher_data_size = sizeof(CRYP_HandleTypeDef);
+}

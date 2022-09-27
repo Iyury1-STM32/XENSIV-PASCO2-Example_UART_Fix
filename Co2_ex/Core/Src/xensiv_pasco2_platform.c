@@ -67,21 +67,7 @@ extern "C" {
  * @param[in] rx_len I2C receive data size
  * @return XENSIV_PASCO2_OK if the I2C transfer was successful; an error indicating what went wrong otherwise
  */
-int32_t xensiv_pasco2_plat_i2c_transfer(void * ctx, uint16_t dev_addr, const uint8_t * tx_buffer, size_t tx_len, uint8_t * rx_buffer, size_t rx_len) {
-	I2C_HandleTypeDef * i2c = (I2C_HandleTypeDef *)ctx;
-    bool send_stop = (rx_buffer != NULL) ? false : true;
-    HAL_StatusTypeDef result;
-    result = HAL_I2C_Master_Transmit(i2c, dev_addr, tx_buffer,
-    		(uint16_t)tx_len & 0xfffU, XENSIV_PASCO2_I2C_TIMEOUT_MS);
-    if ((HAL_OK == result) && (rx_buffer != NULL))
-    {
-        result = HAL_I2C_Master_Receive(i2c, dev_addr, rx_buffer,
-        		(uint16_t)rx_len & 0xfffU, XENSIV_PASCO2_I2C_TIMEOUT_MS);
-    }
-    return (HAL_OK == result)
-        ? XENSIV_PASCO2_OK
-        : XENSIV_PASCO2_ERR_COMM;
-}
+int32_t xensiv_pasco2_plat_i2c_transfer(void * ctx, uint16_t dev_addr, const uint8_t * tx_buffer, size_t tx_len, uint8_t * rx_buffer, size_t rx_len) { }
 
 
 /**
@@ -100,7 +86,6 @@ int32_t xensiv_pasco2_plat_uart_read(void *ctx, uint8_t * data, size_t len) {
 	{
 		return XENSIV_PASCO2_OK;
 	}
-
 }
 
 /**

@@ -1,0 +1,51 @@
+14:48:19 **** Incremental Build of configuration Debug for project Co2_ex ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DDEBUG -DFX_INCLUDE_USER_DEFINE_FILE -DLX_INCLUDE_USER_DEFINE_FILE -DTX_INCLUDE_USER_DEFINE_FILE -DTX_SINGLE_MODE_NON_SECURE=1 -DUSE_HAL_DRIVER -DSTM32U585xx -c -I../FileX/App -I../FileX/Target -I../LevelX/App -I../Core/Inc -I../LevelX/Target -I../AZURE_RTOS/App -I../Drivers/STM32U5xx_HAL_Driver/Inc -I../Drivers/STM32U5xx_HAL_Driver/Inc/Legacy -I../Middlewares/ST/levelx/common/inc -I../Drivers/BSP/Components/mx25lm51245g -I../Middlewares/ST/threadx/common/inc -I../Drivers/CMSIS/Device/ST/STM32U5xx/Include -I../Middlewares/ST/filex/common/inc -I../Middlewares/ST/filex/ports/generic/inc -I../Middlewares/ST/threadx/ports/cortex_m33/gnu/inc -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/ittia_db_iot/common/inc -I../Drivers/BSP/B-U585I-IOT02A -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc "../Core/Src/pasco2_example.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DDEBUG -DFX_INCLUDE_USER_DEFINE_FILE -DLX_INCLUDE_USER_DEFINE_FILE -DTX_INCLUDE_USER_DEFINE_FILE -DTX_SINGLE_MODE_NON_SECURE=1 -DUSE_HAL_DRIVER -DSTM32U585xx -c -I../FileX/App -I../FileX/Target -I../LevelX/App -I../Core/Inc -I../LevelX/Target -I../AZURE_RTOS/App -I../Drivers/STM32U5xx_HAL_Driver/Inc -I../Drivers/STM32U5xx_HAL_Driver/Inc/Legacy -I../Middlewares/ST/levelx/common/inc -I../Drivers/BSP/Components/mx25lm51245g -I../Middlewares/ST/threadx/common/inc -I../Drivers/CMSIS/Device/ST/STM32U5xx/Include -I../Middlewares/ST/filex/common/inc -I../Middlewares/ST/filex/ports/generic/inc -I../Middlewares/ST/threadx/ports/cortex_m33/gnu/inc -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/ittia_db_iot/common/inc -I../Drivers/BSP/B-U585I-IOT02A -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/pasco2_example.d" -MT"Core/Src/pasco2_example.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/pasco2_example.o"
+arm-none-eabi-gcc "../Core/Src/xensiv_pasco2_platform.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DDEBUG -DFX_INCLUDE_USER_DEFINE_FILE -DLX_INCLUDE_USER_DEFINE_FILE -DTX_INCLUDE_USER_DEFINE_FILE -DTX_SINGLE_MODE_NON_SECURE=1 -DUSE_HAL_DRIVER -DSTM32U585xx -c -I../FileX/App -I../FileX/Target -I../LevelX/App -I../Core/Inc -I../LevelX/Target -I../AZURE_RTOS/App -I../Drivers/STM32U5xx_HAL_Driver/Inc -I../Drivers/STM32U5xx_HAL_Driver/Inc/Legacy -I../Middlewares/ST/levelx/common/inc -I../Drivers/BSP/Components/mx25lm51245g -I../Middlewares/ST/threadx/common/inc -I../Drivers/CMSIS/Device/ST/STM32U5xx/Include -I../Middlewares/ST/filex/common/inc -I../Middlewares/ST/filex/ports/generic/inc -I../Middlewares/ST/threadx/ports/cortex_m33/gnu/inc -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/ittia_db_iot/common/inc -I../Drivers/BSP/B-U585I-IOT02A -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/xensiv_pasco2_platform.d" -MT"Core/Src/xensiv_pasco2_platform.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/xensiv_pasco2_platform.o"
+../Core/Src/xensiv_pasco2_platform.c: In function 'xensiv_pasco2_plat_i2c_transfer':
+../Core/Src/xensiv_pasco2_platform.c:70:152: warning: control reaches end of non-void function [-Wreturn-type]
+   70 | int32_t xensiv_pasco2_plat_i2c_transfer(void * ctx, uint16_t dev_addr, const uint8_t * tx_buffer, size_t tx_len, uint8_t * rx_buffer, size_t rx_len) { }
+      |                                                                                                                                                        ^
+arm-none-eabi-g++ -o "Co2_ex.elf" @"objects.list"  -ldata_stream -littia_db_iot -littia_oslib -mcpu=cortex-m33 -T"C:\Github\XENSIV-PASCO2-Example\Co2_ex\STM32U585AIIXQ_FLASH.ld" -Wl,-Map="Co2_ex.map" -Wl,--gc-sections -static -L../Middlewares/Third_Party/ittia_db_iot/common/lib --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: Co2_ex.elf
+ 
+arm-none-eabi-size   Co2_ex.elf 
+arm-none-eabi-objdump -h -S  Co2_ex.elf  > "Co2_ex.list"
+   text	   data	    bss	    dec	    hex	filename
+ 331736	   5280	 224680	 561696	  89220	Co2_ex.elf
+Finished building: default.size.stdout
+ 
+Finished building: Co2_ex.list
+ 
+14:49:14 **** Incremental Build of configuration Debug for project Co2_ex ****
+make -j8 all 
+arm-none-eabi-g++ -o "Co2_ex.elf" @"objects.list"  -ldata_stream -littia_db_iot -littia_oslib -mcpu=cortex-m33 -T"C:\Github\XENSIV-PASCO2-Example\Co2_ex\STM32U585AIIXQ_FLASH.ld" -Wl,-Map="Co2_ex.map" -Wl,--gc-sections -static -L../Middlewares/Third_Party/ittia_db_iot/common/lib --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: Co2_ex.elf
+ 
+arm-none-eabi-size   Co2_ex.elf 
+arm-none-eabi-objdump -h -S  Co2_ex.elf  > "Co2_ex.list"
+   text	   data	    bss	    dec	    hex	filename
+ 331736	   5280	 224680	 561696	  89220	Co2_ex.elf
+Finished building: default.size.stdout
+ 
+Finished building: Co2_ex.list
+ 
+15:06:42 **** Incremental Build of configuration Debug for project Co2_ex ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/xensiv_pasco2_platform.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DDEBUG -DFX_INCLUDE_USER_DEFINE_FILE -DLX_INCLUDE_USER_DEFINE_FILE -DTX_INCLUDE_USER_DEFINE_FILE -DTX_SINGLE_MODE_NON_SECURE=1 -DUSE_HAL_DRIVER -DSTM32U585xx -c -I../FileX/App -I../FileX/Target -I../LevelX/App -I../Core/Inc -I../LevelX/Target -I../AZURE_RTOS/App -I../Drivers/STM32U5xx_HAL_Driver/Inc -I../Drivers/STM32U5xx_HAL_Driver/Inc/Legacy -I../Middlewares/ST/levelx/common/inc -I../Drivers/BSP/Components/mx25lm51245g -I../Middlewares/ST/threadx/common/inc -I../Drivers/CMSIS/Device/ST/STM32U5xx/Include -I../Middlewares/ST/filex/common/inc -I../Middlewares/ST/filex/ports/generic/inc -I../Middlewares/ST/threadx/ports/cortex_m33/gnu/inc -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/ittia_db_iot/common/inc -I../Drivers/BSP/B-U585I-IOT02A -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/xensiv_pasco2_platform.d" -MT"Core/Src/xensiv_pasco2_platform.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/xensiv_pasco2_platform.o"
+../Core/Src/xensiv_pasco2_platform.c: In function 'xensiv_pasco2_plat_i2c_transfer':
+../Core/Src/xensiv_pasco2_platform.c:70:152: warning: control reaches end of non-void function [-Wreturn-type]
+   70 | int32_t xensiv_pasco2_plat_i2c_transfer(void * ctx, uint16_t dev_addr, const uint8_t * tx_buffer, size_t tx_len, uint8_t * rx_buffer, size_t rx_len) { }
+      |                                                                                                                                                        ^
+arm-none-eabi-g++ -o "Co2_ex.elf" @"objects.list"  -ldata_stream -littia_db_iot -littia_oslib -mcpu=cortex-m33 -T"C:\Github\XENSIV-PASCO2-Example\Co2_ex\STM32U585AIIXQ_FLASH.ld" -Wl,-Map="Co2_ex.map" -Wl,--gc-sections -static -L../Middlewares/Third_Party/ittia_db_iot/common/lib --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: Co2_ex.elf
+ 
+arm-none-eabi-size   Co2_ex.elf 
+arm-none-eabi-objdump -h -S  Co2_ex.elf  > "Co2_ex.list"
+   text	   data	    bss	    dec	    hex	filename
+ 331736	   5280	 224680	 561696	  89220	Co2_ex.elf
+Finished building: default.size.stdout
+ 
+Finished building: Co2_ex.list
+ 

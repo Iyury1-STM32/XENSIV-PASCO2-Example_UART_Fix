@@ -270,31 +270,6 @@ int32_t xensiv_pasco2_get_result(uint16_t * val);
  */
 int32_t xensiv_pasco2_get_measurement_status(const xensiv_pasco2_t * dev, xensiv_pasco2_meas_status_t * status);
 
-
-/**
- * @brief Sets the pressure compensation value.
- * The CO2 concentration value acquired by the sensor is dependent on the external atmospheric pressure. To
- * compensate for this effect, the application can provide the value of the atmospheric pressure using this
- * function. At the end of a measurement sequence, the device reads the pressure value and applies it for
- * compensation on the CO2 concentration value before storing it into the result registers, and can be
- * retrieved using \ref xensiv_pasco2_get_result
- *
- * @param[in] dev Pointer to a XENSIV™ PAS CO2 sensor device
- * @param[in] val New pressure compensation value to apply
- * @return XENSIV_PASCO2_OK if setting the pressure reference value was successful; an error indicating what went wrong otherwise
- */
-int32_t xensiv_pasco2_set_pressure_compensation(const xensiv_pasco2_t * dev, uint16_t val);
-
-/**
- * @brief Sets the offset compensation value
- * Defines the reference value used for ABOC and force calibration
- *
- * @param[in] dev Pointer to the XENSIV™ PAS CO2 sensor device
- * @param[in] val New pressure calibration value to apply
- * @return XENSIV_PASCO2_OK if setting the measurement offset was successful; an error indicating what went wrong otherwise
- */
-int32_t xensiv_pasco2_set_offset_compensation(const xensiv_pasco2_t * dev, uint16_t val);
-
 /**
  * @brief Writes to the scratchpad register
  *
@@ -330,21 +305,14 @@ int32_t xensiv_pasco2_cmd(const xensiv_pasco2_t * dev, xensiv_pasco2_cmd_t cmd);
  */
 int32_t xensiv_pasco2_start_single_mode();
 
-
 /**
- * @brief Performs force compensation.
- * Used to calculate the offset compensation when the sensor is exposed to a CO2 reference value.
- * The device is left in idle mode and the new offset compensation value is stored in non-volatile memory.
+ * @brief Initalizes the PASCO2 sensor
  *
- * @param[in] dev Pointer to the XENSIV™ PAS CO2 sensor device
- * @param[in] co2_ref CO2 reference value
- * @return XENSIV_PASCO2_OK if the force compensation was successful; an error indicating what went wrong otherwise
+ * @param[in] void
+ * @return XENSIV_PASCO2_OK if the sensor was initialized
  */
-int32_t xensiv_pasco2_perform_forced_compensation(const xensiv_pasco2_t * dev, uint16_t co2_ref);
-
-int32_t xensiv_pasco2_get_measurement_status_sll1(const xensiv_pasco2_t * dev, xensiv_pasco2_meas_status_t * status);
-
 int32_t xensiv_pasco2_init();
+
 
 #ifdef __cplusplus
 }

@@ -19,8 +19,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "app_threadx.h"
-#include "xensiv_pasco2_platform.h"
-#include "xensiv_pasco2_regs.h"
 #include "xensiv_pasco2.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -34,8 +32,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define XENSIV_PASCO2_UART_WRITE_XFER_BUF_SIZE  (8U)
-#define XENSIV_PASCO2_UART_READ_XFER_BUF_SIZE   (5U)
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -46,18 +43,12 @@
 /* Private variables ---------------------------------------------------------*/
 
 I2C_HandleTypeDef hi2c1;
-
 OSPI_HandleTypeDef hospi2;
 DMA_HandleTypeDef handle_GPDMA1_Channel0;
-
 RNG_HandleTypeDef hrng;
-
 CRYP_HandleTypeDef hcryp;
-
 UART_HandleTypeDef huart1;
-
 UART_HandleTypeDef huart3;
-
 
 /* USER CODE BEGIN PV */
 
@@ -135,11 +126,9 @@ int main(void)
 
   MX_ThreadX_Init();
 
-
-
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-
+  while(1) {}
 
   /* USER CODE END WHILE */
 
@@ -248,6 +237,7 @@ static void MX_GPDMA1_Init(void)
   /* USER CODE BEGIN GPDMA1_Init 1 */
 
   /* USER CODE END GPDMA1_Init 1 */
+
   /* USER CODE BEGIN GPDMA1_Init 2 */
 
   /* USER CODE END GPDMA1_Init 2 */
@@ -512,13 +502,13 @@ static void MX_USART1_UART_Init(void)
 static void MX_USART3_UART_Init(void)
 {
 
-  /* USER CODE BEGIN USART2_Init 0 */
+  /* USER CODE BEGIN USART3_Init 0 */
 
-  /* USER CODE END USART2_Init 0 */
+  /* USER CODE END USART3_Init 0 */
 
-  /* USER CODE BEGIN USART2_Init 1 */
+  /* USER CODE BEGIN USART3_Init 1 */
 
-  /* USER CODE END USART2_Init 1 */
+  /* USER CODE END USART3_Init 1 */
   huart3.Instance = USART3;
   huart3.Init.BaudRate = 9600;
   huart3.Init.WordLength = UART_WORDLENGTH_8B;
@@ -534,21 +524,10 @@ static void MX_USART3_UART_Init(void)
   {
     Error_Handler();
   }
-//  if (HAL_UARTEx_SetTxFifoThreshold(&huart2, UART_TXFIFO_THRESHOLD_1_8) != HAL_OK)
-//  {
-//    Error_Handler();
-//  }
-//  if (HAL_UARTEx_SetRxFifoThreshold(&huart2, UART_RXFIFO_THRESHOLD_1_8) != HAL_OK)
-//  {
-//    Error_Handler();
-//  }
-//  if (HAL_UARTEx_DisableFifoMode(&huart2) != HAL_OK)
-//  {
-//    Error_Handler();
-//  }
-  /* USER CODE BEGIN USART2_Init 2 */
 
-  /* USER CODE END USART2_Init 2 */
+  /* USER CODE BEGIN USART3_Init 2 */
+
+  /* USER CODE END USART3_Init 2 */
 
 }
 

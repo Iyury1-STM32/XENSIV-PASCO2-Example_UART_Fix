@@ -92,8 +92,8 @@ all: main-build
 main-build: Co2_ex.elf secondary-outputs
 
 # Tool invocations
-Co2_ex.elf Co2_ex.map: $(OBJS) $(USER_OBJS) C:\Users\ianyu\OneDrive\BSc\ Eng\STM32\STM32F446\workspace\My_workspace\MasteringMCU2_WS\Co2_ex\STM32U585AIIXQ_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "Co2_ex.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m33 -T"C:\Users\ianyu\OneDrive\BSc Eng\STM32\STM32F446\workspace\My_workspace\MasteringMCU2_WS\Co2_ex\STM32U585AIIXQ_FLASH.ld" -Wl,-Map="Co2_ex.map" -Wl,--gc-sections -static -L../Middlewares/Third_Party/ittia_db_iot/common/lib --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Co2_ex.elf Co2_ex.map: $(OBJS) $(USER_OBJS) C:\Github\XENSIV-PASCO2-Example\Co2_ex\STM32U585AIIXQ_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "Co2_ex.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m33 -T"C:\Github\XENSIV-PASCO2-Example\Co2_ex\STM32U585AIIXQ_FLASH.ld" -Wl,-Map="Co2_ex.map" -Wl,--gc-sections -static -L../Middlewares/Third_Party/ittia_db_iot/common/lib --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
