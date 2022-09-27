@@ -57,5 +57,6 @@ By defining "APPDEBUG" at the beginning of "pasco2_example.c", additional print 
 
 ![teraterm_debug](https://user-images.githubusercontent.com/76540445/192642541-a5197149-833d-42db-94a4-93e124e82857.PNG)
 
+Without APPDEBUG
 ![teraterm_nodebug](https://user-images.githubusercontent.com/76540445/192642572-5468ed5d-9880-4c3f-add3-f5ee4e53d8a8.PNG)
 
