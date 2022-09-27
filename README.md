@@ -1,5 +1,7 @@
 # Indoor CO2 Sensing
 
+![blockdiagram](https://user-images.githubusercontent.com/76540445/192641730-168c4bf1-e662-4bef-a312-0dc307cb4783.png)
+
 # Summary
 
 This application is used for detection of indoor air CO2 content. The CO2 measurements can be used as inputs for demand controlled ventilation (DCV), activation of air purifiers, or an alarm system if CO2 levels reach unsafe levels. Measurement points can also be uploaded to a cloud server for data analytics.
@@ -49,4 +51,11 @@ The main function creates two Azure RTOS ThreadX threads of equal priority to ru
 
 The "measurementTask" thread reads from the PASCO2 sensor in 10s intervals. The infrared emitter of the PASCO2 sensor requires at least 10s between reads in order to cool down. A timer "pco2_timer" is created to count down for 10s, and then signal a semaphore "pco2_timer_sem". The "measurementTask" will block on this semaphore, and then begin the measurement sequence once the semaphore is available after the 10s timer has expired. A watchdog timer "meas_watchdog" is used to detect when the measurement task has timed out on a read. The timer is activated when the measurement sequence begins and deactivated when the measurement sequence has completed. If the measurement task is preempted by FileX or a DMA interrupt during the measurement sequence, the measurement watchdog may time out as well. To ensure this does not occur, the timer is set sufficiently long such that the DMA interrupt handler has time to complete. After the measurment is taken, it is timestamped and stored into a time series on ITTIA DB IoT. When the measurement sequence has completed, "measurementTask" signals a "meas_rdy" semaphore, and calls "tx_thread_relinquish" to yield the CPU to the publisher task.
 
+The "publisherTask" thread waits on the "meas_rdy" semaphore without blocking, so it is free to do other work until a measurement is available to publish. Once the "meas_rdy" semaphore is available, the "publisherTask" can read the value/timestamp pair from the CO2 time series stored on ITTIA DB IoT, and then publish the pair to an MQTT topic to be received from an MQTT broker. For the time being, the value/timestamp pair is output to the console, which can be read by opening a serial monitor using TeraTerm with the baud rate set to 115200.
+
+By defining "APPDEBUG" at the beginning of "pasco2_example.c", additional print statements are output to the console which demonstrates context switching between threads. 
+
+![teraterm_debug](https://user-images.githubusercontent.com/76540445/192642541-a5197149-833d-42db-94a4-93e124e82857.PNG)
+
+![teraterm_nodebug](https://user-images.githubusercontent.com/76540445/192642572-5468ed5d-9880-4c3f-add3-f5ee4e53d8a8.PNG)
 
