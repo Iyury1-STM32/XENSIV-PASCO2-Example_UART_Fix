@@ -24,12 +24,12 @@ The application code is contained in "pasco2_example.c" under CO2_ex/Core/Src.
 
 # Hardware Setup
 
-Parts list: STM32 B-U585I-IOT02A x1
-Infineon Xensiv PASCO2 CO2 sensor x1
-HYFAI Universal AC/DC Power Adapter x1
-47uF electrolytic capacitor x1
-10uF ceramic capacitor x2
-100nF ceramic capacitor x2
+Parts list: STM32 B-U585I-IOT02A x1     <br />
+Infineon Xensiv PASCO2 CO2 sensor x1    <br />
+HYFAI Universal AC/DC Power Adapter x1  <br />
+47uF electrolytic capacitor x1          <br />
+10uF ceramic capacitor x2               <br />
+100nF ceramic capacitor x2              <br />
 
 The sensor requires a 3.3V supply for its microcontroller, and a 12V supply for the IR light source driver. Both voltage sources share a common ground.
  ![internal_diagram](https://user-images.githubusercontent.com/76540445/189276004-33408bd3-8a63-42dd-a08c-f0691aa2c0a3.PNG)
@@ -38,3 +38,15 @@ Wiring instructions are also included in the datasheet:
 ![image](https://user-images.githubusercontent.com/76540445/189276868-cf4ef7b2-ba99-4a4c-9e0b-459334d7ff51.png)
 
 The HYFAI Universal AC/DC Power Adapter is used to supply 12V to the sensor.
+
+![HardwareSetup](https://user-images.githubusercontent.com/76540445/192639246-1f9dbbc1-75c1-4d8b-8097-dcc0d2173a4e.jpg)
+
+# Software Setup
+
+The application code is contained in "pasco2_example.c".
+
+The main function creates two Azure RTOS ThreadX threads of equal priority to run "measurementTask" and "publisherTask". No time slices are provisioned to these threads, so cooperative scheduling is required. The thread running "publisherTask" starts automatically, initializes ITTIA DB IoT and the PASCO2 sensor, and then starts the thread running "measurementTask".
+
+The "measurementTask" thread reads from the PASCO2 sensor in 10s intervals. The infrared emitter of the PASCO2 sensor requires at least 10s between reads in order to cool down. A timer "pco2_timer" is created to count down for 10s, and then signal a semaphore "pco2_timer_sem". The "measurementTask" will block on this semaphore, and then begin the measurement sequence once the semaphore is available after the 10s timer has expired. A watchdog timer "meas_watchdog" is used to detect when the measurement task has timed out on a read. The timer is activated when the measurement sequence begins and deactivated when the measurement sequence has completed. If the measurement task is preempted by FileX or a DMA interrupt during the measurement sequence, the measurement watchdog may time out as well. To ensure this does not occur, the timer is set sufficiently long such that the DMA interrupt handler has time to complete. After the measurment is taken, it is timestamped and stored into a time series on ITTIA DB IoT. When the measurement sequence has completed, "measurementTask" signals a "meas_rdy" semaphore, and calls "tx_thread_relinquish" to yield the CPU to the publisher task.
+
+
